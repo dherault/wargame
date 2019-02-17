@@ -1,5 +1,5 @@
 import Mousetrap from 'mousetrap'
-import store from '../../state/store'
+import store from '../state/store'
 import draw from './draw'
 
 function registerCanvas(canvas) {
@@ -10,7 +10,44 @@ function registerCanvas(canvas) {
   // window.canvas = canvas
   // window._ = _
 
-  // canvas.addEventListener('click', e => console.log(e))
+  canvas.addEventListener('click', e => {
+    // console.log(e)
+  })
+
+  canvas.addEventListener('mousemove', e => {
+    store.dispatch({
+      type: 'UPDATE_MOUSE_POSITION',
+      payload: {
+        offsetX: e.offsetX,
+        offsetY: e.offsetY,
+      }
+    })
+    // console.log(Math.floor(viewBox.x + e.offsetX / tileSize))
+  })
+
+  canvas.addEventListener('contextmenu', e => e.preventDefault())
+
+  canvas.addEventListener('mousedown', e => {
+    if (e.button === 2) {
+      store.dispatch({
+        type: 'UPDATE_MOUSE_STATE',
+        payload: {
+          rightButtonDown: true,
+        }
+      })
+    }
+  })
+
+  canvas.addEventListener('mouseup', e => {
+    if (e.button === 2) {
+      store.dispatch({
+        type: 'UPDATE_MOUSE_STATE',
+        payload: {
+          rightButtonDown: false,
+        }
+      })
+    }
+  })
   
   window.addEventListener('wheel', e => {
     const { viewBox } = store.getState()
@@ -27,7 +64,9 @@ function registerCanvas(canvas) {
 
   Mousetrap.bind('z', () => {
     const { viewBox } = store.getState()
-    const goalY = viewBox.goalY - 1
+    const goalY = Math.max(0, viewBox.goalY - 1)
+
+    if (goalY === viewBox.goalY) return
 
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 
@@ -42,6 +81,8 @@ function registerCanvas(canvas) {
     const { viewBox } = store.getState()
     const goalY = viewBox.goalY + 1
 
+    if (goalY === viewBox.goalY) return
+
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 
       payload: { 
@@ -53,7 +94,9 @@ function registerCanvas(canvas) {
 
   Mousetrap.bind('q', () => {
     const { viewBox } = store.getState()
-    const goalX = viewBox.goalX - 1
+    const goalX = Math.max(0, viewBox.goalX - 1)
+
+    if (goalX === viewBox.goalX) return
 
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 
@@ -67,6 +110,8 @@ function registerCanvas(canvas) {
   Mousetrap.bind('d', () => {
     const { viewBox } = store.getState()
     const goalX = viewBox.goalX + 1
+
+    if (goalX === viewBox.goalX) return
 
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 

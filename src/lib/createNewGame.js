@@ -12,7 +12,7 @@ function createNewGame() {
 
   worldMap.forEach((row, y) => {
     row.forEach((tile, x) => {
-      if (tile.type === 'GRASS') {
+      if (tile.type === 'ROAD') {
         grassTiles.push({ x, y })
       }
     })
@@ -30,13 +30,26 @@ function createNewGame() {
   ]
 
   store.dispatch({
+    type: 'SET_WORLD_MAP',
+    payload: worldMap,
+  })
+
+  store.dispatch({
     type: 'SET_UNITS',
     payload: units,
   })
 
   store.dispatch({
-    type: 'SET_WORLD_MAP',
-    payload: worldMap,
+    type: 'SET_PLAY_ORDER',
+    payload: ['BLUE', 'RED'],
+  })
+
+  store.dispatch({
+    type: 'SET_TURN',
+    payload: {
+      number: 1,
+      faction: 'BLUE',
+    },
   })
 
   store.dispatch({

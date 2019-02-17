@@ -1,5 +1,5 @@
-import store from '../../state/store'
-import gameConfiguration from '../gameConfiguration'
+import store from '../state/store'
+import gameConfiguration from './gameConfiguration'
 
 const unitsDrawers = {
   INFANTERY(_, tileSize, x, y, color) {

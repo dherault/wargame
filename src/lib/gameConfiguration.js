@@ -26,7 +26,7 @@ export default {
       color: '#014c00',
       movementCost: {
         FOOT: 2, 
-        WHEEL: 3, 
+        WHEEL: Infinity, 
         FLY: 1, 
         SAIL: Infinity,
       } 
@@ -67,20 +67,28 @@ export default {
       name: 'infantery',
       movementType: 'FOOT',
       movement: 3,
+      damages: {
+        INFANTERY: 50,
+        TANK: 10,
+      }
     },
     TANK: {
       name: 'tank',
       movementType: 'WHEEL',
       movement: 6,
+      damages: {
+        INFANTERY: 80,
+        TANK: 50,
+      }
     },
   },
   factionsConfiguration: {
     BLUE: {
-      name: 'blue',
+      name: 'Blue Nation',
       color: '#4286f4',
     },
     RED: {
-      name: 'red',
+      name: 'Red Nation',
       color: '#d61919',
     },
   },

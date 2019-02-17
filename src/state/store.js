@@ -5,16 +5,22 @@ import throttle from 'lodash.throttle'
 
 import { loadState, saveState } from './persist'
 
-import worldMap from './reducers/worldMap'
-import viewBox from './reducers/viewBox'
+import mouse from './reducers/mouse'
+import playOrder from './reducers/playOrder'
+import turn from './reducers/turn'
 import units from './reducers/units'
+import viewBox from './reducers/viewBox'
+import worldMap from './reducers/worldMap'
 
 import viewBoxSaga from './sagas/viewBox'
 
 const reducer = combineReducers({
-  worldMap,
-  viewBox,
+  mouse,
+  playOrder,
+  turn,
   units,
+  viewBox,
+  worldMap,
 })
 
 function* rootSaga() {
@@ -25,7 +31,9 @@ function* rootSaga() {
 
 function logger() {
   return next => action => {
-    console.log('Action', action.type, action.payload)
+    if (action.type !== 'UPDATE_MOUSE_POSITION') {
+      console.log('Action', action.type, action.payload)
+    }
 
     return next(action)
   }

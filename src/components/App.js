@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import registerCanvas from '../lib/world/registerCanvas'
+import { connect } from 'react-redux'
+import registerCanvas from '../lib/registerCanvas'
+import gameConfiguration from '../lib/gameConfiguration'
 import './App.css';
 
 class App extends Component {
@@ -25,20 +27,32 @@ class App extends Component {
     canvas.height = window.innerHeight
   }
 
+  handleNextPlayerClick = () => {
+
+  }
+
   handleNewGameClick = () => {
     localStorage.removeItem('state')
     window.location.reload()
   }
 
   render() {
+    const { turn } = this.props
+
     return (
-      <div className="App">
+      <div className="App relative">
         <canvas
           id="canvas"
           className="App-canvas no-select"
         />
-        <div className="relative">
-          <button style={{ position: 'absolute', bottom: 30, right: 30 }} onClick={this.handleNewGameClick}>
+        <div className="absolute x4" style={{ bottom: 30, right: 30, background: 'white', padding: 10 }}>
+          <div style={{ marginRight: 10 }}>
+            turn {turn.number} - {gameConfiguration.factionsConfiguration[turn.faction].name}
+          </div>
+          <button style={{ marginRight: 10 }} onClick={this.handleNextPlayerClick}>
+            Play
+          </button>
+          <button onClick={this.handleNewGameClick}>
             New Game
           </button>
         </div>
@@ -47,4 +61,8 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = s => ({
+  turn: s.turn,
+})
+
+export default connect(mapStateToProps)(App)
