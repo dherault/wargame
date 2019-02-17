@@ -7,12 +7,14 @@ import { loadState, saveState } from './persist'
 
 import worldMap from './reducers/worldMap'
 import viewBox from './reducers/viewBox'
+import units from './reducers/units'
 
 import viewBoxSaga from './sagas/viewBox'
 
 const reducer = combineReducers({
   worldMap,
   viewBox,
+  units,
 })
 
 function* rootSaga() {

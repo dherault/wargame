@@ -1,8 +1,24 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
 
+const unitsDrawers = {
+  INFANTERY(_, tileSize, x, y, color) {
+    _.fillStyle = color
+
+    _.beginPath()
+    _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+    _.closePath()
+    _.fill()
+  },
+  TANK(_, tileSize, x, y, color) {
+    _.fillStyle = color
+
+    _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+  }
+}
+
 function draw(_) {
-  const { viewBox, worldMap } = store.getState()
+  const { viewBox, worldMap, units } = store.getState()
   const { width, height } = _.canvas
 
   _.clearRect(0, 0, width, height)
@@ -27,6 +43,10 @@ function draw(_) {
       )
     }
   }
+
+  units.forEach(unit => {
+    unitsDrawers[unit.type](_, tileSize, unit.position.x - (viewBox.x), unit.position.y - (viewBox.y), gameConfiguration.factionsConfiguration[unit.faction].color)
+  }) 
 }
 
 export default draw

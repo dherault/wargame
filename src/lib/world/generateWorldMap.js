@@ -18,6 +18,8 @@ const tilesTypes = [
   'GRASS',
   'GRASS',
   'GRASS',
+  'GRASS',
+  'GRASS',
   'ROAD',
   'ROAD',
   'FOREST',
@@ -27,9 +29,9 @@ const tilesTypes = [
 
 function generateWorldMap() {
   const map = []
-  const width = 100
-  const height = 100
-  const seaWidth = 5
+  const width = 25
+  const height = 25
+  const seaWidth = 1
 
   for (let j = 0; j < height; j++) {
     const row = []

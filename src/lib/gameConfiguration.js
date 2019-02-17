@@ -1,9 +1,10 @@
 export default {
-  initialViewBoxWidth: 15, // tiles
+  initialViewBoxWidth: 25, // tiles
   tilesConfiguration: {
     GRASS: {
+      name: 'grass',
       color: '#047a02',
-      cost: {
+      movementCost: {
         FOOT: 1, 
         WHEEL: 2, 
         FLY: 1, 
@@ -11,8 +12,9 @@ export default {
       } 
     },
     ROAD: {
+      name: 'road',
       color: '#e0dac9',
-      cost: {
+      movementCost: {
         FOOT: 1, 
         WHEEL: 1, 
         FLY: 1, 
@@ -20,8 +22,9 @@ export default {
       } 
     },
     FOREST: {
+      name: 'forest',
       color: '#014c00',
-      cost: {
+      movementCost: {
         FOOT: 2, 
         WHEEL: 3, 
         FLY: 1, 
@@ -29,8 +32,9 @@ export default {
       } 
     },
     MOUNTAIN: {
+      name: 'mountain',
       color: '#a5a195',
-      cost: {
+      movementCost: {
         FOOT: 3, 
         WHEEL: Infinity,
         FLY: 1,
@@ -38,8 +42,9 @@ export default {
       } 
     },
     RIVER: {
+      name: 'river',
       color: '#57def9',
-      cost: {
+      movementCost: {
         FOOT: 2, 
         WHEEL: Infinity,
         FLY: 1,
@@ -47,13 +52,36 @@ export default {
       } 
     },
     SEA: {
+      name: 'sea',
       color: '#2032a3',
-      cost: {
+      movementCost: {
         FOOT: Infinity,
         WHEEL: Infinity,
         FLY: 1,
         SAIL:  1,
       } 
     },
-  }
+  },
+  unitsConfiguration: {
+    INFANTERY: {
+      name: 'infantery',
+      movementType: 'FOOT',
+      movement: 3,
+    },
+    TANK: {
+      name: 'tank',
+      movementType: 'WHEEL',
+      movement: 6,
+    },
+  },
+  factionsConfiguration: {
+    BLUE: {
+      name: 'blue',
+      color: '#4286f4',
+    },
+    RED: {
+      name: 'red',
+      color: '#d61919',
+    },
+  },
 }
