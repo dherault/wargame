@@ -17,3 +17,8 @@ export function saveState(state) {
     console.error(error)
   }
 }
+
+window.reset = () => {
+  localStorage.removeItem('state')
+  window.location.reload()
+}

@@ -5,6 +5,7 @@
   "dependencies": {
     "flexpad": "^0.2.0",
     "lodash.throttle": "^4.1.1",
+    "mousetrap": "^1.6.2",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-redux": "^6.0.0",

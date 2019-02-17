@@ -16,22 +16,27 @@ cost:
 */
 const tilesTypes = [
   'GRASS',
+  'GRASS',
+  'GRASS',
+  'ROAD',
   'ROAD',
   'FOREST',
   'MOUNTAIN',
   'RIVER',
-  'SEA',
 ]
 
 function generateWorldMap() {
   const map = []
+  const width = 100
+  const height = 100
+  const seaWidth = 5
 
-  for (let i = 0; i < 100; i++) {
+  for (let j = 0; j < height; j++) {
     const row = []
     
-    for (let j = 0; j < 100; j++) {
+    for (let i = 0; i < width; i++) {
       row.push({
-        type: randomArray(tilesTypes)
+        type: i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? 'SEA' : randomArray(tilesTypes)
       })
     }
     

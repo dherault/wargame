@@ -6,16 +6,18 @@ import throttle from 'lodash.throttle'
 import { loadState, saveState } from './persist'
 
 import worldMap from './reducers/worldMap'
+import viewBox from './reducers/viewBox'
 
-import battleSaga from './sagas/battle'
+import viewBoxSaga from './sagas/viewBox'
 
 const reducer = combineReducers({
   worldMap,
+  viewBox,
 })
 
 function* rootSaga() {
   yield all([
-    battleSaga(),
+    viewBoxSaga(),
   ])
 }
 
