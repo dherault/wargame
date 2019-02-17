@@ -1,6 +1,6 @@
 function mouse(state = {}, action) {
 
-  if (action.type === 'UPDATE_MOUSE_POSITION') {
+  if (action.type === 'UPDATE_MOUSE_POSITION' || action.type === 'UPDATE_MOUSE_STATE') {
     return {
       ...state,
       ...action.payload,

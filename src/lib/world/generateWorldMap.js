@@ -8,11 +8,6 @@ tiles:
 3 - mountain
 4 - river
 5 - sea
-cost:
-0 - foot
-1 - wheel
-3 - fly
-4 - sail
 */
 const tilesTypes = [
   'GRASS',

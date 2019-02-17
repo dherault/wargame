@@ -28,12 +28,29 @@ function computePossibleTiles(unitPosition, unitType) {
     unitConfiguration.movementType,
     unitConfiguration.movement
   )
-    
+
   const possibleTiles = []
 
   tilesHashs.forEach(tileHash => possibleTiles.push(unhash(tileHash)))
   
   return cache[hash] = possibleTiles
+}
+
+function expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles = new Set()) {
+  if (remainingMovementPoints <= 0) return tiles
+
+  const neighbouringTiles = []
+
+  checkTile(worldMap, x - 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, x + 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, x, y - 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, x, y + 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+
+  neighbouringTiles.forEach(({ x, y, remainingMovementPoints }) => {
+    expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles)
+  })
+
+  return tiles
 }
 
 function checkTile(worldMap, x, y, movementType, remainingMovementPoints, tiles, neighbouringTiles) {
@@ -43,8 +60,8 @@ function checkTile(worldMap, x, y, movementType, remainingMovementPoints, tiles,
     if (!tiles.has(tileHash)) {
       const { type } = worldMap[y][x]
       const cost = gameConfiguration.tilesConfiguration[type].movementCost[movementType]
-  
-      if (cost >= remainingMovementPoints) {
+      
+      if (cost <= remainingMovementPoints) {
         tiles.add(tileHash)
         neighbouringTiles.push({ 
           x, 
@@ -54,23 +71,6 @@ function checkTile(worldMap, x, y, movementType, remainingMovementPoints, tiles,
       }
     }
   }
-}
-
-function expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles = new Set()) {
-  if (remainingMovementPoints <= 0) return tiles
-
-  const neighbouringTiles = []
-
-  checkTile(worldMap, x - 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles, neighbouringTiles)
-  checkTile(worldMap, x + 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles, neighbouringTiles)
-  checkTile(worldMap, x, y - 1, movementType, remainingMovementPoints, tiles, neighbouringTiles, neighbouringTiles)
-  checkTile(worldMap, x, y + 1, movementType, remainingMovementPoints, tiles, neighbouringTiles, neighbouringTiles)
-
-  neighbouringTiles.forEach(({ x, y, remainingMovementPoints }) => {
-    expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles)
-  })
-
-  return tiles
 }
 
 export default computePossibleTiles
