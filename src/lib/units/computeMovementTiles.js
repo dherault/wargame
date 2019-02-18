@@ -1,8 +1,6 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
 
-const cache = {}
-const fullHash = (x, y, type) => `${x}_${y}_${type}`
 const hash = (x, y) => `${x}_${y}`
 const unhash = string => {
   const [xs, ys] = string.split('_')
@@ -13,18 +11,19 @@ const unhash = string => {
   }
 }
 
-function computePossibleTiles(unitPosition, unitType) {
-  const hash = fullHash(unitPosition.x, unitPosition.y, unitType)
+// TODO ? compute units hash and cache result
+function computePossibleTiles(unit) {
+  const { worldMap, units } = store.getState()
+  const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]
+  const unitsPositionsHashs = new Set()
 
-  if (cache[hash]) return cache[hash]
-
-  const { worldMap } = store.getState()
-  const unitConfiguration = gameConfiguration.unitsConfiguration[unitType]
+  units.forEach(u => unitsPositionsHashs.add(hash(u.position.x, u.position.y)))
 
   const tilesHashs = expandPossibleTiles(
-    worldMap, 
-    unitPosition.x, 
-    unitPosition.y, 
+    worldMap,
+    unitsPositionsHashs, 
+    unit.position.x, 
+    unit.position.y, 
     unitConfiguration.movementType,
     unitConfiguration.movement
   )
@@ -33,31 +32,31 @@ function computePossibleTiles(unitPosition, unitType) {
 
   tilesHashs.forEach(tileHash => possibleTiles.push(unhash(tileHash)))
   
-  return cache[hash] = possibleTiles
+  return possibleTiles
 }
 
-function expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles = new Set()) {
+function expandPossibleTiles(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles = new Set()) {
   if (remainingMovementPoints <= 0) return tiles
 
   const neighbouringTiles = []
 
-  checkTile(worldMap, x - 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, x + 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, x, y - 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, x, y + 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, unitsPositionsHashs, x - 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, unitsPositionsHashs, x + 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, unitsPositionsHashs, x, y - 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  checkTile(worldMap, unitsPositionsHashs, x, y + 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
 
   neighbouringTiles.forEach(({ x, y, remainingMovementPoints }) => {
-    expandPossibleTiles(worldMap, x, y, movementType, remainingMovementPoints, tiles)
+    expandPossibleTiles(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles)
   })
 
   return tiles
 }
 
-function checkTile(worldMap, x, y, movementType, remainingMovementPoints, tiles, neighbouringTiles) {
-  if (worldMap[y][x]) {
+function checkTile(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles, neighbouringTiles) {
+  if (worldMap[y] && worldMap[y][x]) {
     const tileHash = hash(x, y)
 
-    if (!tiles.has(tileHash)) {
+    if (!(tiles.has(tileHash) || unitsPositionsHashs.has(tileHash))) {
       const { type } = worldMap[y][x]
       const cost = gameConfiguration.tilesConfiguration[type].movementCost[movementType]
       

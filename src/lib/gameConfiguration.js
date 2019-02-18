@@ -1,5 +1,4 @@
 export default {
-  initialViewBoxWidth: 25, // tiles
   tilesConfiguration: {
     GRASS: {
       name: 'grass',

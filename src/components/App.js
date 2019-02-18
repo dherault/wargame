@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import registerCanvas from '../lib/registerCanvas'
 import gameConfiguration from '../lib/gameConfiguration'
-import './App.css';
+
+import UnitMenu from './UnitMenu'
+
+import './App.css'
 
 class App extends Component {
 
@@ -45,6 +48,7 @@ class App extends Component {
           id="canvas"
           className="App-canvas no-select"
         />
+        <UnitMenu />
         <div className="absolute x4" style={{ bottom: 30, right: 30, background: 'white', padding: 10 }}>
           <div style={{ marginRight: 10 }}>
             turn {turn.number} - {gameConfiguration.factionsConfiguration[turn.faction].name}

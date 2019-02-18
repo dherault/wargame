@@ -19,14 +19,19 @@ function createNewGame() {
   })
 
   const units = [
-    { type: 'INFANTERY', faction: 'BLUE', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK', faction: 'BLUE', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK', faction: 'RED', position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+  ]
+
+  const playOrder = [
+    { faction: 'BLUE', playerType: 'HUMAN' }, 
+    { faction: 'RED', playerType: 'COMPUTER' },
   ]
 
   store.dispatch({
@@ -41,14 +46,14 @@ function createNewGame() {
 
   store.dispatch({
     type: 'SET_PLAY_ORDER',
-    payload: ['BLUE', 'RED'],
+    payload: playOrder,
   })
 
   store.dispatch({
     type: 'SET_TURN',
     payload: {
       number: 1,
-      faction: 'BLUE',
+      ...playOrder[0],
     },
   })
 
@@ -59,8 +64,8 @@ function createNewGame() {
       y: 0,
       goalX: 0,
       goalY: 0,
-      width: gameConfiguration.initialViewBoxWidth,
-      goalWidth: gameConfiguration.initialViewBoxWidth,
+      width: worldMap[0].length,
+      goalWidth: worldMap[0].length,
     },
   })
 }

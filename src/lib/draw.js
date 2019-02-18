@@ -2,41 +2,24 @@ import store from '../state/store'
 import gameConfiguration from './gameConfiguration'
 import computeMovementTiles from './units/computeMovementTiles'
 
-const unitsDrawers = {
-  INFANTERY(_, tileSize, x, y, color) {
-    _.fillStyle = color
-    _.strokeStyle = '#333333'
-    _.lineWidth = 2
-
-    _.beginPath()
-    _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
-    _.closePath()
-    _.fill()
-    _.stroke()
-  },
-  TANK(_, tileSize, x, y, color) {
-    _.fillStyle = color
-    _.strokeStyle = '#333333'
-    _.lineWidth = 2
-
-    _.beginPath()
-    _.rect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
-    _.closePath()
-    _.fill()
-    _.stroke()
-  }
-}
+let movementGradientAnimationStep = 0
+let movementGradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, units } = store.getState()
+  const { viewBox, mouse, worldMap, units, turn, selectedUnits, selectedTile } = store.getState()
   const { width, height } = _.canvas
 
-  _.clearRect(0, 0, width, height)
+  _.fillStyle = 'black'
+  _.fillRect(0, 0, width, height)
   
   const tileSize = width / viewBox.width // pixel per tile
   const viewBoxHeight = Math.ceil(height / tileSize) // tiles
-  const mouseX = Math.floor(mouse.offsetX / tileSize + viewBox.x)
-  const mouseY = Math.floor(mouse.offsetY / tileSize + viewBox.y)
+
+  _.lineWidth = 1
+
+  /* ----------------
+    DRAW BACKGROUND
+  ---------------- */
 
   for (let j = 0; j < viewBoxHeight + 1; j++) { // + 1 for move draw
     const y = Math.floor(j + viewBox.y)
@@ -46,47 +29,140 @@ function draw(_) {
 
       if (!tile) continue 
 
-      _.fillStyle = gameConfiguration.tilesConfiguration[tile.type].color
-      _.fillRect(
-        (i - (viewBox.x % 1)) * tileSize,
-        (j - (viewBox.y % 1)) * tileSize,
-        tileSize,
-        tileSize
-      )
+      const color = gameConfiguration.tilesConfiguration[tile.type].color
+
+      _.fillStyle = color
+      _.strokeStyle = color
+
+      _.beginPath()
+      _.rect((i - viewBox.x % 1) * tileSize, (j - viewBox.y % 1) * tileSize, tileSize, tileSize)
+      _.closePath()
+      _.fill()
+      _.stroke()
     }
   }
 
-  units.forEach(unit => {
-    unitsDrawers[unit.type](
-      _, 
-      tileSize, 
-      unit.position.x - viewBox.x, 
-      unit.position.y - viewBox.y, 
-      gameConfiguration.factionsConfiguration[unit.faction].color
-    )
-  }) 
+  /* -----------
+    DRAW UNITS
+  ----------- */
 
-  if (mouse.rightButtonDown) {
-    const rightClickedUnit = units.find(unit => unit.position.x === mouseX && unit.position.y === mouseY)
+  units.forEach(unit => drawUnit(_, tileSize, unit)) 
 
-    if (rightClickedUnit) {
-      const movementTiles = computeMovementTiles(rightClickedUnit.position, rightClickedUnit.type)
+  /* --------------------
+    DRAW MOVEMENT TILES
+  -------------------- */
+
+  if (turn.playerType === 'HUMAN') {
+
+    let movementTiles
+
+    if (mouse.rightButtonDown) {
+      const rightClickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
+  
+      if (rightClickedUnit) movementTiles = computeMovementTiles(rightClickedUnit)
+    }
+
+    if (selectedUnits[0]) movementTiles = computeMovementTiles(selectedUnits[0])
+
+    if (movementTiles) {
+      movementGradientAnimationStep += 1
+
+      if (movementGradientAnimationStep > 100) {
+        movementGradientAnimationStep = 0
+        movementGradientAnimationDirection = !movementGradientAnimationDirection
+      }
+
+      const gradient = _.createLinearGradient(width, 0, 0, width);
+          
+      gradient.addColorStop(0, 'rgba(250, 250, 250, 0.85)')
+      gradient.addColorStop(movementGradientAnimationDirection ? 1 - movementGradientAnimationStep / 100 : movementGradientAnimationStep / 100, 'rgba(180, 180, 180, 0.85)')
+      gradient.addColorStop(1, 'rgba(250, 250, 250, 0.85)')
+
+      _.fillStyle = gradient
+      _.strokeStyle = gradient
       
-      _.globalAlpha = 0.5
-      _.fillStyle = '#12e242'
-
       movementTiles.forEach(tile => {
-        _.fillRect(
-          (tile.x - viewBox.x) * tileSize,
-          (tile.y - viewBox.y) * tileSize,
-          tileSize,
-          tileSize
-        )
+        _.beginPath()
+        _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
+        _.closePath()
+        _.fill()
+        _.stroke()
       })
-      
-      _.globalAlpha = 1
     }
   }
+
+  /* ---------------------------
+    DRAW TILE SELECTION SQUARE
+  --------------------------- */
+
+  _.lineWidth = 2
+  _.strokeStyle = 'red'
+
+  const tile = selectedTile || mouse
+
+  _.beginPath()
+  _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
+  _.closePath()
+  _.stroke()
+}
+
+function drawUnit(_, tileSize, unit) {
+  const { viewBox } = store.getState()
+  const x = unit.position.x - viewBox.x
+  const y = unit.position.y - viewBox.y
+  
+  _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
+  _.strokeStyle = '#333333'
+  _.lineWidth = 2
+
+  switch (unit.type) {
+
+    case 'INFANTERY':
+      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
+      _.beginPath()
+      _.arc((x + 0.5) * tileSize, (y+ 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+      _.closePath()
+      _.fill()
+      _.stroke()
+
+      if (unit.played) {
+        _.fillStyle = 'black'
+        _.globalAlpha = 0.5
+        _.beginPath()
+        _.arc((x + 0.5) * tileSize, (y+ 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+        _.closePath()
+        _.fill()
+        _.globalAlpha = 1
+      }
+      break
+    
+    case 'TANK': 
+      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
+      _.beginPath()
+      _.rect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+      _.closePath()
+      _.fill()
+      _.stroke()
+
+      if (unit.played) {
+        _.fillStyle = 'black'
+        _.globalAlpha = 0.5
+        _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+        _.globalAlpha = 1
+      }
+      break
+
+    default:
+      break
+  }
+
+  _.font = `bold ${tileSize / 5}px lato`
+  _.textAlign = 'right'
+  _.textBaseline = 'alphabetic'
+  _.fillStyle = 'white'
+  _.fillRect((x + 0.55) * tileSize, (y + 0.8) * tileSize, 0.45 * tileSize, 0.2 * tileSize)
+  _.fillStyle = 'black'
+  _.fillText(unit.life, (x + 0.94) * tileSize, (y + 0.97) * tileSize)
 }
 
 export default draw

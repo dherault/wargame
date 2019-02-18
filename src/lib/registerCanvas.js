@@ -1,34 +1,101 @@
 import Mousetrap from 'mousetrap'
 import store from '../state/store'
+import computeMovementTiles from './units/computeMovementTiles'
+import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from './world/boundViewBox'
 import draw from './draw'
 
 function registerCanvas(canvas) {
   // A function called once for registering the canvas event listeners
   const _ = canvas.getContext('2d')
 
-  // For debug purposes
-  // window.canvas = canvas
-  // window._ = _
+  /* -------------
+    MOUSE EVENTS
+  ------------- */
 
-  canvas.addEventListener('click', e => {
-    // console.log(e)
-  })
+  /* Mouse move */
 
   canvas.addEventListener('mousemove', e => {
+    const { viewBox } = store.getState()
+    const tileSize = canvas.width / viewBox.width // pixel per tile
+
     store.dispatch({
       type: 'UPDATE_MOUSE_POSITION',
       payload: {
         offsetX: e.offsetX,
         offsetY: e.offsetY,
+        x: Math.floor(e.offsetX / tileSize + viewBox.x),
+        y: Math.floor(e.offsetY / tileSize + viewBox.y),
       }
     })
     // console.log(Math.floor(viewBox.x + e.offsetX / tileSize))
   })
 
+  /* Left click */
+
+  canvas.addEventListener('click', e => {
+    const { mouse, viewBox, units, selectedUnits, turn } = store.getState()
+
+    // No click events on computer's turn
+    if (turn.playerType === 'COMPUTER') return
+
+    const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
+
+    if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
+      store.dispatch({
+        type: 'SELECT_UNIT_0',
+        payload: clickedUnit,
+      })
+
+      return
+    }
+
+    if (selectedUnits[0]) {
+      const possibleMovementTiles = computeMovementTiles(selectedUnits[0])
+     
+      if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
+        const tileSize = canvas.width / viewBox.width // pixel per tile
+
+        store.dispatch({
+          type: 'SELECT_TILE',
+          payload: {
+            x: mouse.x,
+            y: mouse.y,
+          }
+        })
+
+        store.dispatch({
+          type: 'OPEN_UNIT_MENU',
+          payload: {
+            offsetX: (mouse.x - viewBox.x + 1) * tileSize,
+            offsetY: (mouse.y - viewBox.y) * tileSize
+          },
+        })
+
+        return
+      }
+
+      store.dispatch({
+        type: 'DESELECT_UNITS'
+      })
+
+      store.dispatch({
+        type: 'CLOSE_UNIT_MENU'
+      })
+
+      return
+    }
+  })
+
+  /* Right click */
+
   canvas.addEventListener('contextmenu', e => e.preventDefault())
 
   canvas.addEventListener('mousedown', e => {
     if (e.button === 2) {
+      store.dispatch({
+        type: 'DESELECT_UNITS'
+      })
+
       store.dispatch({
         type: 'UPDATE_MOUSE_STATE',
         payload: {
@@ -48,23 +115,38 @@ function registerCanvas(canvas) {
       })
     }
   })
-  
+
+  /* Mouse wheel */
+
   window.addEventListener('wheel', e => {
     const { viewBox } = store.getState()
-    const goalWidth = viewBox.goalWidth + Math.sign(e.deltaY)
+    const goalWidth = boundViewBoxWidth(viewBox.goalWidth + Math.sign(e.deltaY))
+
+    if (goalWidth === viewBox.goalWidth) return
+
+    const goalX = boundViewBoxX(viewBox.goalX, goalWidth)
+    const goalY = boundViewBoxY(viewBox.goalY, goalWidth)
 
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 
       payload: { 
         goalWidth,
+        goalX,
+        goalY,
         diffGoalWidth: goalWidth - viewBox.width,
+        diffGoalX: goalX - viewBox.x,
+        diffGoalY: goalY - viewBox.y,
       },
     })
   })
 
+  /* ----------------
+    KEYBOARD EVENTS
+  ---------------- */
+
   Mousetrap.bind('z', () => {
     const { viewBox } = store.getState()
-    const goalY = Math.max(0, viewBox.goalY - 1)
+    const goalY = boundViewBoxY(viewBox.goalY - 1)
 
     if (goalY === viewBox.goalY) return
 
@@ -79,7 +161,7 @@ function registerCanvas(canvas) {
 
   Mousetrap.bind('s', () => {
     const { viewBox } = store.getState()
-    const goalY = viewBox.goalY + 1
+    const goalY = boundViewBoxY(viewBox.goalY + 1)
 
     if (goalY === viewBox.goalY) return
 
@@ -109,7 +191,7 @@ function registerCanvas(canvas) {
 
   Mousetrap.bind('d', () => {
     const { viewBox } = store.getState()
-    const goalX = viewBox.goalX + 1
+    const goalX = boundViewBoxX(viewBox.goalX + 1)
 
     if (goalX === viewBox.goalX) return
 

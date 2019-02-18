@@ -1,0 +1,11 @@
+.UnitMenu {
+  background-color: white;
+}
+
+.UnitMenu-item {
+  padding: 4px 10px;
+}
+
+.UnitMenu-item:hover {
+  background-color: lightcyan;
+}
