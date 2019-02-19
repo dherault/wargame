@@ -8,32 +8,38 @@ function createNewGame() {
 
   const worldMap = generateWorldMap()
   
-  const grassTiles = []
+  const landTiles = []
+  const seaTiles = []
 
   worldMap.forEach((row, y) => {
     row.forEach((tile, x) => {
       if (tile.type === 'ROAD') {
-        grassTiles.push({ x, y })
+        landTiles.push({ x, y })
+      }
+      else if (tile.type === 'SEA') {
+        seaTiles.push({ x, y })
       }
     })
   })
 
   const units = [
-    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'SUBMARINE', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'SUBMARINE', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
   ]
 
-  const playOrder = [
-    { faction: 'BLUE', playerType: 'HUMAN' }, 
-    { faction: 'RED', playerType: 'HUMAN' },
+  const turnOrder = [
+    { faction: 'BLUE', team: 1, playerType: 'HUMAN' }, 
+    { faction: 'RED', team: 2, playerType: 'HUMAN' },
     // { faction: 'RED', playerType: 'COMPUTER' },
   ]
 
@@ -49,14 +55,14 @@ function createNewGame() {
 
   store.dispatch({
     type: 'SET_PLAY_ORDER',
-    payload: playOrder,
+    payload: turnOrder,
   })
 
   store.dispatch({
     type: 'SET_TURN',
     payload: {
       number: 1,
-      ...playOrder[0],
+      ...turnOrder[0],
     },
   })
 

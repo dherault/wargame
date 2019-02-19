@@ -1,22 +1,45 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
 import './UnitMenu.css'
+
+import computeRangeTiles from '../lib/units/computeRangeTiles'
+import gameConfiguration from '../lib/gameConfiguration';
 
 class UnitMenu extends Component {
 
   closeMenu = () => {
-    this.props.dispatch({
+    const { dispatch } = this.props
+
+    dispatch({
       type: 'CLOSE_UNIT_MENU',
     })
   }
 
-  handleMovelClick = () => {
-    const { selectedTile, selectedUnits, dispatch } = this.props
+  handleFireClick = () => {
+    const { dispatch, selectedTile } = this.props
+
+    dispatch({
+      type: 'AWAIT_FIRE_SELECTION',
+      payload: {
+        firePosition: selectedTile,
+      },
+    })
+
+    dispatch({
+      type: 'DESELECT_TILE',
+    })
+
+    this.closeMenu()
+  }
+
+  handleAwaitClick = () => {
+    const { selectedTile, selectedUnit, dispatch } = this.props
     
     dispatch({
       type: 'MOVE_UNIT',
       payload: {
-        unit: selectedUnits[0],
+        unit: selectedUnit,
         tile: selectedTile,
       },
     })
@@ -28,7 +51,7 @@ class UnitMenu extends Component {
     const { dispatch } = this.props
 
     dispatch({
-      type: 'DESELECT_UNITS',
+      type: 'DESELECT_UNIT',
     })
 
     dispatch({
@@ -39,14 +62,25 @@ class UnitMenu extends Component {
   }
 
   render() {
-    const { selectedUnits, unitMenu } = this.props
+    const { selectedTile, selectedUnit, units, unitMenu } = this.props
 
     if (!unitMenu.opened) return null
 
+    const rangeTiles = computeRangeTiles(selectedUnit, selectedTile) // at end position
+
     return (
       <div className="UnitMenu absolute no-select pointer" style={{ top: unitMenu.offsetY, left: unitMenu.offsetX }}>
-        <div className="UnitMenu-item" onClick={this.handleMovelClick}>
-          Move here
+        {units.some(unit => 
+          unit.team !== selectedUnit.team 
+          && rangeTiles.some(tile => tile.x === unit.position.x && tile.y === unit.position.y)
+          && gameConfiguration.unitsConfiguration[selectedUnit.type].damages[unit.type]
+        ) && (
+          <div className="UnitMenu-item" onClick={this.handleFireClick}>
+            Fire
+          </div>
+        )}
+        <div className="UnitMenu-item" onClick={this.handleAwaitClick}>
+          Await
         </div>
         <div className="UnitMenu-item" onClick={this.handleCancelClick}>
           Cancel
@@ -57,8 +91,9 @@ class UnitMenu extends Component {
 }
 
 const mapStateToProps = s => ({
+  units: s.units,
   selectedTile: s.selectedTile,
-  selectedUnits: s.selectedUnits,
+  selectedUnit: s.selectedUnit,
   unitMenu: s.unitMenu,
 })
 

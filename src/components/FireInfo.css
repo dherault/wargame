@@ -1,0 +1,11 @@
+.FireInfo {
+  background-color: white;
+}
+
+.FireInfo-item {
+  padding: 4px 10px;
+}
+
+.FireInfo-item:hover {
+  background-color: lightcyan;
+}

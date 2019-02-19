@@ -59,7 +59,7 @@ function checkTile(worldMap, unitsPositionsHashs, x, y, movementType, remainingM
 
     if (!(tiles.has(tileHash) || unitsPositionsHashs.has(tileHash))) {
       const { type } = worldMap[y][x]
-      const cost = gameConfiguration.tilesConfiguration[type].movementCost[movementType]
+      const cost = gameConfiguration.terrainConfiguration[type].movementCost[movementType]
       
       if (cost <= remainingMovementPoints) {
         tiles.add(tileHash)

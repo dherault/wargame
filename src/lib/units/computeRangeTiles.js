@@ -8,12 +8,12 @@ const unhash = string => {
   return [{ x: parseInt(x), y: parseInt(y) }, parseInt(distance)]
 }
 
-function computeRangeTiles(unit) {
+function computeRangeTiles(unit, position) {
   const { range } = gameConfiguration.unitsConfiguration[unit.type]
 
   const tiles = []
 
-  const openSet = [hash(unit.position, 0)]
+  const openSet = [hash(position || unit.position, 0)]
   const closedSet = new Set()
   const visitedSet = new Set()
 

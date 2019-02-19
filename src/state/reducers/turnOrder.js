@@ -1,8 +1,9 @@
 /*
   faction
+  team
   playerType
 */
-function playOrder(state = null, action) {
+function turnOrder(state = [], action) {
   switch (action.type) {
     case 'SET_PLAY_ORDER':
       return action.payload
@@ -12,4 +13,4 @@ function playOrder(state = null, action) {
   }
 }
 
-export default playOrder
+export default turnOrder

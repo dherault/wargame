@@ -7,7 +7,7 @@ let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, units, turn, selectedUnits, selectedTile } = store.getState()
+  const { viewBox, mouse, worldMap, units, turn, selectedUnit, selectedTile, unitMenu } = store.getState()
   const { width, height } = _.canvas
 
   _.fillStyle = 'black'
@@ -30,7 +30,7 @@ function draw(_) {
 
       if (!tile) continue 
 
-      const color = gameConfiguration.tilesConfiguration[tile.type].color
+      const color = gameConfiguration.terrainConfiguration[tile.type].color
 
       _.fillStyle = color
       _.strokeStyle = color
@@ -42,12 +42,6 @@ function draw(_) {
       _.stroke()
     }
   }
-
-  /* -----------
-    DRAW UNITS
-  ----------- */
-
-  units.forEach(unit => drawUnit(_, tileSize, unit)) 
 
   /* ------------------------------
     DRAW MOVEMENT AND RANGE TILES
@@ -64,7 +58,11 @@ function draw(_) {
       if (rightClickedUnit) rangeTiles = computeRangeTiles(rightClickedUnit)
     }
 
-    if (selectedUnits[0]) movementTiles = computeMovementTiles(selectedUnits[0])
+    if (selectedUnit && !unitMenu.awaitFireSelection) movementTiles = computeMovementTiles(selectedUnit)
+
+    if (unitMenu.awaitFireSelection) {
+      rangeTiles = computeRangeTiles(selectedUnit, unitMenu.firePosition).filter(tile => units.some(unit => unit.team !== selectedUnit.team && unit.position.x === tile.x && unit.position.y === tile.y))
+    }
 
     if (movementTiles || rangeTiles) {
       gradientAnimationStep += 1
@@ -91,6 +89,12 @@ function draw(_) {
         _.stroke()
       })
     }
+
+    /* -----------
+      DRAW UNITS
+    ----------- */
+
+    units.forEach(unit => drawUnit(_, tileSize, unit)) 
   }
 
   /* ---------------------------
@@ -110,6 +114,7 @@ function draw(_) {
 
 function drawUnit(_, tileSize, unit) {
   const { viewBox } = store.getState()
+  // // console.log('unit.position', unit.position)
   const x = unit.position.x - viewBox.x
   const y = unit.position.y - viewBox.y
   
@@ -164,18 +169,43 @@ function drawUnit(_, tileSize, unit) {
       _.fill()
       _.stroke()
 
-    if (unit.played) {
-      _.fillStyle = 'black'
-      _.globalAlpha = 0.5
+      if (unit.played) {
+        _.fillStyle = 'black'
+        _.globalAlpha = 0.5
+        _.beginPath()
+        _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
+        _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
+        _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.fill()
+        _.globalAlpha = 1
+      }
+    break
+
+    case 'SUBMARINE':
+      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
       _.beginPath()
       _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
-      _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
-      _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.9) * tileSize, (y + 0.5) * tileSize)
+      _.lineTo((x + 0.5) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.1) * tileSize, (y + 0.5) * tileSize)
       _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
       _.fill()
-      _.globalAlpha = 1
-    }
-    break
+      _.stroke()
+
+      if (unit.played) {
+        _.fillStyle = 'black'
+        _.globalAlpha = 0.5
+        _.beginPath()
+        _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.lineTo((x + 0.9) * tileSize, (y + 0.5) * tileSize)
+        _.lineTo((x + 0.5) * tileSize, (y + 0.9) * tileSize)
+        _.lineTo((x + 0.1) * tileSize, (y + 0.5) * tileSize)
+        _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.fill()
+        _.globalAlpha = 1
+      }
+      break
 
     default:
       break

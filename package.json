@@ -18,7 +18,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sync-s3": "aws s3 sync build/ s3://basicwars.com --region eu-west-3",
+    "invalidate-cloudfront": "aws cloudfront create-invalidation --distribution-id E3JR8XO6CA1OSL --paths '/*'",
+    "deploy": "npm run sync-s3 && npm run invalidate-cloudfront",
+    "build-deploy": "npm run build && npm run deploy"
   },
   "eslintConfig": {
     "extends": "react-app"

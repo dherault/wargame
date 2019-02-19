@@ -1,8 +1,9 @@
 export default {
-  tilesConfiguration: {
+  terrainConfiguration: {
     GRASS: {
       name: 'grass',
       color: '#047a02',
+      defense: 1,
       movementCost: {
         FOOT: 1, 
         WHEEL: 2, 
@@ -13,6 +14,7 @@ export default {
     ROAD: {
       name: 'road',
       color: '#e0dac9',
+      defense: 0,
       movementCost: {
         FOOT: 1, 
         WHEEL: 1, 
@@ -23,6 +25,7 @@ export default {
     FOREST: {
       name: 'forest',
       color: '#014c00',
+      defense: 2,
       movementCost: {
         FOOT: 2, 
         WHEEL: Infinity, 
@@ -33,6 +36,7 @@ export default {
     MOUNTAIN: {
       name: 'mountain',
       color: '#a5a195',
+      defense: 4,
       movementCost: {
         FOOT: 3, 
         WHEEL: Infinity,
@@ -43,6 +47,7 @@ export default {
     RIVER: {
       name: 'river',
       color: '#57def9',
+      defense: 0,
       movementCost: {
         FOOT: 2, 
         WHEEL: Infinity,
@@ -53,6 +58,7 @@ export default {
     SEA: {
       name: 'sea',
       color: '#2032a3',
+      defense: 0,
       movementCost: {
         FOOT: Infinity,
         WHEEL: Infinity,
@@ -68,8 +74,9 @@ export default {
       movement: 3,
       range: [1, 1],
       damages: {
-        INFANTERY: 50,
-        TANK: 10,
+        INFANTERY: 55,
+        TANK: 5,
+        ARTILLERY: 15,
       },
     },
     TANK: {
@@ -78,8 +85,9 @@ export default {
       movement: 6,
       range: [1, 1],
       damages: {
-        INFANTERY: 80,
-        TANK: 50,
+        INFANTERY: 75,
+        TANK: 55,
+        ARTILLERY: 70,
       },
     },
     ARTILLERY: {
@@ -88,8 +96,19 @@ export default {
       movement: 5,
       range: [2, 3],
       damages: {
-        INFANTERY: 70,
-        TANK: 60,
+        INFANTERY: 90,
+        TANK: 45,
+        ARTILLERY: 75,
+        SUBMARINE: 60,
+      },
+    },
+    SUBMARINE: {
+      name: 'submarine',
+      movementType: 'SAIL',
+      movement: 5,
+      range: [1, 1],
+      damages: {
+        SUBMARINE: 60,
       },
     },
   },

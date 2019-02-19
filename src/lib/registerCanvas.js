@@ -54,43 +54,81 @@ function registerCanvas(canvas) {
   }
 
   canvas.addEventListener('click', e => {
-    const { mouse, units, selectedUnits, turn } = store.getState()
+    const { mouse, units, selectedUnit, unitMenu, selectedTile, turn } = store.getState()
 
     // No click events on computer's turn
     if (turn.playerType === 'COMPUTER') return
 
     const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
 
-    if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
+    if (unitMenu.awaitFireSelection && clickedUnit && clickedUnit.team !== selectedUnit.team) {
+
+      store.dispatch({
+        type: 'MOVE_UNIT',
+        payload: {
+          unit: selectedUnit,
+          tile: unitMenu.firePosition,
+        },
+      })
+
+      store.dispatch({
+        type: 'CANCEL_FIRE_SELECTION'
+      })
+
+      store.dispatch({
+        type: 'DESELECT_UNIT',
+      })
       
-      if (selectedUnits[0] && clickedUnit.id === selectedUnits[0].id) {
-        openUnitMenu()
-      }
-      else {
-        store.dispatch({
-          type: 'SELECT_UNIT_0',
-          payload: clickedUnit,
-        })
-      }
-      
+      store.dispatch({
+        type: 'FIRE',
+        payload: {
+          attacker: selectedUnit,
+          defender: clickedUnit,
+        },
+      })
+
       return
     }
 
-    if (selectedUnits[0]) {
-      const possibleMovementTiles = computeMovementTiles(selectedUnits[0])
+    if (selectedUnit) {
+
+      if (clickedUnit && clickedUnit.id === selectedUnit.id) {
+        return openUnitMenu()
+      }
+
+      const possibleMovementTiles = computeMovementTiles(selectedUnit)
      
       if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
         return openUnitMenu()
       }
 
-      store.dispatch({
-        type: 'DESELECT_UNITS'
-      })
+      if (unitMenu.opened) {
+        store.dispatch({ type: 'CLOSE_UNIT_MENU' })
+      }
 
-      store.dispatch({
-        type: 'CLOSE_UNIT_MENU'
-      })
+      if (selectedTile) {
+        store.dispatch({ type: 'DESELECT_TILE' })
+      }
 
+      if (unitMenu.awaitFireSelection) {
+        store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
+      }
+
+      store.dispatch({ type: 'DESELECT_UNIT' })
+    }
+
+    if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
+      
+      if (selectedUnit && clickedUnit.id === selectedUnit.id) {
+        openUnitMenu()
+      }
+      else {
+        store.dispatch({
+          type: 'SELECT_UNIT',
+          payload: clickedUnit,
+        })
+      }
+      
       return
     }
   })
@@ -102,7 +140,7 @@ function registerCanvas(canvas) {
   canvas.addEventListener('mousedown', e => {
     if (e.button === 2) {
       store.dispatch({
-        type: 'DESELECT_UNITS'
+        type: 'DESELECT_UNIT'
       })
 
       store.dispatch({

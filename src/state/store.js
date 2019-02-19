@@ -1,4 +1,4 @@
-import { combineReducers, applyMiddleware, compose, createStore } from 'redux'
+import { applyMiddleware, compose, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
 import throttle from 'lodash.throttle'
@@ -6,9 +6,9 @@ import throttle from 'lodash.throttle'
 import { loadState, saveState } from './persist'
 
 import mouse from './reducers/mouse'
-import playOrder from './reducers/playOrder'
+import turnOrder from './reducers/turnOrder'
 import selectedTile from './reducers/selectedTile'
-import selectedUnits from './reducers/selectedUnits'
+import selectedUnit from './reducers/selectedUnit'
 import turn from './reducers/turn'
 import unitMenu from './reducers/unitMenu'
 import units from './reducers/units'
@@ -19,9 +19,9 @@ import viewBoxSaga from './sagas/viewBox'
 
 const reducers = {
   mouse,
-  playOrder,
+  turnOrder,
   selectedTile,
-  selectedUnits,
+  selectedUnit,
   turn,
   unitMenu,
   units,

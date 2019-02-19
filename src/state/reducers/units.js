@@ -11,8 +11,8 @@ function units(state = [], action) {
 
       return units
 
-      case 'END_PLAYER_TURN': 
-        return state.map(unit => Object.assign({}, unit, { played: false }))
+    case 'END_PLAYER_TURN': 
+      return state.map(unit => Object.assign({}, unit, { played: false }))
 
     default:
       return state

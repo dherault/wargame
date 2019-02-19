@@ -1,6 +1,7 @@
 /*
   number
   faction
+  team
   playerType
 */
 function turn(state = {}, action, globalState) {
@@ -9,18 +10,18 @@ function turn(state = {}, action, globalState) {
       return action.payload
     
     case 'END_PLAYER_TURN':
-      const { playOrder } = globalState
-      let playOrderIndex = playOrder.findIndex(item => item.faction === state.faction) + 1
+      const { turnOrder } = globalState
+      let turnOrderIndex = turnOrder.findIndex(item => item.faction === state.faction) + 1
       let number = state.number
 
-      if (playOrderIndex >= playOrder.length) {
-        playOrderIndex = 0
+      if (turnOrderIndex >= turnOrder.length) {
+        turnOrderIndex = 0
         number++
       }
 
       return {
         number,
-        ...playOrder[playOrderIndex],
+        ...turnOrder[turnOrderIndex],
       }
 
     default:
