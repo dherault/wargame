@@ -8,7 +8,7 @@ export default {
         WHEEL: 2, 
         FLY: 1, 
         SAIL: Infinity,
-      } 
+      }, 
     },
     ROAD: {
       name: 'road',
@@ -18,7 +18,7 @@ export default {
         WHEEL: 1, 
         FLY: 1, 
         SAIL: Infinity,
-      } 
+      }, 
     },
     FOREST: {
       name: 'forest',
@@ -28,7 +28,7 @@ export default {
         WHEEL: Infinity, 
         FLY: 1, 
         SAIL: Infinity,
-      } 
+      }, 
     },
     MOUNTAIN: {
       name: 'mountain',
@@ -38,7 +38,7 @@ export default {
         WHEEL: Infinity,
         FLY: 1,
         SAIL: Infinity,
-      } 
+      }, 
     },
     RIVER: {
       name: 'river',
@@ -48,7 +48,7 @@ export default {
         WHEEL: Infinity,
         FLY: 1,
         SAIL: Infinity,
-      } 
+      }, 
     },
     SEA: {
       name: 'sea',
@@ -58,7 +58,7 @@ export default {
         WHEEL: Infinity,
         FLY: 1,
         SAIL:  1,
-      } 
+      },
     },
   },
   unitsConfiguration: {
@@ -66,19 +66,31 @@ export default {
       name: 'infantery',
       movementType: 'FOOT',
       movement: 3,
+      range: [1, 1],
       damages: {
         INFANTERY: 50,
         TANK: 10,
-      }
+      },
     },
     TANK: {
       name: 'tank',
       movementType: 'WHEEL',
       movement: 6,
+      range: [1, 1],
       damages: {
         INFANTERY: 80,
         TANK: 50,
-      }
+      },
+    },
+    ARTILLERY: {
+      name: 'artillery',
+      movementType: 'WHEEL',
+      movement: 5,
+      range: [2, 3],
+      damages: {
+        INFANTERY: 70,
+        TANK: 60,
+      },
     },
   },
   factionsConfiguration: {

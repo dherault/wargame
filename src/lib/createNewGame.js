@@ -1,5 +1,5 @@
 import store from '../state/store'
-import gameConfiguration from './gameConfiguration'
+// import gameConfiguration from './gameConfiguration'
 import generateWorldMap from './world/generateWorldMap'
 import { randomPop } from './utils'
 
@@ -23,10 +23,12 @@ function createNewGame() {
     { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'INFANTERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'TANK',      faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'BLUE', life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'INFANTERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
     { type: 'TANK',      faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'RED',  life: 100, played: false, position: randomPop(grassTiles), id: Math.random().toString().slice(2) },
   ]
 
   const playOrder = [

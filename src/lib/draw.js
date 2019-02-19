@@ -1,9 +1,10 @@
 import store from '../state/store'
 import gameConfiguration from './gameConfiguration'
 import computeMovementTiles from './units/computeMovementTiles'
+import computeRangeTiles from './units/computeRangeTiles'
 
-let movementGradientAnimationStep = 0
-let movementGradientAnimationDirection = true
+let gradientAnimationStep = 0
+let gradientAnimationDirection = true
 
 function draw(_) {
   const { viewBox, mouse, worldMap, units, turn, selectedUnits, selectedTile } = store.getState()
@@ -48,40 +49,41 @@ function draw(_) {
 
   units.forEach(unit => drawUnit(_, tileSize, unit)) 
 
-  /* --------------------
-    DRAW MOVEMENT TILES
-  -------------------- */
+  /* ------------------------------
+    DRAW MOVEMENT AND RANGE TILES
+  ------------------------------ */
 
   if (turn.playerType === 'HUMAN') {
 
     let movementTiles
+    let rangeTiles
 
     if (mouse.rightButtonDown) {
       const rightClickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
   
-      if (rightClickedUnit) movementTiles = computeMovementTiles(rightClickedUnit)
+      if (rightClickedUnit) rangeTiles = computeRangeTiles(rightClickedUnit)
     }
 
     if (selectedUnits[0]) movementTiles = computeMovementTiles(selectedUnits[0])
 
-    if (movementTiles) {
-      movementGradientAnimationStep += 1
+    if (movementTiles || rangeTiles) {
+      gradientAnimationStep += 1
 
-      if (movementGradientAnimationStep > 100) {
-        movementGradientAnimationStep = 0
-        movementGradientAnimationDirection = !movementGradientAnimationDirection
+      if (gradientAnimationStep > 100) {
+        gradientAnimationStep = 0
+        gradientAnimationDirection = !gradientAnimationDirection
       }
 
       const gradient = _.createLinearGradient(width, 0, 0, width);
           
-      gradient.addColorStop(0, 'rgba(250, 250, 250, 0.85)')
-      gradient.addColorStop(movementGradientAnimationDirection ? 1 - movementGradientAnimationStep / 100 : movementGradientAnimationStep / 100, 'rgba(180, 180, 180, 0.85)')
-      gradient.addColorStop(1, 'rgba(250, 250, 250, 0.85)')
-
-      _.fillStyle = gradient
-      _.strokeStyle = gradient
+      gradient.addColorStop(0, movementTiles ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
+      gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, movementTiles ? 'rgba(180, 180, 180, 0.85)' : 'rgba(140, 30, 30, 0.85)')
+      gradient.addColorStop(1, movementTiles ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
       
-      movementTiles.forEach(tile => {
+      _.fillStyle = gradient
+      _.strokeStyle = gradient;
+      
+      (movementTiles || rangeTiles).forEach(tile => {
         _.beginPath()
         _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
         _.closePath()
@@ -151,6 +153,29 @@ function drawUnit(_, tileSize, unit) {
         _.globalAlpha = 1
       }
       break
+
+    case 'ARTILLERY':
+      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
+      _.beginPath()
+      _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.fill()
+      _.stroke()
+
+    if (unit.played) {
+      _.fillStyle = 'black'
+      _.globalAlpha = 0.5
+      _.beginPath()
+      _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
+      _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.fill()
+      _.globalAlpha = 1
+    }
+    break
 
     default:
       break
