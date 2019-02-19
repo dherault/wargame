@@ -32,8 +32,29 @@ function registerCanvas(canvas) {
 
   /* Left click */
 
+  function openUnitMenu() {
+    const { mouse, viewBox } = store.getState()
+    const tileSize = canvas.width / viewBox.width // pixel per tile
+
+    store.dispatch({
+      type: 'SELECT_TILE',
+      payload: {
+        x: mouse.x,
+        y: mouse.y,
+      }
+    })
+    
+    store.dispatch({
+      type: 'OPEN_UNIT_MENU',
+      payload: {
+        offsetX: (mouse.x - viewBox.x + 1) * tileSize,
+        offsetY: (mouse.y - viewBox.y) * tileSize
+      },
+    })
+  }
+
   canvas.addEventListener('click', e => {
-    const { mouse, viewBox, units, selectedUnits, turn } = store.getState()
+    const { mouse, units, selectedUnits, turn } = store.getState()
 
     // No click events on computer's turn
     if (turn.playerType === 'COMPUTER') return
@@ -41,11 +62,17 @@ function registerCanvas(canvas) {
     const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
 
     if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
-      store.dispatch({
-        type: 'SELECT_UNIT_0',
-        payload: clickedUnit,
-      })
-
+      
+      if (selectedUnits[0] && clickedUnit.id === selectedUnits[0].id) {
+        openUnitMenu()
+      }
+      else {
+        store.dispatch({
+          type: 'SELECT_UNIT_0',
+          payload: clickedUnit,
+        })
+      }
+      
       return
     }
 
@@ -53,25 +80,7 @@ function registerCanvas(canvas) {
       const possibleMovementTiles = computeMovementTiles(selectedUnits[0])
      
       if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
-        const tileSize = canvas.width / viewBox.width // pixel per tile
-
-        store.dispatch({
-          type: 'SELECT_TILE',
-          payload: {
-            x: mouse.x,
-            y: mouse.y,
-          }
-        })
-
-        store.dispatch({
-          type: 'OPEN_UNIT_MENU',
-          payload: {
-            offsetX: (mouse.x - viewBox.x + 1) * tileSize,
-            offsetY: (mouse.y - viewBox.y) * tileSize
-          },
-        })
-
-        return
+        return openUnitMenu()
       }
 
       store.dispatch({
@@ -176,7 +185,7 @@ function registerCanvas(canvas) {
 
   Mousetrap.bind('q', () => {
     const { viewBox } = store.getState()
-    const goalX = Math.max(0, viewBox.goalX - 1)
+    const goalX = boundViewBoxX(viewBox.goalX - 1)
 
     if (goalX === viewBox.goalX) return
 
@@ -203,6 +212,78 @@ function registerCanvas(canvas) {
       },
     })
   })
+
+  // Mousetrap.bind('z+q', () => {
+  //   const { viewBox } = store.getState()
+  //   const goalY = boundViewBoxY(viewBox.goalY - 1)
+  //   const goalX = boundViewBoxX(viewBox.goalX - 1)
+
+  //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
+
+  //   store.dispatch({ 
+  //     type: 'RESIZE_VIEW_BOX', 
+  //     payload: { 
+  //       goalX,
+  //       goalY,
+  //       diffGoalX: goalX - viewBox.x,
+  //       diffGoalY: goalY - viewBox.y,
+  //     },
+  //   })
+  // })
+
+  // Mousetrap.bind('z+d', () => {
+  //   const { viewBox } = store.getState()
+  //   const goalY = boundViewBoxY(viewBox.goalY - 1)
+  //   const goalX = boundViewBoxX(viewBox.goalX + 1)
+
+  //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
+
+  //   store.dispatch({ 
+  //     type: 'RESIZE_VIEW_BOX', 
+  //     payload: { 
+  //       goalX,
+  //       goalY,
+  //       diffGoalX: goalX - viewBox.x,
+  //       diffGoalY: goalY - viewBox.y,
+  //     },
+  //   })
+  // })
+
+  // Mousetrap.bind('s+q', () => {
+  //   const { viewBox } = store.getState()
+  //   const goalY = boundViewBoxY(viewBox.goalY + 1)
+  //   const goalX = boundViewBoxX(viewBox.goalX - 1)
+
+  //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
+
+  //   store.dispatch({ 
+  //     type: 'RESIZE_VIEW_BOX', 
+  //     payload: { 
+  //       goalX,
+  //       goalY,
+  //       diffGoalX: goalX - viewBox.x,
+  //       diffGoalY: goalY - viewBox.y,
+  //     },
+  //   })
+  // })
+
+  // Mousetrap.bind('s+d', () => {
+  //   const { viewBox } = store.getState()
+  //   const goalY = boundViewBoxY(viewBox.goalY + 1)
+  //   const goalX = boundViewBoxX(viewBox.goalX + 1)
+
+  //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
+
+  //   store.dispatch({ 
+  //     type: 'RESIZE_VIEW_BOX', 
+  //     payload: { 
+  //       goalX,
+  //       goalY,
+  //       diffGoalX: goalX - viewBox.x,
+  //       diffGoalY: goalY - viewBox.y,
+  //     },
+  //   })
+  // })
   
   let requestId
 

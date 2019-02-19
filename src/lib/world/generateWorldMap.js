@@ -26,9 +26,9 @@ const tilesTypes = [
 
 function generateWorldMap() {
   const map = []
-  const width = 15
-  const height = 15
-  const seaWidth = 1
+  const width = 20
+  const height = 20
+  const seaWidth = 3
 
   for (let j = 0; j < height; j++) {
     const row = []

@@ -12,6 +12,7 @@ const unhash = string => {
 }
 
 // TODO ? compute units hash and cache result
+// TODO ? use BFS
 function computePossibleTiles(unit) {
   const { worldMap, units } = store.getState()
   const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]

@@ -17,7 +17,7 @@ import worldMap from './reducers/worldMap'
 
 import viewBoxSaga from './sagas/viewBox'
 
-const reducer = combineReducers({
+const reducers = {
   mouse,
   playOrder,
   selectedTile,
@@ -27,7 +27,20 @@ const reducer = combineReducers({
   units,
   viewBox,
   worldMap,
-})
+}
+
+const reducer = (state = {}, action) => {
+  const nextState = {}
+
+  // Adding two extra arguments to reducers:
+  // - state previous to action
+  // - ongoing modified state
+  Object.keys(reducers).forEach(key => {
+    nextState[key] = reducers[key](state[key], action, state, nextState)
+  })
+
+  return nextState
+}
 
 function* rootSaga() {
   yield all([

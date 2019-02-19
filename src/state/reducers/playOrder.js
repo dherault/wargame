@@ -1,3 +1,7 @@
+/*
+  faction
+  playerType
+*/
 function playOrder(state = null, action) {
   switch (action.type) {
     case 'SET_PLAY_ORDER':

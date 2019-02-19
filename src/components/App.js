@@ -31,7 +31,11 @@ class App extends Component {
   }
 
   handleNextPlayerClick = () => {
+    const { dispatch } = this.props
 
+    dispatch({
+      type: 'END_PLAYER_TURN',
+    })
   }
 
   handleNewGameClick = () => {
@@ -54,7 +58,7 @@ class App extends Component {
             turn {turn.number} - {gameConfiguration.factionsConfiguration[turn.faction].name}
           </div>
           <button style={{ marginRight: 10 }} onClick={this.handleNextPlayerClick}>
-            Play
+            End Turn
           </button>
           <button onClick={this.handleNewGameClick}>
             New Game

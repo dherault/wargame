@@ -33,7 +33,8 @@ function createNewGame() {
 
   const playOrder = [
     { faction: 'BLUE', playerType: 'HUMAN' }, 
-    { faction: 'RED', playerType: 'COMPUTER' },
+    { faction: 'RED', playerType: 'HUMAN' },
+    // { faction: 'RED', playerType: 'COMPUTER' },
   ]
 
   store.dispatch({
