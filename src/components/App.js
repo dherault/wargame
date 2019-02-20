@@ -32,11 +32,14 @@ class App extends Component {
   }
 
   handleNextPlayerClick = () => {
-    const { dispatch } = this.props
+    const { selectedTile, selectedUnit, unitMenu, dispatch } = this.props
 
-    dispatch({
-      type: 'END_PLAYER_TURN',
-    })
+    if (unitMenu.awaitFireSelection) dispatch({ type: 'CANCEL_FIRE_SELECTION' })
+    if (unitMenu.opened) dispatch({ type: 'CLOSE_UNIT_MENU' })
+    if (selectedUnit) dispatch({ type: 'DESELECT_UNIT' })
+    if (selectedTile) dispatch({ type: 'DESELECT_TILE' })
+
+    dispatch({ type: 'END_PLAYER_TURN' })
   }
 
   handleNewGameClick = () => {
@@ -73,6 +76,9 @@ class App extends Component {
 
 const mapStateToProps = s => ({
   turn: s.turn,
+  unitMenu: s.unitMenu,
+  selectedTile: s.selectedTile,
+  selectedUnit: s.selectedUnit,
 })
 
 export default connect(mapStateToProps)(App)

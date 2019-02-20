@@ -30,7 +30,7 @@ function registerCanvas(canvas) {
     // console.log(Math.floor(viewBox.x + e.offsetX / tileSize))
   })
 
-  /* Left click */
+  /* Click */
 
   function openUnitMenu() {
     const { mouse, viewBox } = store.getState()
@@ -53,58 +53,93 @@ function registerCanvas(canvas) {
     })
   }
 
-  canvas.addEventListener('click', e => {
-    const { mouse, units, selectedUnit, unitMenu, selectedTile, turn } = store.getState()
+  canvas.addEventListener('mousedown', e => {
+    if (e.button === 0) {
+      console.log('left click')
 
-    // No click events on computer's turn
-    if (turn.playerType === 'COMPUTER') return
+      const { mouse, units, selectedUnit, unitMenu, selectedTile, turn } = store.getState()
 
-    const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
+      // No click events on computer's turn
+      if (turn.playerType === 'COMPUTER') return
 
-    if (unitMenu.awaitFireSelection && clickedUnit && clickedUnit.team !== selectedUnit.team) {
+      const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
 
-      store.dispatch({
-        type: 'MOVE_UNIT',
-        payload: {
-          unit: selectedUnit,
-          tile: unitMenu.firePosition,
-        },
-      })
+      if (unitMenu.awaitFireSelection && clickedUnit && clickedUnit.team !== selectedUnit.team) {
 
-      store.dispatch({
-        type: 'CANCEL_FIRE_SELECTION'
-      })
+        store.dispatch({
+          type: 'MOVE_UNIT',
+          payload: {
+            unit: selectedUnit,
+            tile: unitMenu.firePosition,
+          },
+        })
 
-      store.dispatch({
-        type: 'DESELECT_UNIT',
-      })
+        store.dispatch({
+          type: 'CANCEL_FIRE_SELECTION'
+        })
+
+        // Must be after CANCEL_FIRE_SELECTION
+        store.dispatch({
+          type: 'DESELECT_UNIT',
+        })
+
+        store.dispatch({
+          type: 'FIRE',
+          payload: {
+            attacker: selectedUnit,
+            defender: clickedUnit,
+          },
+        })
+
+        return
+      }
+
+      if (selectedUnit) {
+
+        if (clickedUnit && clickedUnit.id === selectedUnit.id) {
+          return openUnitMenu()
+        }
+
+        const possibleMovementTiles = computeMovementTiles(selectedUnit)
       
-      store.dispatch({
-        type: 'FIRE',
-        payload: {
-          attacker: selectedUnit,
-          defender: clickedUnit,
-        },
-      })
+        if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
+          return openUnitMenu()
+        }
 
-      return
+        if (unitMenu.opened) {
+          store.dispatch({ type: 'CLOSE_UNIT_MENU' })
+        }
+
+        if (selectedTile) {
+          store.dispatch({ type: 'DESELECT_TILE' })
+        }
+
+        if (unitMenu.awaitFireSelection) {
+          store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
+        }
+
+        store.dispatch({ type: 'DESELECT_UNIT' })
+      }
+
+      if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
+        
+        if (selectedUnit && clickedUnit.id === selectedUnit.id) {
+          openUnitMenu()
+        }
+        else {
+          store.dispatch({
+            type: 'SELECT_UNIT',
+            payload: clickedUnit,
+          })
+        }
+        
+        return
+      }
     }
+    else if (e.button === 2) {
+      console.log('right click')
 
-    if (selectedUnit) {
-
-      if (clickedUnit && clickedUnit.id === selectedUnit.id) {
-        return openUnitMenu()
-      }
-
-      const possibleMovementTiles = computeMovementTiles(selectedUnit)
-     
-      if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
-        return openUnitMenu()
-      }
-
-      if (unitMenu.opened) {
-        store.dispatch({ type: 'CLOSE_UNIT_MENU' })
-      }
+      const { selectedTile, unitMenu } = store.getState()
 
       if (selectedTile) {
         store.dispatch({ type: 'DESELECT_TILE' })
@@ -114,31 +149,7 @@ function registerCanvas(canvas) {
         store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
       }
 
-      store.dispatch({ type: 'DESELECT_UNIT' })
-    }
-
-    if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
-      
-      if (selectedUnit && clickedUnit.id === selectedUnit.id) {
-        openUnitMenu()
-      }
-      else {
-        store.dispatch({
-          type: 'SELECT_UNIT',
-          payload: clickedUnit,
-        })
-      }
-      
-      return
-    }
-  })
-
-  /* Right click */
-
-  canvas.addEventListener('contextmenu', e => e.preventDefault())
-
-  canvas.addEventListener('mousedown', e => {
-    if (e.button === 2) {
+      // Must be after CANCEL_FIRE_SELECTION
       store.dispatch({
         type: 'DESELECT_UNIT'
       })
@@ -162,6 +173,8 @@ function registerCanvas(canvas) {
       })
     }
   })
+
+  canvas.addEventListener('contextmenu', e => e.preventDefault())
 
   /* Mouse wheel */
 

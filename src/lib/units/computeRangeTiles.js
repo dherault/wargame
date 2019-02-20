@@ -8,7 +8,7 @@ const unhash = string => {
   return [{ x: parseInt(x), y: parseInt(y) }, parseInt(distance)]
 }
 
-function computeRangeTiles(unit, position) {
+function computeRangeTiles(unit, position, globalState) {
   const { range } = gameConfiguration.unitsConfiguration[unit.type]
 
   const tiles = []
@@ -28,7 +28,7 @@ function computeRangeTiles(unit, position) {
     closedSet.add(tileAndDistanceHash)
     visitedSet.add(hash(tile))
 
-    getSuccessors(tile, distance, visitedSet).forEach(tileAndDistanceHash => {
+    getSuccessors(tile, distance, visitedSet, globalState).forEach(tileAndDistanceHash => {
       if (closedSet.has(tileAndDistanceHash)) return
 
       if (openSet.indexOf(tileAndDistanceHash) === -1) {
@@ -41,8 +41,8 @@ function computeRangeTiles(unit, position) {
   return tiles
 }
 
-function getSuccessors(tile, distance, visitedSet) {
-  const { worldMap } = store.getState()
+function getSuccessors(tile, distance, visitedSet, globalState) {
+  const { worldMap } = globalState || store.getState()
   const { x, y } = tile
   const successors = []
 
