@@ -1,6 +1,6 @@
-.AppMenu {
+.TileInfo {
   background-color: white;
   padding: 10px;
-  top: 30px;
-  right: 30px;
+  left: 30px;
+  bottom: 30px;
 }

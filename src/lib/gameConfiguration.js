@@ -1,7 +1,7 @@
 export default {
   terrainConfiguration: {
     PLAIN: {
-      name: 'grass',
+      name: 'Plain',
       color: '#047a02',
       defense: 1,
       movementCost: {
@@ -12,7 +12,7 @@ export default {
       }, 
     },
     ROAD: {
-      name: 'road',
+      name: 'Road',
       color: '#e0dac9',
       defense: 0,
       movementCost: {
@@ -23,7 +23,7 @@ export default {
       }, 
     },
     FOREST: {
-      name: 'forest',
+      name: 'Forest',
       color: '#014c00',
       defense: 2,
       movementCost: {
@@ -34,7 +34,7 @@ export default {
       }, 
     },
     MOUNTAIN: {
-      name: 'mountain',
+      name: 'Mountain',
       color: '#a5a195',
       defense: 4,
       movementCost: {
@@ -45,7 +45,7 @@ export default {
       }, 
     },
     RIVER: {
-      name: 'river',
+      name: 'River',
       color: '#57def9',
       defense: 0,
       movementCost: {
@@ -56,7 +56,7 @@ export default {
       }, 
     },
     SEA: {
-      name: 'sea',
+      name: 'Sea',
       color: '#2032a3',
       defense: 0,
       movementCost: {
@@ -69,7 +69,7 @@ export default {
   },
   unitsConfiguration: {
     INFANTERY: {
-      name: 'infantery',
+      name: 'Infantery',
       movementType: 'FOOT',
       movement: 3,
       range: [1, 1],
@@ -80,7 +80,7 @@ export default {
       },
     },
     TANK: {
-      name: 'tank',
+      name: 'Tank',
       movementType: 'WHEEL',
       movement: 6,
       range: [1, 1],
@@ -91,7 +91,7 @@ export default {
       },
     },
     ARTILLERY: {
-      name: 'artillery',
+      name: 'Artillery',
       movementType: 'WHEEL',
       movement: 5,
       range: [2, 3],
@@ -103,7 +103,7 @@ export default {
       },
     },
     SUBMARINE: {
-      name: 'submarine',
+      name: 'Submarine',
       movementType: 'SAIL',
       movement: 5,
       range: [1, 1],
@@ -120,6 +120,10 @@ export default {
     RED: {
       name: 'Red Nation',
       color: '#d61919',
+    },
+    YELLOW: {
+      name: 'Yellow Nation',
+      color: '#ffe500',
     },
   },
 }

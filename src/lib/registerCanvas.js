@@ -79,6 +79,15 @@ function registerCanvas(canvas) {
           if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
             
             store.dispatch({
+              type: 'CANCEL_FIRE_SELECTION'
+            })
+  
+            // Must be after CANCEL_FIRE_SELECTION
+            store.dispatch({
+              type: 'DESELECT_UNIT_ID',
+            })
+            
+            store.dispatch({
               type: 'FIRE',
               payload: {
                 attackerId: selectedUnitId,
@@ -92,15 +101,6 @@ function registerCanvas(canvas) {
               payload: {
                 unitId: selectedUnitId,
               },
-            })
-  
-            store.dispatch({
-              type: 'CANCEL_FIRE_SELECTION'
-            })
-  
-            // Must be after CANCEL_FIRE_SELECTION
-            store.dispatch({
-              type: 'DESELECT_UNIT_ID',
             })
   
             return

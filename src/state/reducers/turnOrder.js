@@ -5,7 +5,7 @@
 */
 function turnOrder(state = [], action) {
   switch (action.type) {
-    case 'SET_PLAY_ORDER':
+    case 'SET_TURN_ORDER':
       return action.payload
 
     default:

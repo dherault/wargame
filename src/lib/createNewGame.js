@@ -23,24 +23,27 @@ function createNewGame() {
   })
 
   const units = [
-    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'SUBMARINE', faction: 'BLUE', team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'SUBMARINE', faction: 'RED',  team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'SUBMARINE', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'TANK',      faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'ARTILLERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'SUBMARINE', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
+    { type: 'SUBMARINE', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
   ]
 
   const turnOrder = [
     { faction: 'BLUE', team: 1, playerType: 'HUMAN' }, 
     { faction: 'RED', team: 2, playerType: 'HUMAN' },
     // { faction: 'RED', playerType: 'COMPUTER' },
+    { faction: 'YELLOW', team: 3, playerType: 'HUMAN' },
   ]
 
   store.dispatch({
@@ -54,7 +57,7 @@ function createNewGame() {
   })
 
   store.dispatch({
-    type: 'SET_PLAY_ORDER',
+    type: 'SET_TURN_ORDER',
     payload: turnOrder,
   })
 

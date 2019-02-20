@@ -94,13 +94,13 @@ function draw(_) {
         _.stroke()
       })
     }
-
-    /* -----------
-      DRAW UNITS
-    ----------- */
-
-    units.forEach(unit => drawUnit(_, tileSize, unit)) 
   }
+
+  /* -----------
+    DRAW UNITS
+  ----------- */
+
+  units.forEach(unit => drawUnit(_, tileSize, unit)) 
 
   /* ---------------------------
     DRAW TILE SELECTION SQUARE

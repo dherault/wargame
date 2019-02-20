@@ -1,6 +1,6 @@
-.AppMenu {
+.DevPanel {
   background-color: white;
   padding: 10px;
+  left: 30px;
   top: 30px;
-  right: 30px;
 }
