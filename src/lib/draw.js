@@ -69,7 +69,7 @@ function draw(_) {
       if (rightClickedUnit) rangePositions = computeRangePositions(rightClickedUnit)
     }
 
-    if (movementPositions || rangePositions) {
+    if (rangePositions || movementPositions) {
       gradientAnimationStep += 1
 
       if (gradientAnimationStep > 100) {
@@ -79,14 +79,14 @@ function draw(_) {
 
       const gradient = _.createLinearGradient(width, 0, 0, width);
           
-      gradient.addColorStop(0, movementPositions ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
-      gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, movementPositions ? 'rgba(180, 180, 180, 0.85)' : 'rgba(140, 30, 30, 0.85)')
-      gradient.addColorStop(1, movementPositions ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
+      gradient.addColorStop(0, rangePositions ? 'rgba(255, 50, 50, 0.85)' : 'rgba(250, 250, 250, 0.85)')
+      gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, rangePositions ? 'rgba(140, 30, 30, 0.85)' : 'rgba(180, 180, 180, 0.85)')
+      gradient.addColorStop(1, rangePositions ? 'rgba(255, 50, 50, 0.85)' : 'rgba(250, 250, 250, 0.85)')
       
       _.fillStyle = gradient
       _.strokeStyle = gradient;
       
-      (movementPositions || rangePositions).forEach(tile => {
+      (rangePositions || movementPositions).forEach(tile => {
         _.beginPath()
         _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
         _.closePath()

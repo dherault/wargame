@@ -16,6 +16,7 @@ class DevPanel extends Component {
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
     const scorePerFaction = computeWorldStateScore(worldState)
     const scoreEntries = Object.entries(scorePerFaction)
+    
     return ( 
       <div className="DevPanel absolute">
         {mouse.x}, {mouse.y}

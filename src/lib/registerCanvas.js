@@ -86,7 +86,7 @@ function registerCanvas(canvas) {
             store.dispatch({
               type: 'DESELECT_UNIT_ID',
             })
-            
+
             store.dispatch({
               type: 'FIRE',
               payload: {

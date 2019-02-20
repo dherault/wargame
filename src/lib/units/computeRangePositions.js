@@ -15,7 +15,6 @@ function computeRangePositions(unit, initialPosition) {
 
   const openSet = [hash(initialPosition || unit.position, 0)]
   const closedSet = new Set()
-  const visitedSet = new Set()
 
   while (openSet.length) {
     const positionAndDistanceHash = openSet.shift()
@@ -25,11 +24,9 @@ function computeRangePositions(unit, initialPosition) {
 
     if (distance >= range[0]) positions.push(position)
 
-    closedSet.add(positionAndDistanceHash)
-    visitedSet.add(hash(position))
+    closedSet.add(hash(position))
 
-    getSuccessors(position, distance, visitedSet).forEach(positionAndDistanceHash => {
-      if (closedSet.has(positionAndDistanceHash)) return
+    getSuccessors(position, distance, closedSet).forEach(positionAndDistanceHash => {
 
       if (openSet.indexOf(positionAndDistanceHash) === -1) {
         openSet.push(positionAndDistanceHash)
@@ -41,21 +38,21 @@ function computeRangePositions(unit, initialPosition) {
   return positions
 }
 
-function getSuccessors(position, distance, visitedSet) {
+function getSuccessors(position, distance, closedSet) {
   const { worldMap } = store.getState()
   const { x, y } = position
   const successors = []
 
-  checkSuccessor(worldMap, { x: x - 1, y }, distance + 1, visitedSet, successors)
-  checkSuccessor(worldMap, { x: x + 1, y }, distance + 1, visitedSet, successors)
-  checkSuccessor(worldMap, { x, y: y - 1 }, distance + 1, visitedSet, successors)
-  checkSuccessor(worldMap, { x, y: y + 1 }, distance + 1, visitedSet, successors)
+  checkSuccessor(worldMap, { x: x - 1, y }, distance + 1, closedSet, successors)
+  checkSuccessor(worldMap, { x: x + 1, y }, distance + 1, closedSet, successors)
+  checkSuccessor(worldMap, { x, y: y - 1 }, distance + 1, closedSet, successors)
+  checkSuccessor(worldMap, { x, y: y + 1 }, distance + 1, closedSet, successors)
 
   return successors
 }
 
-function checkSuccessor(worldMap, position, distance, visitedSet, successors) {
-  if (worldMap[position.y] && worldMap[position.y][position.x] && !visitedSet.has(hash(position))) successors.push(hash(position, distance))
+function checkSuccessor(worldMap, position, distance, closedSet, successors) {
+  if (worldMap[position.y] && worldMap[position.y][position.x] && !closedSet.has(hash(position))) successors.push(hash(position, distance))
 }
 
 export default computeRangePositions

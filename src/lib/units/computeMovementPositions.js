@@ -1,77 +1,88 @@
 import store from '../../state/store'
+import Heap from '../common/Heap'
 import gameConfiguration from '../gameConfiguration'
+import { samePosition } from '../utils'
 
-const hash = (x, y) => `${x}_${y}`
-const unhash = string => {
-  const [xs, ys] = string.split('_')
+const hash = (position) => `${position.x}_${position.y}`
 
-  return {
-    x: parseInt(xs),
-    y: parseInt(ys),
-  }
-}
-
-// TODO? compute units hash and cache result
-// TODO? use BFS --> UCS
-// TODO: refactor and comment
-function computePossibleTiles(unit) {
-  const { worldMap, units } = store.getState()
-  const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]
-  const unitsPositionsHashs = new Set()
-
-  units.forEach(u => unitsPositionsHashs.add(hash(u.position.x, u.position.y)))
-
-  const tilesHashs = expandPossibleTiles(
-    worldMap,
-    unitsPositionsHashs, 
-    unit.position.x, 
-    unit.position.y, 
-    unitConfiguration.movementType,
-    unitConfiguration.movement
-  )
-
-  const possibleTiles = []
-
-  tilesHashs.forEach(tileHash => possibleTiles.push(unhash(tileHash)))
+// Uniform cost search to expand movement positions
+function computeMovementPositions(unit) {
+  const { units } = store.getState()
+  const { movement } = gameConfiguration.unitsConfiguration[unit.type]
   
-  return possibleTiles
-}
+  const getSuccessors = getSuccessorsFactory(unit)
 
-function expandPossibleTiles(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles = new Set()) {
-  if (remainingMovementPoints <= 0) return tiles
+  const positions = []
+  const openSet = new Heap()
+  const closedSet = new Set()
 
-  const neighbouringTiles = []
+  openSet.insert(0, unit.position)
 
-  checkTile(worldMap, unitsPositionsHashs, x - 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, unitsPositionsHashs, x + 1, y, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, unitsPositionsHashs, x, y - 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
-  checkTile(worldMap, unitsPositionsHashs, x, y + 1, movementType, remainingMovementPoints, tiles, neighbouringTiles)
+  while (openSet.size) {
+    // Extract first candidate from heap
+    const [cost, position] = openSet.extractMin()
 
-  neighbouringTiles.forEach(({ x, y, remainingMovementPoints }) => {
-    expandPossibleTiles(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles)
-  })
+    // If cost is larger than possible movement, ignore candidate
+    if (cost > movement) continue
 
-  return tiles
-}
+    // If no unit is on the position add the position to the results
+    if (!units.some(u => samePosition(u.position, position))) {
+      positions.push(position)
+    }
 
-function checkTile(worldMap, unitsPositionsHashs, x, y, movementType, remainingMovementPoints, tiles, neighbouringTiles) {
-  if (worldMap[y] && worldMap[y][x]) {
-    const tileHash = hash(x, y)
+    closedSet.add(hash(position))
 
-    if (!(tiles.has(tileHash) || unitsPositionsHashs.has(tileHash))) {
-      const { type } = worldMap[y][x]
-      const cost = gameConfiguration.terrainConfiguration[type].movementCost[movementType]
-      
-      if (cost <= remainingMovementPoints) {
-        tiles.add(tileHash)
-        neighbouringTiles.push({ 
-          x, 
-          y, 
-          remainingMovementPoints: remainingMovementPoints - cost 
-        })
+    // For each successor (adjacent position with updated cost)
+    getSuccessors(position, cost).forEach(({ position, cost }) => {
+      if (closedSet.has(hash(position))) return
+
+      // If the position is not already in the heap
+      if (!openSet.list.some(item => item[1] && samePosition(item[1], position))) {
+        openSet.insert(cost, position)
       }
+    })
+
+  }
+
+  return positions
+}
+
+function getSuccessorsFactory(unit) {
+  const { worldMap, units } = store.getState()
+  const { terrainConfiguration } = gameConfiguration
+  const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
+  const ennemyUnits = units.filter(u => u.team !== unit.team)
+  
+  // Check for a given position if the tile exists
+  // If yes, puts it in successors with its updated cost
+  const checkSuccessor = (position, cost, successors) => {
+    const tile = worldMap[position.y] && worldMap[position.y][position.x]
+
+    if (tile) {
+      successors.push({ 
+        position, 
+        cost: cost + terrainConfiguration[tile.type].movementCost[movementType], 
+      })
     }
   }
+  
+  // Get adjacent tiles position and cost for a given unit movement type
+  return function getSuccessors(position, cost) {
+    // Enemy unit block passage, friendly ones do not
+    if (ennemyUnits.some(unit => samePosition(unit.position, position))) {
+      return []
+    }
+  
+    const { x, y } = position
+    const successors = []
+  
+    checkSuccessor({ x: x - 1, y }, cost, successors)
+    checkSuccessor({ x: x + 1, y }, cost, successors)
+    checkSuccessor({ x, y: y - 1 }, cost, successors)
+    checkSuccessor({ x, y: y + 1 }, cost, successors)
+  
+    return successors
+  }
 }
 
-export default computePossibleTiles
+export default computeMovementPositions
