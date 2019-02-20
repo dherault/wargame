@@ -13,19 +13,17 @@ class DevPanel extends Component {
   render() {
     const { mouse, units } = this.props
     const worldState = getWorldStateFromStore()
-    
-    console.log('worldState', worldState)
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
     const scorePerFaction = computeWorldStateScore(worldState)
-
+    const scoreEntries = Object.entries(scorePerFaction)
     return ( 
       <div className="DevPanel absolute">
         {mouse.x}, {mouse.y}
         {hoveredUnit && (<br />)}
         {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(worldState, hoveredUnit)}`)}
         <br />
-          {Object.entries(scorePerFaction).map(([faction, score]) => (
-            <div key={faction}>{faction} - {score}</div>
+          {scoreEntries.map(([faction, score]) => (
+            <div key={faction}>{faction} - {score} - {scoreEntries.filter(([f, s]) => f !== faction).reduce((a, b) => a + b[1], 0)}</div>
           ))}
       </div>
     )

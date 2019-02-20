@@ -1,6 +1,5 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-import { findById } from '../utils'
 
 const hash = (x, y) => `${x}_${y}`
 const unhash = string => {

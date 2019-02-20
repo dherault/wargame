@@ -1,6 +1,5 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-import { findById } from '../utils'
 
 const hash = (position, distance = 0) => `${position.x}_${position.y}_${distance}`
 const unhash = string => {
