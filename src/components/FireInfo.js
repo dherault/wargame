@@ -3,31 +3,38 @@ import { connect } from 'react-redux'
 
 import './FireInfo.css'
 
-import computeRangeTiles from '../lib/units/computeRangeTiles'
+import { samePosition, findById } from '../lib/utils'
+import computeRangePositions from '../lib/units/computeRangePositions'
 import computeFireDamage from '../lib/units/computeFireDamage'
 
 class FireInfo extends Component {
 
   render() {
-    const { mouse, selectedUnit, turn, units, unitMenu, viewBox } = this.props
+    const { mouse, selectedUnitId, turn, units, unitMenu, viewBox } = this.props
 
     if (!unitMenu.awaitFireSelection) return null
 
-    const rangeTiles = computeRangeTiles(selectedUnit, unitMenu.firePosition)
+    const selectedUnit = findById(units, selectedUnitId)
+    const rangePositions = computeRangePositions(selectedUnit)
     const unit = units.find(unit => 
-      unit.team !== turn.team 
-      && unit.position.x === mouse.x 
-      && unit.position.y === mouse.y
-      && rangeTiles.some(tile => unit.position.x === tile.x && unit.position.y === tile.y)
+      unit.team !== turn.team // From opposite team
+      && samePosition(unit.position, mouse) // At mouse position 
+      && rangePositions.some(position => samePosition(unit.position, position)) // In range
     )
 
     if (!unit) return null
     
     const tileSize = window.innerWidth / viewBox.width // pixel per tile
-    const [attackedDamage, defenderDamage] = computeFireDamage(selectedUnit, unit)
+    const [attackedDamage, defenderDamage] = computeFireDamage(selectedUnitId, unit.id)
     
     return (
-      <div className="FireInfo absolute no-select pointer" style={{ top: (unit.position.y - viewBox.y) * tileSize, left: (unit.position.x - viewBox.x + 1) * tileSize }}>
+      <div 
+        className="FireInfo absolute no-select pointer" 
+        style={{ 
+          top: (unit.position.y - viewBox.y) * tileSize, 
+          left: (unit.position.x - viewBox.x + 1) * tileSize 
+        }}
+      >
         {attackedDamage} ⇄ {defenderDamage}
       </div>
     )
@@ -36,7 +43,7 @@ class FireInfo extends Component {
 
 const mapStateToProps = s => ({
   mouse: s.mouse,
-  selectedUnit: s.selectedUnit,
+  selectedUnitId: s.selectedUnitId,
   turn: s.turn,
   unitMenu: s.unitMenu,
   units: s.units,

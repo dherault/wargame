@@ -10,11 +10,11 @@ tiles:
 5 - sea
 */
 const tilesTypes = [
-  'GRASS',
-  'GRASS',
-  'GRASS',
-  'GRASS',
-  'GRASS',
+  'PLAIN',
+  'PLAIN',
+  'PLAIN',
+  'PLAIN',
+  'PLAIN',
   'ROAD',
   'ROAD',
   'ROAD',

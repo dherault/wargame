@@ -7,8 +7,8 @@ import { loadState, saveState } from './persist'
 
 import mouse from './reducers/mouse'
 import turnOrder from './reducers/turnOrder'
-import selectedTile from './reducers/selectedTile'
-import selectedUnit from './reducers/selectedUnit'
+import selectedPosition from './reducers/selectedPosition'
+import selectedUnitId from './reducers/selectedUnitId'
 import turn from './reducers/turn'
 import unitMenu from './reducers/unitMenu'
 import units from './reducers/units'
@@ -20,8 +20,8 @@ import viewBoxSaga from './sagas/viewBox'
 const reducers = {
   mouse,
   turnOrder,
-  selectedTile,
-  selectedUnit,
+  selectedPosition,
+  selectedUnitId,
   turn,
   unitMenu,
   units,

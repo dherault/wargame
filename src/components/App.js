@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import registerCanvas from '../lib/registerCanvas'
-import gameConfiguration from '../lib/gameConfiguration'
 
+import AppMenu from './AppMenu'
 import FireInfo from './FireInfo'
 import UnitMenu from './UnitMenu'
 
@@ -31,54 +30,19 @@ class App extends Component {
     canvas.height = window.innerHeight
   }
 
-  handleNextPlayerClick = () => {
-    const { selectedTile, selectedUnit, unitMenu, dispatch } = this.props
-
-    if (unitMenu.awaitFireSelection) dispatch({ type: 'CANCEL_FIRE_SELECTION' })
-    if (unitMenu.opened) dispatch({ type: 'CLOSE_UNIT_MENU' })
-    if (selectedUnit) dispatch({ type: 'DESELECT_UNIT' })
-    if (selectedTile) dispatch({ type: 'DESELECT_TILE' })
-
-    dispatch({ type: 'END_PLAYER_TURN' })
-  }
-
-  handleNewGameClick = () => {
-    localStorage.removeItem('state')
-    window.location.reload()
-  }
-
   render() {
-    const { turn } = this.props
-
     return (
       <div className="App relative">
         <canvas
           id="canvas"
           className="App-canvas no-select"
         />
-        <UnitMenu />
+        <AppMenu />
         <FireInfo />
-        <div className="absolute x4" style={{ bottom: 30, right: 30, background: 'white', padding: 10 }}>
-          <div style={{ marginRight: 10 }}>
-            turn {turn.number} - {gameConfiguration.factionsConfiguration[turn.faction].name}
-          </div>
-          <button style={{ marginRight: 10 }} onClick={this.handleNextPlayerClick}>
-            End Turn
-          </button>
-          <button onClick={this.handleNewGameClick}>
-            New Game
-          </button>
-        </div>
+        <UnitMenu />
       </div>
     )
   }
 }
 
-const mapStateToProps = s => ({
-  turn: s.turn,
-  unitMenu: s.unitMenu,
-  selectedTile: s.selectedTile,
-  selectedUnit: s.selectedUnit,
-})
-
-export default connect(mapStateToProps)(App)
+export default App

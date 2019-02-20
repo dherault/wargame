@@ -1,30 +1,39 @@
 import store from '../../state/store'
-import computeRangeTiles from './computeRangeTiles'
+import computeRangePositions from './computeRangePositions'
 import gameConfiguration from '../gameConfiguration'
+import { samePosition, findById } from '../utils'
 
-function computeFireDamage(attacker, defender, globalState) {
-  const { unitMenu } = globalState || store.getState()
+// Takes in a attacker id and a defender id
+// Returns an array defining the attack and counter attack damages
+function computeFireDamage(attackerId, defenderId) {
+  const { units } = store.getState()
 
-  const defenderInRange = computeRangeTiles(attacker, unitMenu.firePosition, globalState).some(tile => tile.x === defender.position.x && tile.y === defender.position.y)
+  const attacker = findById(units, attackerId)
+  const defender = findById(units, defenderId)
 
+  const defenderInRange = computeRangePositions(attacker).some(position => samePosition(position, defender.position))
+
+  // This should never happen but it make the function correct
   if (!defenderInRange) return [0, 0]
 
-  const attackDamage = computeAttackDamage(attacker, defender, globalState)
+  const attackDamage = computeAttackDamage(attacker, defender)
   const nextDefender = Object.assign({}, defender, { life: defender.life - attackDamage })
 
+  // If the defender is dead it cannot counter attack
   if (nextDefender.life <= 0) return [attackDamage, 0]
 
-  const attackerInRange = computeRangeTiles(defender, null, globalState).some(tile => tile.x ===  unitMenu.firePosition.x && tile.y ===  unitMenu.firePosition.y)
+  const attackerInRange = computeRangePositions(defender, null).some(position => samePosition(position, attacker.position))
 
+  // If the defender has not the attacker in its range it cannot counter attack
   if (!attackerInRange) return [attackDamage, 0]
 
-  const counterAttackDamage = computeAttackDamage(nextDefender, attacker, globalState)
+  const counterAttackDamage = computeAttackDamage(nextDefender, attacker)
 
   return [attackDamage, counterAttackDamage]
 }
 
-function computeAttackDamage(attacker, defender, globalState) {
-  const { worldMap } = globalState || store.getState()
+function computeAttackDamage(attacker, defender) {
+  const { worldMap } = store.getState()
   const defenderTileType = worldMap[defender.position.y][defender.position.x].type
 
   const initialDamage = gameConfiguration.unitsConfiguration[attacker.type].damages[defender.type]

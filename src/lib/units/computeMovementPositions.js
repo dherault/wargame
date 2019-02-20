@@ -1,5 +1,6 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
+import { findById } from '../utils'
 
 const hash = (x, y) => `${x}_${y}`
 const unhash = string => {
@@ -11,8 +12,9 @@ const unhash = string => {
   }
 }
 
-// TODO ? compute units hash and cache result
-// TODO ? use BFS
+// TODO? compute units hash and cache result
+// TODO? use BFS --> UCS
+// TODO: refactor and comment
 function computePossibleTiles(unit) {
   const { worldMap, units } = store.getState()
   const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]

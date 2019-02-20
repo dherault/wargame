@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 
 import './UnitMenu.css'
 
-import computeRangeTiles from '../lib/units/computeRangeTiles'
-import gameConfiguration from '../lib/gameConfiguration';
+import { samePosition, findById } from '../lib/utils'
+import computeRangePositions from '../lib/units/computeRangePositions'
+import gameConfiguration from '../lib/gameConfiguration'
 
 class UnitMenu extends Component {
 
@@ -17,30 +18,42 @@ class UnitMenu extends Component {
   }
 
   handleFireClick = () => {
-    const { dispatch, selectedTile } = this.props
+    const { dispatch, selectedUnitId, selectedPosition } = this.props
 
     dispatch({
-      type: 'AWAIT_FIRE_SELECTION',
+      type: 'MOVE_UNIT',
       payload: {
-        firePosition: selectedTile,
+        unitId: selectedUnitId,
+        position: selectedPosition,
       },
     })
 
     dispatch({
-      type: 'DESELECT_TILE',
+      type: 'AWAIT_FIRE_SELECTION',
+    })
+
+    dispatch({
+      type: 'DESELECT_POSITION',
     })
 
     this.closeMenu()
   }
 
   handleAwaitClick = () => {
-    const { selectedTile, selectedUnit, dispatch } = this.props
+    const { selectedPosition, selectedUnitId, dispatch } = this.props
     
     dispatch({
       type: 'MOVE_UNIT',
       payload: {
-        unit: selectedUnit,
-        tile: selectedTile,
+        unitId: selectedUnitId,
+        position: selectedPosition,
+      },
+    })
+
+    dispatch({
+      type: 'PLAY_UNIT',
+      payload: {
+        unitId: selectedUnitId,
       },
     })
 
@@ -51,29 +64,31 @@ class UnitMenu extends Component {
     const { dispatch } = this.props
 
     dispatch({
-      type: 'DESELECT_UNIT',
+      type: 'DESELECT_UNIT_ID',
     })
 
     dispatch({
-      type: 'DESELECT_TILE',
+      type: 'DESELECT_POSITION',
     })
 
     this.closeMenu()
   }
 
   render() {
-    const { selectedTile, selectedUnit, units, unitMenu } = this.props
+    const { selectedPosition, selectedUnitId, units, unitMenu } = this.props
 
     if (!unitMenu.opened) return null
 
-    const rangeTiles = computeRangeTiles(selectedUnit, selectedTile) // at end position
-
+    const selectedUnit = findById(units, selectedUnitId)
+    console.log('selectedUnit', selectedUnit)
+    const rangePositions = computeRangePositions(selectedUnit, selectedPosition) // range positions at selected position
+    
     return (
       <div className="UnitMenu absolute no-select pointer" style={{ top: unitMenu.offsetY, left: unitMenu.offsetX }}>
-        {units.some(unit => 
-          unit.team !== selectedUnit.team 
-          && rangeTiles.some(tile => tile.x === unit.position.x && tile.y === unit.position.y)
-          && gameConfiguration.unitsConfiguration[selectedUnit.type].damages[unit.type]
+        {units.some(unit => // If there is a unit
+          unit.team !== selectedUnit.team // From opposite team
+          && rangePositions.some(position => samePosition(position, unit.position)) // In range
+          && gameConfiguration.unitsConfiguration[selectedUnit.type].damages[unit.type] // Able to take damages from selectedUnit
         ) && (
           <div className="UnitMenu-item" onClick={this.handleFireClick}>
             Fire
@@ -92,8 +107,8 @@ class UnitMenu extends Component {
 
 const mapStateToProps = s => ({
   units: s.units,
-  selectedTile: s.selectedTile,
-  selectedUnit: s.selectedUnit,
+  selectedPosition: s.selectedPosition,
+  selectedUnitId: s.selectedUnitId,
   unitMenu: s.unitMenu,
 })
 

@@ -1,8 +1,11 @@
 import Mousetrap from 'mousetrap'
 import store from '../state/store'
-import computeMovementTiles from './units/computeMovementTiles'
+import computeFireDamage from './units/computeFireDamage'
+import computeMovementPositions from './units/computeMovementPositions'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from './world/boundViewBox'
+import { samePosition, findById } from './utils'
 import draw from './draw'
+import computeRangePositions from './units/computeRangePositions';
 
 function registerCanvas(canvas) {
   // A function called once for registering the canvas event listeners
@@ -27,7 +30,6 @@ function registerCanvas(canvas) {
         y: Math.floor(e.offsetY / tileSize + viewBox.y),
       }
     })
-    // console.log(Math.floor(viewBox.x + e.offsetX / tileSize))
   })
 
   /* Click */
@@ -37,7 +39,7 @@ function registerCanvas(canvas) {
     const tileSize = canvas.width / viewBox.width // pixel per tile
 
     store.dispatch({
-      type: 'SELECT_TILE',
+      type: 'SELECT_POSITION',
       payload: {
         x: mouse.x,
         y: mouse.y,
@@ -54,55 +56,87 @@ function registerCanvas(canvas) {
   }
 
   canvas.addEventListener('mousedown', e => {
+    // No click events on computer's turn
+    if (store.getState().turn.playerType === 'COMPUTER') return
+
+    // If left click
     if (e.button === 0) {
       console.log('left click')
 
-      const { mouse, units, selectedUnit, unitMenu, selectedTile, turn } = store.getState()
+      const { mouse, units, selectedUnitId, unitMenu, selectedPosition, turn } = store.getState()
+      const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
+      
+      if (selectedUnitId) {
+        
+        const selectedUnit = findById(units, selectedUnitId)
 
-      // No click events on computer's turn
-      if (turn.playerType === 'COMPUTER') return
+        // If we are waiting for fire selection
+        if (unitMenu.awaitFireSelection) {
+          
+          const rangePosition = computeRangePositions(selectedUnit)
 
-      const clickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
+          // If we clicked an ennemy unit in range
+          if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
+            
+            store.dispatch({
+              type: 'FIRE',
+              payload: {
+                attackerId: selectedUnitId,
+                defenderId: clickedUnit.id,
+                damages: computeFireDamage(selectedUnitId, clickedUnit.id)
+              },
+            })
 
-      if (unitMenu.awaitFireSelection && clickedUnit && clickedUnit.team !== selectedUnit.team) {
+            store.dispatch({
+              type: 'PLAY_UNIT',
+              payload: {
+                unitId: selectedUnitId,
+              },
+            })
+  
+            store.dispatch({
+              type: 'CANCEL_FIRE_SELECTION'
+            })
+  
+            // Must be after CANCEL_FIRE_SELECTION
+            store.dispatch({
+              type: 'DESELECT_UNIT_ID',
+            })
+  
+            return
+          }
+  
+          // If we did not click an ennemy in range
+          else {
+            store.dispatch({
+              type: 'CANCEL_FIRE_SELECTION'
+            })
 
-        store.dispatch({
-          type: 'MOVE_UNIT',
-          payload: {
-            unit: selectedUnit,
-            tile: unitMenu.firePosition,
-          },
-        })
+            store.dispatch({
+              type: 'MOVE_UNIT',
+              payload: {
+                unitId: selectedUnitId,
+                position: selectedUnit.previousPosition,
+              },
+            })
 
-        store.dispatch({
-          type: 'CANCEL_FIRE_SELECTION'
-        })
+            store.dispatch({
+              type: 'DESELECT_UNIT_ID',
+            })
 
-        // Must be after CANCEL_FIRE_SELECTION
-        store.dispatch({
-          type: 'DESELECT_UNIT',
-        })
+            return
+          }
+        }
 
-        store.dispatch({
-          type: 'FIRE',
-          payload: {
-            attacker: selectedUnit,
-            defender: clickedUnit,
-          },
-        })
-
-        return
-      }
-
-      if (selectedUnit) {
-
-        if (clickedUnit && clickedUnit.id === selectedUnit.id) {
+        // If we re-click on the unit we selected
+        if (clickedUnit && clickedUnit.id === selectedUnitId) {
           return openUnitMenu()
         }
 
-        const possibleMovementTiles = computeMovementTiles(selectedUnit)
-      
-        if (possibleMovementTiles.some(tile => tile.x === mouse.x && tile.y === mouse.y)) {
+        const possibleMovementPositions = computeMovementPositions(selectedUnit)
+        
+        // If we click on a possible movement position
+        if (possibleMovementPositions.some(position => samePosition(position, mouse))) {
           return openUnitMenu()
         }
 
@@ -110,49 +144,35 @@ function registerCanvas(canvas) {
           store.dispatch({ type: 'CLOSE_UNIT_MENU' })
         }
 
-        if (selectedTile) {
-          store.dispatch({ type: 'DESELECT_TILE' })
+        if (selectedPosition) {
+          store.dispatch({ type: 'DESELECT_POSITION' })
         }
 
         if (unitMenu.awaitFireSelection) {
           store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
         }
+        
+        // Must be after CANCEL_FIRE_SELECTION
+        store.dispatch({ type: 'DESELECT_UNIT_ID' })
 
-        store.dispatch({ type: 'DESELECT_UNIT' })
+        return
       }
 
+      // If no unit is selected and we click a playable unit
       if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
         
-        if (selectedUnit && clickedUnit.id === selectedUnit.id) {
-          openUnitMenu()
-        }
-        else {
-          store.dispatch({
-            type: 'SELECT_UNIT',
-            payload: clickedUnit,
-          })
-        }
+        store.dispatch({
+          type: 'SELECT_UNIT_ID',
+          payload: clickedUnit.id,
+        })
         
         return
       }
     }
+
+    // If right click
     else if (e.button === 2) {
       console.log('right click')
-
-      const { selectedTile, unitMenu } = store.getState()
-
-      if (selectedTile) {
-        store.dispatch({ type: 'DESELECT_TILE' })
-      }
-
-      if (unitMenu.awaitFireSelection) {
-        store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
-      }
-
-      // Must be after CANCEL_FIRE_SELECTION
-      store.dispatch({
-        type: 'DESELECT_UNIT'
-      })
 
       store.dispatch({
         type: 'UPDATE_MOUSE_STATE',

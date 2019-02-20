@@ -1,6 +1,6 @@
 export default {
   terrainConfiguration: {
-    GRASS: {
+    PLAIN: {
       name: 'grass',
       color: '#047a02',
       defense: 1,

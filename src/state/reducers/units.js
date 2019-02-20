@@ -1,42 +1,52 @@
-import computeFireDamage from '../../lib/units/computeFireDamage'
-
+/*
+  An array of units
+*/
 function units(state = [], action, globalState) {
   switch (action.type) {
     case 'SET_UNITS':
       return action.payload
 
+    case 'PLAY_UNIT': {
+      const units = state.slice()
+      const { unitId } = action.payload
+      const unitIndex = units.findIndex(u => u.id === unitId)
+      units[unitIndex] = Object.assign({}, units[unitIndex], { played: true })
+
+      return units
+    }
+
     case 'MOVE_UNIT': {
       const units = state.slice()
-      const { unit, tile } = action.payload
-      const unitIndex = units.findIndex(u => u.id === unit.id)
-      units[unitIndex] = Object.assign({}, units[unitIndex], { position: tile, played: true })
+      const { unitId, position } = action.payload
+      const unitIndex = units.findIndex(u => u.id === unitId)
+      units[unitIndex] = Object.assign({}, units[unitIndex], { position, previousPosition: units[unitIndex].position })
 
       return units
     }
 
     case 'FIRE': {
-      const { attacker, defender } = action.payload
-      const [attackerDamage, defenderDamage] = computeFireDamage(attacker, defender, globalState)
+      const { attackerId, defenderId, damages } = action.payload
+      const [attackerDamage, defenderDamage] = damages
       const units = state.slice()
-      const attackerUnitIndex = units.findIndex(u => u.id === attacker.id)
-      const defenderUnitIndex = units.findIndex(u => u.id === defender.id)
-      const nextAttacker = Object.assign({}, units[attackerUnitIndex], { life: attacker.life - defenderDamage })
-      const nextDefender = Object.assign({}, units[defenderUnitIndex], { life: defender.life - attackerDamage })
+      const attackerUnitIndex = units.findIndex(u => u.id === attackerId)
+      const defenderUnitIndex = units.findIndex(u => u.id === defenderId)
+      const nextAttacker = Object.assign({}, units[attackerUnitIndex], { life: units[attackerUnitIndex].life - defenderDamage })
+      const nextDefender = Object.assign({}, units[defenderUnitIndex], { life: units[defenderUnitIndex].life - attackerDamage })
 
       if (nextAttacker.life > 0) {
-        units[attackerUnitIndex] = Object.assign({}, units[attackerUnitIndex], { life: attacker.life - defenderDamage })
+        units[attackerUnitIndex] = nextAttacker
       }
       else {
         units.splice(attackerUnitIndex, 1)
       }
 
       if (nextDefender.life > 0) {
-        units[defenderUnitIndex] = Object.assign({}, units[defenderUnitIndex], { life: defender.life - attackerDamage })
+        units[defenderUnitIndex] = nextDefender
       }
       else {
         units.splice(defenderUnitIndex, 1)
       }
-      // NOTE: you cannot splice both indexes since both units cannot die in a confrontation
+      // NOTE: you cannot splice both indexes (would lead to index shifting) since both units cannot die in a confrontation
 
       return units
     }

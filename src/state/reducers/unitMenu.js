@@ -5,7 +5,7 @@ function unitMenu(state = { opened: false }, action) {
         ...state,
         opened: true,
         awaitFireSelection: false,
-        ...action.payload,
+        ...action.payload, // unitMenu.offsetX TODO: remove and recompute
       }
     
     case 'CLOSE_UNIT_MENU':
@@ -18,7 +18,6 @@ function unitMenu(state = { opened: false }, action) {
       return {
         ...state,
         awaitFireSelection: true,
-        ...action.payload, // unitMenu.firePosition
       }
 
     case 'CANCEL_FIRE_SELECTION':

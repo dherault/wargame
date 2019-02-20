@@ -1,13 +1,14 @@
 import store from '../state/store'
 import gameConfiguration from './gameConfiguration'
-import computeMovementTiles from './units/computeMovementTiles'
-import computeRangeTiles from './units/computeRangeTiles'
+import computeMovementPositions from './units/computeMovementPositions'
+import computeRangePositions from './units/computeRangePositions'
+import { samePosition, findById } from './utils'
 
 let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, units, turn, selectedUnit, selectedTile, unitMenu } = store.getState()
+  const { viewBox, mouse, worldMap, units, turn, selectedUnitId, selectedPosition, unitMenu } = store.getState()
   const { width, height } = _.canvas
 
   _.fillStyle = 'black'
@@ -49,22 +50,26 @@ function draw(_) {
 
   if (turn.playerType === 'HUMAN') {
 
-    let movementTiles
-    let rangeTiles
+    let movementPositions
+    let rangePositions
 
-    if (mouse.rightButtonDown) {
-      const rightClickedUnit = units.find(unit => unit.position.x === mouse.x && unit.position.y === mouse.y)
-  
-      if (rightClickedUnit) rangeTiles = computeRangeTiles(rightClickedUnit)
+    if (selectedUnitId && !unitMenu.awaitFireSelection) {
+      const selectedUnit = findById(units, selectedUnitId)
+      movementPositions = computeMovementPositions(selectedUnit)
     }
-
-    if (selectedUnit && !unitMenu.awaitFireSelection) movementTiles = computeMovementTiles(selectedUnit)
 
     if (unitMenu.awaitFireSelection) {
-      rangeTiles = computeRangeTiles(selectedUnit, unitMenu.firePosition).filter(tile => units.some(unit => unit.team !== selectedUnit.team && unit.position.x === tile.x && unit.position.y === tile.y))
+      const selectedUnit = findById(units, selectedUnitId)
+      rangePositions = computeRangePositions(selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position)))
     }
 
-    if (movementTiles || rangeTiles) {
+    if (mouse.rightButtonDown) {
+      const rightClickedUnit = units.find(unit => samePosition(unit.position, mouse))
+  
+      if (rightClickedUnit) rangePositions = computeRangePositions(rightClickedUnit)
+    }
+
+    if (movementPositions || rangePositions) {
       gradientAnimationStep += 1
 
       if (gradientAnimationStep > 100) {
@@ -74,14 +79,14 @@ function draw(_) {
 
       const gradient = _.createLinearGradient(width, 0, 0, width);
           
-      gradient.addColorStop(0, movementTiles ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
-      gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, movementTiles ? 'rgba(180, 180, 180, 0.85)' : 'rgba(140, 30, 30, 0.85)')
-      gradient.addColorStop(1, movementTiles ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
+      gradient.addColorStop(0, movementPositions ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
+      gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, movementPositions ? 'rgba(180, 180, 180, 0.85)' : 'rgba(140, 30, 30, 0.85)')
+      gradient.addColorStop(1, movementPositions ? 'rgba(250, 250, 250, 0.85)' : 'rgba(255, 50, 50, 0.85)')
       
       _.fillStyle = gradient
       _.strokeStyle = gradient;
       
-      (movementTiles || rangeTiles).forEach(tile => {
+      (movementPositions || rangePositions).forEach(tile => {
         _.beginPath()
         _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
         _.closePath()
@@ -104,7 +109,7 @@ function draw(_) {
   _.lineWidth = 2
   _.strokeStyle = 'red'
 
-  const tile = selectedTile || mouse
+  const tile = selectedPosition || mouse
 
   _.beginPath()
   _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
