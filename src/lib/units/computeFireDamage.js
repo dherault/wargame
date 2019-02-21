@@ -1,38 +1,37 @@
-import store from '../../state/store'
 import computeRangePositions from './computeRangePositions'
 import gameConfiguration from '../gameConfiguration'
 import { samePosition, findById } from '../utils'
 
 // Takes in a attacker id and a defender id
 // Returns an array defining the attack and counter attack damages
-function computeFireDamage(attackerId, defenderId) {
+function computeFireDamage(store, attackerId, defenderId) {
   const { units } = store.getState()
 
   const attacker = findById(units, attackerId)
   const defender = findById(units, defenderId)
 
-  const defenderInRange = computeRangePositions(attacker).some(position => samePosition(position, defender.position))
+  const defenderInRange = computeRangePositions(store, attacker).some(position => samePosition(position, defender.position))
 
   // This should never happen but it make the function correct
   if (!defenderInRange) return [0, 0]
 
-  const attackDamage = computeAttackDamage(attacker, defender)
+  const attackDamage = computeAttackDamage(store, attacker, defender)
   const nextDefender = Object.assign({}, defender, { life: defender.life - attackDamage })
 
   // If the defender is dead it cannot counter attack
   if (nextDefender.life <= 0) return [attackDamage, 0]
 
-  const attackerInRange = computeRangePositions(defender, null).some(position => samePosition(position, attacker.position))
+  const attackerInRange = computeRangePositions(store, defender, null).some(position => samePosition(position, attacker.position))
 
   // If the defender has not the attacker in its range it cannot counter attack
   if (!attackerInRange) return [attackDamage, 0]
 
-  const counterAttackDamage = computeAttackDamage(nextDefender, attacker)
+  const counterAttackDamage = computeAttackDamage(store, nextDefender, attacker)
 
   return [attackDamage, counterAttackDamage]
 }
 
-function computeAttackDamage(attacker, defender) {
+function computeAttackDamage(store, attacker, defender) {
   const { worldMap } = store.getState()
   const defenderTile = worldMap[defender.position.y][defender.position.x]
 

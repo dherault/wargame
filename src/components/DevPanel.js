@@ -4,24 +4,25 @@ import { connect } from 'react-redux'
 import './DevPanel.css'
 
 // import gameConfiguration from '../lib/gameConfiguration'
+import store from '../state/store'
 import { samePosition } from '../lib/utils'
-import getWorldStateFromStore from '../lib/ai/getWorldStateFromStore'
 import computeWorldStateScore, { computeUnitScore } from '../lib/ai/computeWorldStateScore'
 
 class DevPanel extends Component {
 
   render() {
-    const { mouse, units } = this.props
-    const worldState = getWorldStateFromStore()
+    const { aiComputation, mouse, units } = this.props
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
-    const scorePerFaction = computeWorldStateScore(worldState)
+    const scorePerFaction = computeWorldStateScore(store)
     const scoreEntries = Object.entries(scorePerFaction)
     
     return ( 
       <div className="DevPanel absolute">
         {mouse.x}, {mouse.y}
+        {aiComputation && (<br />)}
+        {aiComputation && '...'}
         {hoveredUnit && (<br />)}
-        {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(worldState, hoveredUnit)}`)}
+        {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)}`)}
         <br />
           {scoreEntries.map(([factionId, score]) => (
             <div key={factionId}>{factionId} - {score} - {scoreEntries.filter(([f, s]) => f !== factionId).reduce((a, b) => a + b[1], 0)}</div>
@@ -32,6 +33,7 @@ class DevPanel extends Component {
 }
 
 const mapStateToProps = s => ({
+  aiComputation: s.aiComputation,
   mouse: s.mouse,
   units: s.units
 })

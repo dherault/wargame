@@ -1,4 +1,3 @@
-import store from '../../state/store'
 import Heap from '../common/Heap'
 import gameConfiguration from '../gameConfiguration'
 import { samePosition } from '../utils'
@@ -6,11 +5,11 @@ import { samePosition } from '../utils'
 const hash = position => `${position.x}_${position.y}`
 
 // Uniform cost search to expand movement positions
-function computeMovementPositions(unit) {
+function computeMovementPositions(store, unit) {
   const { units } = store.getState()
   const { movement } = gameConfiguration.unitsConfiguration[unit.type]
   
-  const getSuccessors = getSuccessorsFactory(unit)
+  const getSuccessors = getSuccessorsFactory(store, unit)
 
   const positions = []
   const openSet = new Heap()
@@ -47,7 +46,7 @@ function computeMovementPositions(unit) {
   return positions
 }
 
-function getSuccessorsFactory(unit) {
+function getSuccessorsFactory(store, unit) {
   const { worldMap, units } = store.getState()
   const { terrainConfiguration } = gameConfiguration
   const { movementType } = gameConfiguration.unitsConfiguration[unit.type]

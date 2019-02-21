@@ -16,12 +16,12 @@ function moneyByFaction(state = {}, action, globalState) {
     }
 
     case 'BEGIN_PLAYER_TURN': {
-      const { turn, buildings } = globalState
-      const nCities = buildings.filter(building => building.type === 'CITY' && building.factionId === turn.faction.id).length
+      const { currentFaction, buildings } = globalState
+      const nCities = buildings.filter(building => building.type === 'CITY' && building.factionId === currentFaction.id).length
 
       return {
         ...state,
-        [turn.faction.id]: state[turn.faction.id] + nCities * gameConfiguration.moneyPerCityPerTurn,
+        [currentFaction.id]: state[currentFaction.id] + nCities * gameConfiguration.moneyPerCityPerTurn,
       }
     }
 

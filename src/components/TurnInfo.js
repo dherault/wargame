@@ -21,12 +21,12 @@ class TurnInfo extends Component {
   }
 
   render() {
-    const { turn, moneyByFaction } = this.props
+    const { turn, currentFaction, moneyByFaction } = this.props
     
     return (
       <div className="TurnInfo absolute x4">
         <div style={{ marginRight: 10 }}>
-          turn {turn.number} - {gameConfiguration.factionsConfiguration[turn.faction.id].name} - {moneyByFaction[turn.faction.id]}$
+          turn {turn} - {gameConfiguration.factionsConfiguration[currentFaction.id].name} - {moneyByFaction[currentFaction.id]}$
         </div>
         <button onClick={this.handleNextPlayerClick}>
           End Turn
@@ -38,11 +38,12 @@ class TurnInfo extends Component {
 
 const mapStateToProps = s => ({
   buildingMenu: s.buildingMenu,
+  currentFaction: s.currentFaction,
+  moneyByFaction: s.moneyByFaction,
   selectedPosition: s.selectedPosition,
   selectedUnitId: s.selectedUnitId,
   turn: s.turn,
   unitMenu: s.unitMenu,
-  moneyByFaction: s.moneyByFaction,
 })
 
 export default connect(mapStateToProps)(TurnInfo)

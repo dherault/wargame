@@ -49,8 +49,8 @@ function resizeViewBox() {
   }, intervalPeriod)
 }
 
-function* battleSaga() {
+function* viewBoxSaga() {
   yield takeEvery('RESIZE_VIEW_BOX', resizeViewBox)
 }
 
-export default battleSaga
+export default viewBoxSaga

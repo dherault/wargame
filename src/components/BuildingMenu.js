@@ -15,15 +15,15 @@ const buildingTypeToMovementTypes = {
 class BuildingMenu extends Component {
 
   handleCreateUnitClick = type => {
-    const { turn, selectedPosition, dispatch } = this.props
+    const { currentFaction, selectedPosition, dispatch } = this.props
 
     dispatch({
       type: 'CREATE_UNIT',
       payload: {
         type,
         position: selectedPosition,
-        factionId: turn.faction.id,
-        team: turn.faction.team,
+        factionId: currentFaction.id,
+        team: currentFaction.team,
       },
     })
 
@@ -75,8 +75,8 @@ class BuildingMenu extends Component {
 const mapStateToProps = s => ({
   buildingMenu: s.buildingMenu,
   buildings: s.buildings,
+  currentFaction: s.currentFaction,
   selectedPosition: s.selectedPosition,
-  turn: s.turn,
   viewBox: s.viewBox,
 })
 

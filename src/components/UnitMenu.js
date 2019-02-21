@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import './UnitMenu.css'
 
+import store from '../state/store'
 import { samePosition, findById } from '../lib/utils'
 import computeRangePositions from '../lib/units/computeRangePositions'
 import gameConfiguration from '../lib/gameConfiguration'
@@ -100,7 +101,7 @@ class UnitMenu extends Component {
 
     const tileSize = window.innerWidth / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)
-    const rangePositions = computeRangePositions(selectedUnit, selectedPosition) // range positions at selected position
+    const rangePositions = computeRangePositions(store, selectedUnit, selectedPosition) // range positions at selected position
     
     return (
       <div 

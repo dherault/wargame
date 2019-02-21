@@ -8,7 +8,7 @@ let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, buildings, units, turn, selectedUnitId, selectedPosition, unitMenu } = store.getState()
+  const { viewBox, mouse, worldMap, buildings, units, currentFaction, selectedUnitId, selectedPosition, unitMenu } = store.getState()
   const { width, height } = _.canvas
 
   _.fillStyle = 'black'
@@ -57,25 +57,25 @@ function draw(_) {
     DRAW MOVEMENT AND RANGE TILES
   ------------------------------ */
 
-  if (turn.faction.type === 'HUMAN') {
+  if (currentFaction.type === 'HUMAN') {
 
     let movementPositions
     let rangePositions
 
     if (selectedUnitId && !unitMenu.awaitFireSelection) {
       const selectedUnit = findById(units, selectedUnitId)
-      movementPositions = computeMovementPositions(selectedUnit)
+      movementPositions = computeMovementPositions(store, selectedUnit)
     }
 
     if (unitMenu.awaitFireSelection) {
       const selectedUnit = findById(units, selectedUnitId)
-      rangePositions = computeRangePositions(selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position)))
+      rangePositions = computeRangePositions(store, selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position)))
     }
 
     if (mouse.rightButtonDown) {
       const rightClickedUnit = units.find(unit => samePosition(unit.position, mouse))
   
-      if (rightClickedUnit) rangePositions = computeRangePositions(rightClickedUnit)
+      if (rightClickedUnit) rangePositions = computeRangePositions(store, rightClickedUnit)
     }
 
     if (rangePositions || movementPositions) {

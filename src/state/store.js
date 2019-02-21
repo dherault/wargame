@@ -4,9 +4,12 @@ import { all } from 'redux-saga/effects'
 import throttle from 'lodash.throttle'
 
 import { loadState, saveState } from './persist'
+import createReducer from './createReducer'
 
+import aiComputation from './reducers/aiComputation'
 import buildingMenu from './reducers/buildingMenu'
 import buildings from './reducers/buildings'
+import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
 import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
@@ -18,11 +21,14 @@ import units from './reducers/units'
 import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
 
+import aiSaga from './sagas/ai'
 import viewBoxSaga from './sagas/viewBox'
 
 const reducers = {
+  aiComputation, 
   buildingMenu, 
   buildings,
+  currentFaction,
   factions,
   moneyByFaction,
   mouse,
@@ -35,21 +41,11 @@ const reducers = {
   worldMap,
 }
 
-const reducer = (state = {}, action) => {
-  const nextState = {}
-
-  // Adding two extra arguments to reducers:
-  // - state previous to action
-  // - ongoing modified state
-  Object.keys(reducers).forEach(key => {
-    nextState[key] = reducers[key](state[key], action, state, nextState)
-  })
-
-  return nextState
-}
+const reducer = createReducer(reducers)
 
 function* rootSaga() {
   yield all([
+    aiSaga(),
     viewBoxSaga(),
   ])
 }

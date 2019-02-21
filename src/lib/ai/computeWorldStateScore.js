@@ -1,19 +1,19 @@
 import gameConfiguration from '../gameConfiguration'
 
-function computeWorldStateScore(worldState) {
-  const { units, factions } = worldState
+function computeWorldStateScore(store) {
+  const { units, factions } = store.getState()
 
   // Build a score per unit and sum up by factionId
   const scorePerFaction = {}
 
   factions.forEach(faction => scorePerFaction[faction.id] = 0)
-  units.forEach(unit => scorePerFaction[unit.factionId] += computeUnitScore(worldState, unit))
+  units.forEach(unit => scorePerFaction[unit.factionId] += computeUnitScore(store, unit))
 
   return scorePerFaction
 }
 
-export function computeUnitScore(worldState, unit) {
-  const { units } = worldState
+export function computeUnitScore(store, unit) {
+  const { units } = store.getState()
   const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]
 
   let attackableUnitsScore = 0

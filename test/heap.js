@@ -8,7 +8,7 @@ describe('Heap', () => {
     let error
 
     try {
-      const heap = new Heap()
+      new Heap()
     }
     catch (err) {
       error = err

@@ -58,14 +58,15 @@ function registerCanvas(canvas) {
   }
 
   canvas.addEventListener('mousedown', e => {
+    const { currentFaction } = store.getState()
     // No click events on computer's turn
-    if (store.getState().turn.playerType === 'COMPUTER') return
+    if (currentFaction.type === 'COMPUTER') return
 
     // If left click
     if (e.button === 0) {
       console.log('left click')
 
-      const { mouse, buildings, units, selectedUnitId, buildingMenu, unitMenu, selectedPosition, turn } = store.getState()
+      const { mouse, buildings, units, selectedUnitId, buildingMenu, unitMenu, selectedPosition } = store.getState()
       const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
       const clickedBuilding = buildings.find(building => samePosition(building.position, mouse))
       
@@ -76,7 +77,7 @@ function registerCanvas(canvas) {
         // If we are waiting for fire selection
         if (unitMenu.awaitFireSelection) {
           
-          const rangePosition = computeRangePositions(selectedUnit)
+          const rangePosition = computeRangePositions(store, selectedUnit)
 
           // If we clicked an ennemy unit in range
           if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
@@ -95,7 +96,7 @@ function registerCanvas(canvas) {
               payload: {
                 attackerId: selectedUnitId,
                 defenderId: clickedUnit.id,
-                damages: computeFireDamage(selectedUnitId, clickedUnit.id)
+                damages: computeFireDamage(store, selectedUnitId, clickedUnit.id)
               },
             })
 
@@ -136,7 +137,7 @@ function registerCanvas(canvas) {
           return openUnitMenu()
         }
 
-        const possibleMovementPositions = computeMovementPositions(selectedUnit)
+        const possibleMovementPositions = computeMovementPositions(store, selectedUnit)
         
         // If we click on a possible movement position
         if (possibleMovementPositions.some(position => samePosition(position, mouse))) {
@@ -162,7 +163,7 @@ function registerCanvas(canvas) {
       }
 
       // If no unit is selected and we click a playable unit
-      if (clickedUnit && clickedUnit.factionId === turn.faction.id && !clickedUnit.played) {
+      if (clickedUnit && clickedUnit.factionId === currentFaction.id && !clickedUnit.played) {
         
         store.dispatch({
           type: 'SELECT_UNIT_ID',
@@ -172,7 +173,7 @@ function registerCanvas(canvas) {
         return
       }
 
-      if (clickedBuilding && clickedBuilding.factionId === turn.faction.id && clickedBuilding.type !== 'CITY') {
+      if (clickedBuilding && clickedBuilding.factionId === currentFaction.id && clickedBuilding.type !== 'CITY') {
         selectMousePosition()
 
         store.dispatch({
