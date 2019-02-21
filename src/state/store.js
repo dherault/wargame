@@ -5,12 +5,14 @@ import throttle from 'lodash.throttle'
 
 import { loadState, saveState } from './persist'
 
+import buildingMenu from './reducers/buildingMenu'
 import buildings from './reducers/buildings'
+import factions from './reducers/factions'
+import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
 import selectedPosition from './reducers/selectedPosition'
 import selectedUnitId from './reducers/selectedUnitId'
 import turn from './reducers/turn'
-import turnOrder from './reducers/turnOrder'
 import unitMenu from './reducers/unitMenu'
 import units from './reducers/units'
 import viewBox from './reducers/viewBox'
@@ -19,12 +21,14 @@ import worldMap from './reducers/worldMap'
 import viewBoxSaga from './sagas/viewBox'
 
 const reducers = {
+  buildingMenu, 
   buildings,
+  factions,
+  moneyByFaction,
   mouse,
   selectedPosition,
   selectedUnitId,
   turn,
-  turnOrder,
   unitMenu,
   units,
   viewBox,

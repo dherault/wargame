@@ -1,4 +1,5 @@
 export default {
+  moneyPerCityPerTurn: 1000,
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',
@@ -84,6 +85,7 @@ export default {
       movementType: 'FOOT',
       movement: 3,
       range: [1, 1],
+      cost: 1000,
       damages: {
         INFANTERY: 55,
         TANK: 5,
@@ -95,6 +97,7 @@ export default {
       movementType: 'WHEEL',
       movement: 6,
       range: [1, 1],
+      cost: 7000,
       damages: {
         INFANTERY: 75,
         TANK: 55,
@@ -106,6 +109,7 @@ export default {
       movementType: 'WHEEL',
       movement: 5,
       range: [2, 3],
+      cost: 6000,
       damages: {
         INFANTERY: 90,
         TANK: 45,
@@ -118,9 +122,18 @@ export default {
       movementType: 'SAIL',
       movement: 5,
       range: [1, 1],
+      cost: 20000,
       damages: {
         SUBMARINE: 60,
       },
+    },
+  },
+  buildingsConfiguration: {
+    CITY: {
+      name: 'City',
+    },
+    BASE: {
+      name: 'Base',
     },
   },
   factionsConfiguration: {

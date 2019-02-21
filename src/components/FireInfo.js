@@ -17,7 +17,7 @@ class FireInfo extends Component {
     const selectedUnit = findById(units, selectedUnitId)
     const rangePositions = computeRangePositions(selectedUnit)
     const unit = units.find(unit => 
-      unit.team !== turn.team // From opposite team
+      unit.team !== turn.faction.team // From opposite team
       && samePosition(unit.position, mouse) // At mouse position 
       && rangePositions.some(position => samePosition(unit.position, position)) // In range
     )

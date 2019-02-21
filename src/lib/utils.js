@@ -25,3 +25,7 @@ export function samePosition(p1, p2) {
 export function findById(array, id) {
   return array.find(item => item.id === id)
 }
+
+export function createId() {
+  return Math.random().toString().slice(2)
+}

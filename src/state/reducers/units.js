@@ -1,10 +1,19 @@
+import { createId } from '../../lib/utils'
+
 /*
   An array of units
 */
-function units(state = [], action, globalState) {
+function units(state = [], action) {
   switch (action.type) {
     case 'SET_UNITS':
       return action.payload
+
+    case 'CREATE_UNIT': {
+      const { type, position, factionId, team } = action.payload
+      const unit = { type, position, factionId, team, life: 100, played: true, id: createId() }
+
+      return [...state, unit]
+    }
 
     case 'PLAY_UNIT': {
       const units = state.slice()

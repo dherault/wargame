@@ -1,9 +1,9 @@
 import store from '../../state/store'
 
 function getWorldStateFromStore() {
-  const { units, turnOrder } = store.getState()
+  const { units, factions } = store.getState()
 
-  return { units, turnOrder }
+  return { units, factions }
 }
 
 export default getWorldStateFromStore

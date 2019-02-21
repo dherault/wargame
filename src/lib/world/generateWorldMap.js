@@ -34,9 +34,7 @@ function generateWorldMap() {
     const row = []
     
     for (let i = 0; i < width; i++) {
-      row.push({
-        type: i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? 'SEA' : randomArray(tilesTypes)
-      })
+      row.push(i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? 'SEA' : randomArray(tilesTypes))
     }
     
     map.push(row)

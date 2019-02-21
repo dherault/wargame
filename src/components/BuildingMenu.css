@@ -1,0 +1,11 @@
+.BuildingMenu {
+  background-color: white;
+}
+
+.BuildingMenu-item {
+  padding: 4px 10px;
+}
+
+.BuildingMenu-item:hover {
+  background-color: lightcyan;
+}

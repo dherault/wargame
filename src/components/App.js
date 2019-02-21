@@ -3,6 +3,7 @@ import Mousetrap from 'mousetrap'
 import registerCanvas from '../lib/registerCanvas'
 
 import AppMenu from './AppMenu'
+import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
 import FireInfo from './FireInfo'
 import TileInfo from './TileInfo'
@@ -53,6 +54,7 @@ class App extends Component {
           className="App-canvas no-select"
         />
         <AppMenu />
+        <BuildingMenu />
         <FireInfo />
         <TileInfo />
         <TurnInfo />

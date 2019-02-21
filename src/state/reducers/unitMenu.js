@@ -5,7 +5,6 @@ function unitMenu(state = { opened: false }, action) {
         ...state,
         opened: true,
         awaitFireSelection: false,
-        ...action.payload, // unitMenu.offsetX TODO: remove and recompute
       }
     
     case 'CLOSE_UNIT_MENU':

@@ -3,7 +3,7 @@ import Heap from '../common/Heap'
 import gameConfiguration from '../gameConfiguration'
 import { samePosition } from '../utils'
 
-const hash = (position) => `${position.x}_${position.y}`
+const hash = position => `${position.x}_${position.y}`
 
 // Uniform cost search to expand movement positions
 function computeMovementPositions(unit) {
@@ -61,7 +61,7 @@ function getSuccessorsFactory(unit) {
     if (tile) {
       successors.push({ 
         position, 
-        cost: cost + terrainConfiguration[tile.type].movementCost[movementType], 
+        cost: cost + terrainConfiguration[tile].movementCost[movementType], 
       })
     }
   }

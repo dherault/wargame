@@ -1,14 +1,13 @@
 import gameConfiguration from '../gameConfiguration'
 
 function computeWorldStateScore(worldState) {
-  const { units, turnOrder } = worldState
+  const { units, factions } = worldState
 
-  // Build a score per unit and sum up by faction
+  // Build a score per unit and sum up by factionId
   const scorePerFaction = {}
 
-  turnOrder.forEach(player => scorePerFaction[player.faction] = 0)
-
-  units.forEach(unit => scorePerFaction[unit.faction] += computeUnitScore(worldState, unit))
+  factions.forEach(faction => scorePerFaction[faction.id] = 0)
+  units.forEach(unit => scorePerFaction[unit.factionId] += computeUnitScore(worldState, unit))
 
   return scorePerFaction
 }

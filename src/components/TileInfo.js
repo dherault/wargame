@@ -9,7 +9,7 @@ import { samePosition } from '../lib/utils'
 class TileInfo extends Component {
 
   render() {
-    const { mouse, worldMap, units } = this.props
+    const { mouse, worldMap, units, buildings } = this.props
     
     if (!worldMap) return null
 
@@ -17,12 +17,16 @@ class TileInfo extends Component {
 
     if (!tile) return null
 
-    const tileConfiguration = gameConfiguration.terrainConfiguration[tile.type]
+    const tileConfiguration = gameConfiguration.terrainConfiguration[tile]
     const unit = units.find(unit => samePosition(unit.position, mouse))
+    const building = buildings.find(building => samePosition(building.position, mouse))
+    const tileName = building ? gameConfiguration.buildingsConfiguration[building.type].name : tileConfiguration.name
 
     return ( 
       <div className="TileInfo absolute x4">
-        {tileConfiguration.name} (defense {tileConfiguration.defense}) {unit && `- ${gameConfiguration.unitsConfiguration[unit.type].name}`}
+        {tileName} (defense {tileConfiguration.defense}) 
+        {building && ` - capture ${building.capture}`} 
+        {unit && ` - ${gameConfiguration.unitsConfiguration[unit.type].name}`}
       </div>
     )
   }
@@ -30,6 +34,7 @@ class TileInfo extends Component {
 
 const mapStateToProps = s => ({
   mouse: s.mouse,
+  buildings: s.buildings,
   units: s.units,
   worldMap: s.worldMap,
 })

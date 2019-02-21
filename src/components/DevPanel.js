@@ -23,8 +23,8 @@ class DevPanel extends Component {
         {hoveredUnit && (<br />)}
         {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(worldState, hoveredUnit)}`)}
         <br />
-          {scoreEntries.map(([faction, score]) => (
-            <div key={faction}>{faction} - {score} - {scoreEntries.filter(([f, s]) => f !== faction).reduce((a, b) => a + b[1], 0)}</div>
+          {scoreEntries.map(([factionId, score]) => (
+            <div key={factionId}>{factionId} - {score} - {scoreEntries.filter(([f, s]) => f !== factionId).reduce((a, b) => a + b[1], 0)}</div>
           ))}
       </div>
     )

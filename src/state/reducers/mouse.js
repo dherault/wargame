@@ -1,8 +1,6 @@
 /*
   x
   y
-  offsetX // TODO: remove offsetX and offsetY
-  offsetY
   rightButtonDown
 */
 function mouse(state = { x: 0, y: 0 }, action) {

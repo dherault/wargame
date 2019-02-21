@@ -17,7 +17,7 @@ class UnitMenu extends Component {
     })
   }
 
-  handleFireClick = () => {
+  moveUnit = () => {
     const { dispatch, selectedUnitId, selectedPosition } = this.props
 
     dispatch({
@@ -27,6 +27,23 @@ class UnitMenu extends Component {
         position: selectedPosition,
       },
     })
+  }
+
+  playUnit = () => {
+    const { selectedUnitId, dispatch } = this.props
+    
+    dispatch({
+      type: 'PLAY_UNIT',
+      payload: {
+        unitId: selectedUnitId,
+      },
+    })
+  }
+
+  handleFireClick = () => {
+    const { dispatch } = this.props
+
+    this.moveUnit()
 
     dispatch({
       type: 'AWAIT_FIRE_SELECTION',
@@ -39,24 +56,26 @@ class UnitMenu extends Component {
     this.closeMenu()
   }
 
-  handleAwaitClick = () => {
-    const { selectedPosition, selectedUnitId, dispatch } = this.props
+  handleCaptureClick = () => {
+    const { buildings, selectedPosition, selectedUnitId, dispatch } = this.props
     
-    dispatch({
-      type: 'MOVE_UNIT',
-      payload: {
-        unitId: selectedUnitId,
-        position: selectedPosition,
-      },
-    })
+    this.moveUnit()
 
     dispatch({
-      type: 'PLAY_UNIT',
+      type: 'CAPTURE_BUILDING',
       payload: {
+        buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
         unitId: selectedUnitId,
       },
     })
 
+    this.playUnit()
+    this.handleCancelClick()
+  }
+
+  handleAwaitClick = () => {
+    this.moveUnit()
+    this.playUnit()
     this.handleCancelClick()
   }
 
@@ -75,16 +94,22 @@ class UnitMenu extends Component {
   }
 
   render() {
-    const { selectedPosition, selectedUnitId, units, unitMenu } = this.props
+    const { buildings, units, selectedPosition, selectedUnitId, unitMenu, viewBox } = this.props
 
     if (!unitMenu.opened) return null
 
+    const tileSize = window.innerWidth / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)
-    console.log('selectedUnit', selectedUnit)
     const rangePositions = computeRangePositions(selectedUnit, selectedPosition) // range positions at selected position
     
     return (
-      <div className="UnitMenu absolute no-select pointer" style={{ top: unitMenu.offsetY, left: unitMenu.offsetX }}>
+      <div 
+        className="UnitMenu absolute no-select pointer" 
+        style={{ 
+          top: (selectedPosition.y - viewBox.y) * tileSize, 
+          left: (selectedPosition.x - viewBox.x + 1) * tileSize,
+        }}
+      >
         {units.some(unit => // If there is a unit
           unit.team !== selectedUnit.team // From opposite team
           && rangePositions.some(position => samePosition(position, unit.position)) // In range
@@ -94,6 +119,15 @@ class UnitMenu extends Component {
             Fire
           </div>
         )}
+        {buildings.some(building => // If there is a building
+          building.team !== selectedUnit.team // From opposite or no team
+          && samePosition(selectedPosition, building.position) // at selected position
+          && selectedUnit.type === 'INFANTERY' // and the selected unit can capture it
+        ) && (
+          <div className="UnitMenu-item" onClick={this.handleCaptureClick}>
+            Capture
+          </div>
+        )}  
         <div className="UnitMenu-item" onClick={this.handleAwaitClick}>
           Await
         </div>
@@ -106,10 +140,12 @@ class UnitMenu extends Component {
 }
 
 const mapStateToProps = s => ({
+  buildings: s.buildings,
   units: s.units,
   selectedPosition: s.selectedPosition,
   selectedUnitId: s.selectedUnitId,
   unitMenu: s.unitMenu,
+  viewBox: s.viewBox,
 })
 
 export default connect(mapStateToProps)(UnitMenu)

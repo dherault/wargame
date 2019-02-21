@@ -32,7 +32,7 @@ function draw(_) {
 
       if (!tile) continue 
 
-      if (tile.type === 'BUILDING') {
+      if (tile === 'BUILDING') {
         const building = buildings.find(building => samePosition(building.position, { x, y }))
 
         drawBuilding(_, tileSize, building)
@@ -40,7 +40,7 @@ function draw(_) {
         continue
       }
 
-      const color = gameConfiguration.terrainConfiguration[tile.type].color
+      const color = gameConfiguration.terrainConfiguration[tile].color
 
       _.fillStyle = color
       _.strokeStyle = color
@@ -57,7 +57,7 @@ function draw(_) {
     DRAW MOVEMENT AND RANGE TILES
   ------------------------------ */
 
-  if (turn.playerType === 'HUMAN') {
+  if (turn.faction.type === 'HUMAN') {
 
     let movementPositions
     let rangePositions
@@ -132,7 +132,7 @@ function drawUnit(_, tileSize, unit) {
   const x = unit.position.x - viewBox.x
   const y = unit.position.y - viewBox.y
   
-  _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
+  _.fillStyle = gameConfiguration.factionsConfiguration[unit.factionId].color
   _.strokeStyle = '#333333'
   _.lineWidth = 2
 
@@ -234,10 +234,16 @@ function drawBuilding(_, tileSize, building) {
   const { viewBox } = store.getState()
   const x = building.position.x - viewBox.x
   const y = building.position.y - viewBox.y
-  const factionConfiguration = gameConfiguration.factionsConfiguration[building.faction]
+  const factionConfiguration = gameConfiguration.factionsConfiguration[building.factionId]
 
-  _.fillStyle = '#333333'
-  _.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+  _.fillStyle = '#555555'
+  _.strokeStyle = '#555555'
+  _.lineWidth = 1
+  _.beginPath()
+  _.rect(x * tileSize, y * tileSize, tileSize, tileSize)
+  _.closePath()
+  _.fill()
+  _.stroke()
 
   _.fillStyle = factionConfiguration ? factionConfiguration.color : gameConfiguration.terrainConfiguration.BUILDING.color
   _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
@@ -245,7 +251,7 @@ function drawBuilding(_, tileSize, building) {
   switch (building.type) {
 
     case 'BASE':
-      _.fillStyle = '#333333'
+      _.fillStyle = '#555555'
       _.beginPath()
       _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.2 * tileSize, 0, 2 * Math.PI)
       _.closePath()

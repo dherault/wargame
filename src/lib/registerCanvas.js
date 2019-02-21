@@ -7,8 +7,8 @@ import { samePosition, findById } from './utils'
 import draw from './draw'
 import computeRangePositions from './units/computeRangePositions';
 
+// A function called once for registering the canvas event listeners
 function registerCanvas(canvas) {
-  // A function called once for registering the canvas event listeners
   const _ = canvas.getContext('2d')
 
   /* -------------
@@ -18,25 +18,27 @@ function registerCanvas(canvas) {
   /* Mouse move */
 
   canvas.addEventListener('mousemove', e => {
-    const { viewBox } = store.getState()
+    const { mouse, viewBox } = store.getState()
     const tileSize = canvas.width / viewBox.width // pixel per tile
+
+    const x = Math.floor(e.offsetX / tileSize + viewBox.x)
+    const y = Math.floor(e.offsetY / tileSize + viewBox.y)
+
+    if (mouse.x === x && mouse.y === y) return
 
     store.dispatch({
       type: 'UPDATE_MOUSE_POSITION',
       payload: {
-        offsetX: e.offsetX,
-        offsetY: e.offsetY,
-        x: Math.floor(e.offsetX / tileSize + viewBox.x),
-        y: Math.floor(e.offsetY / tileSize + viewBox.y),
+        x,
+        y,
       }
     })
   })
 
   /* Click */
 
-  function openUnitMenu() {
-    const { mouse, viewBox } = store.getState()
-    const tileSize = canvas.width / viewBox.width // pixel per tile
+  function selectMousePosition() {
+    const { mouse } = store.getState()
 
     store.dispatch({
       type: 'SELECT_POSITION',
@@ -45,13 +47,13 @@ function registerCanvas(canvas) {
         y: mouse.y,
       }
     })
-    
+  }
+
+  function openUnitMenu() {
+    selectMousePosition()
+
     store.dispatch({
       type: 'OPEN_UNIT_MENU',
-      payload: {
-        offsetX: (mouse.x - viewBox.x + 1) * tileSize,
-        offsetY: (mouse.y - viewBox.y) * tileSize
-      },
     })
   }
 
@@ -63,8 +65,9 @@ function registerCanvas(canvas) {
     if (e.button === 0) {
       console.log('left click')
 
-      const { mouse, units, selectedUnitId, unitMenu, selectedPosition, turn } = store.getState()
+      const { mouse, buildings, units, selectedUnitId, buildingMenu, unitMenu, selectedPosition, turn } = store.getState()
       const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
+      const clickedBuilding = buildings.find(building => samePosition(building.position, mouse))
       
       if (selectedUnitId) {
         
@@ -159,7 +162,7 @@ function registerCanvas(canvas) {
       }
 
       // If no unit is selected and we click a playable unit
-      if (clickedUnit && clickedUnit.faction === turn.faction && !clickedUnit.played) {
+      if (clickedUnit && clickedUnit.factionId === turn.faction.id && !clickedUnit.played) {
         
         store.dispatch({
           type: 'SELECT_UNIT_ID',
@@ -167,6 +170,28 @@ function registerCanvas(canvas) {
         })
         
         return
+      }
+
+      if (clickedBuilding && clickedBuilding.factionId === turn.faction.id && clickedBuilding.type !== 'CITY') {
+        selectMousePosition()
+
+        store.dispatch({
+          type: 'OPEN_BUILDING_MENU',
+        })
+
+        return
+      }
+
+      if (buildingMenu.opened) {
+        store.dispatch({ 
+          type: 'CLOSE_BUILDING_MENU',
+        })
+      }
+
+      if (selectedPosition) {
+        store.dispatch({ 
+          type: 'DESELECT_POSITION',
+        })
       }
     }
 
