@@ -13,7 +13,7 @@ function createNewGame() {
 
   worldMap.forEach((row, y) => {
     row.forEach((tile, x) => {
-      if (tile.type === 'ROAD') {
+      if (tile.type === 'ROAD' || tile.type === 'PLAIN') {
         landTiles.push({ x, y })
       }
       else if (tile.type === 'SEA') {
@@ -22,21 +22,37 @@ function createNewGame() {
     })
   })
 
+  const createId = () => Math.random().toString().slice(2)
+
+  const buildings = [
+    { type: 'CITY', faction: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY', faction: 'RED',  team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY', faction: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY', faction: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE', faction: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE', faction: 'RED',  team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE', faction: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+  ]
+
+  buildings.forEach(building => {
+    worldMap[building.position.y][building.position.x].type = 'BUILDING'
+  })
+
   const units = [
-    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'SUBMARINE', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'TANK',      faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'ARTILLERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'SUBMARINE', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
-    { type: 'INFANTERY', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(landTiles), id: Math.random().toString().slice(2) },
-    { type: 'SUBMARINE', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(seaTiles),  id: Math.random().toString().slice(2) },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'INFANTERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'TANK',      faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'ARTILLERY', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'SUBMARINE', faction: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'INFANTERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'TANK',      faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'ARTILLERY', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'SUBMARINE', faction: 'RED',    team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
+    { type: 'INFANTERY', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(landTiles), id: createId() },
+    { type: 'SUBMARINE', faction: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
   ]
 
   const turnOrder = [
@@ -49,6 +65,11 @@ function createNewGame() {
   store.dispatch({
     type: 'SET_WORLD_MAP',
     payload: worldMap,
+  })
+
+  store.dispatch({
+    type: 'SET_BUILDINGS',
+    payload: buildings,
   })
 
   store.dispatch({

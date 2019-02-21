@@ -66,6 +66,17 @@ export default {
         SAIL:  1,
       },
     },
+    BUILDING: {
+      name: 'Building',
+      color: '#c1c1c1',
+      defense: 3,
+      movementCost: {
+        FOOT: 1,
+        WHEEL: 1,
+        FLY: 1,
+        SAIL: 1,
+      },
+    }
   },
   unitsConfiguration: {
     INFANTERY: {

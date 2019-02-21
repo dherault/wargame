@@ -8,7 +8,7 @@ let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, units, turn, selectedUnitId, selectedPosition, unitMenu } = store.getState()
+  const { viewBox, mouse, worldMap, buildings, units, turn, selectedUnitId, selectedPosition, unitMenu } = store.getState()
   const { width, height } = _.canvas
 
   _.fillStyle = 'black'
@@ -27,9 +27,18 @@ function draw(_) {
     const y = Math.floor(j + viewBox.y)
 
     for (let i = 0; i < viewBox.width + 1; i++) {
-      const tile = worldMap[y] && worldMap[y][Math.floor(i + viewBox.x)]
+      const x = Math.floor(i + viewBox.x)
+      const tile = worldMap[y] && worldMap[y][x]
 
       if (!tile) continue 
+
+      if (tile.type === 'BUILDING') {
+        const building = buildings.find(building => samePosition(building.position, { x, y }))
+
+        drawBuilding(_, tileSize, building)
+
+        continue
+      }
 
       const color = gameConfiguration.terrainConfiguration[tile.type].color
 
@@ -130,7 +139,6 @@ function drawUnit(_, tileSize, unit) {
   switch (unit.type) {
 
     case 'INFANTERY':
-      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
       _.beginPath()
       _.arc((x + 0.5) * tileSize, (y+ 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
       _.closePath()
@@ -149,7 +157,6 @@ function drawUnit(_, tileSize, unit) {
       break
     
     case 'TANK': 
-      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
       _.beginPath()
       _.rect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
       _.closePath()
@@ -165,7 +172,6 @@ function drawUnit(_, tileSize, unit) {
       break
 
     case 'ARTILLERY':
-      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
       _.beginPath()
       _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
       _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
@@ -188,7 +194,6 @@ function drawUnit(_, tileSize, unit) {
     break
 
     case 'SUBMARINE':
-      _.fillStyle = gameConfiguration.factionsConfiguration[unit.faction].color
       _.beginPath()
       _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
       _.lineTo((x + 0.9) * tileSize, (y + 0.5) * tileSize)
@@ -223,6 +228,34 @@ function drawUnit(_, tileSize, unit) {
   _.fillRect((x + 0.55) * tileSize, (y + 0.8) * tileSize, 0.45 * tileSize, 0.2 * tileSize)
   _.fillStyle = 'black'
   _.fillText(unit.life, (x + 0.94) * tileSize, (y + 0.97) * tileSize)
+}
+
+function drawBuilding(_, tileSize, building) {
+  const { viewBox } = store.getState()
+  const x = building.position.x - viewBox.x
+  const y = building.position.y - viewBox.y
+  const factionConfiguration = gameConfiguration.factionsConfiguration[building.faction]
+
+  _.fillStyle = '#333333'
+  _.fillRect(x * tileSize, y * tileSize, tileSize, tileSize)
+
+  _.fillStyle = factionConfiguration ? factionConfiguration.color : gameConfiguration.terrainConfiguration.BUILDING.color
+  _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+
+  switch (building.type) {
+
+    case 'BASE':
+      _.fillStyle = '#333333'
+      _.beginPath()
+      _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.2 * tileSize, 0, 2 * Math.PI)
+      _.closePath()
+      _.fill()
+
+      break
+    
+    default:
+      break
+  }
 }
 
 export default draw
