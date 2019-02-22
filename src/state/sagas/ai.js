@@ -10,6 +10,20 @@ function* playAi() {
     yield put({ type: 'BEGIN_AI_COMPUTATION' })
     console.log('_____BEGIN_AI_____')
 
+    // let error
+    // let actions
+
+    // try {
+    //   actions = computeAiActions()
+    // }
+    // catch(err) {
+    //   error = err
+    // }
+    // finally {
+    //   if (!error) window.reset()
+    //   else console.error(error)
+    // }
+
     const actions = computeAiActions()
 
     console.log('ai actions', actions)

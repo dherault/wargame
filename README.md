@@ -12,4 +12,4 @@ npm start
 ## Glossary
 
 - Position: { x, y }
-- Tile: { type: 'PLAIN' }
+- Tile: string eg: 'PLAIN'

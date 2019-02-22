@@ -81,7 +81,7 @@ describe('Tree', () => {
     assert.deepEqual(tree.getChildren(treeIndex), [])
   })
 
-  it('should retrieve children', () => {
+  it('should retrieve children data', () => {
 
     const tree = new Tree()
     const rootIndex = tree.addNode(0)

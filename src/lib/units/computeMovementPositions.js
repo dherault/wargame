@@ -46,7 +46,8 @@ function computeMovementPositions(store, unit) {
   return positions
 }
 
-function getSuccessorsFactory(store, unit) {
+// export for computeAiActions
+export function getSuccessorsFactory(store, unit) {
   const { worldMap, units } = store.getState()
   const { terrainConfiguration } = gameConfiguration
   const { movementType } = gameConfiguration.unitsConfiguration[unit.type]

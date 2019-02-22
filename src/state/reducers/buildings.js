@@ -8,7 +8,7 @@ function buildings(state = [], action, globalState) {
     case 'SET_BUILDINGS':
       return action.payload
 
-    case 'CAPTURE_BUILDING': {
+    case 'CAPTURE': {
       const buildings = state.slice()
       const { buildingId, unitId } = action.payload
       const buildingIndex = buildings.findIndex(building => building.id === buildingId)

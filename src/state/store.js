@@ -67,7 +67,8 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
   : compose
 
 const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, logger))
-const persistedState = loadState()
+const persistedState = {}
+// const persistedState = loadState()
 
 const store = createStore(reducer, persistedState, enhancer)
 

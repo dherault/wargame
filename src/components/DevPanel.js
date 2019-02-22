@@ -22,7 +22,7 @@ class DevPanel extends Component {
         {aiComputation && (<br />)}
         {aiComputation && '...'}
         {hoveredUnit && (<br />)}
-        {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)}`)}
+        {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)} - ${hoveredUnit.id}`)}
         <br />
           {scoreEntries.map(([factionId, score]) => (
             <div key={factionId}>{factionId} - {score} - {scoreEntries.filter(([f, s]) => f !== factionId).reduce((a, b) => a + b[1], 0)}</div>

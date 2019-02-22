@@ -63,7 +63,7 @@ class UnitMenu extends Component {
     this.moveUnit()
 
     dispatch({
-      type: 'CAPTURE_BUILDING',
+      type: 'CAPTURE',
       payload: {
         buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
         unitId: selectedUnitId,

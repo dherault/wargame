@@ -228,6 +228,13 @@ function drawUnit(_, tileSize, unit) {
   _.fillRect((x + 0.55) * tileSize, (y + 0.8) * tileSize, 0.45 * tileSize, 0.2 * tileSize)
   _.fillStyle = 'black'
   _.fillText(unit.life, (x + 0.94) * tileSize, (y + 0.97) * tileSize)
+
+  _.font = `bold ${tileSize / 3}px lato`
+  _.textAlign = 'center'
+  _.textBaseline = 'middle'
+  _.fillStyle = 'white'
+  _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize, (y + 0.5) * tileSize)
+
 }
 
 function drawBuilding(_, tileSize, building) {
