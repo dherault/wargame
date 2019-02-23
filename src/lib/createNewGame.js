@@ -54,10 +54,12 @@ function createNewGame() {
   ]
 
   const factions = [
-    { id: 'BLUE', team: 1, type: 'COMPUTER' }, 
+    { id: 'BLUE', team: 1, type: 'HUMAN' }, 
     { id: 'RED', team: 2, type: 'COMPUTER' },
-    { id: 'YELLOW', team: 3, type: 'HUMAN' },
+    { id: 'YELLOW', team: 3, type: 'COMPUTER' },
   ]
+
+  const currentFaction = factions[0]
 
   const moneyByFaction = {}
 
@@ -97,7 +99,7 @@ function createNewGame() {
 
   store.dispatch({
     type: 'SET_CURRENT_FACTION',
-    payload: factions[0],
+    payload: currentFaction,
   })
 
   store.dispatch({
@@ -105,9 +107,9 @@ function createNewGame() {
     payload: moneyByFaction,
   })
 
-  store.dispatch({
-    type: 'BEGIN_PLAYER_TURN',
-  })
+  if (currentFaction.type === 'HUMAN') {
+    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+  }
 }
 
 export default createNewGame

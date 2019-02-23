@@ -1,4 +1,5 @@
-import { createId } from '../../lib/utils'
+import { createId, samePosition } from '../../lib/utils'
+import DataError from '../../lib/common/DataError'
 
 /*
   An array of units
@@ -10,6 +11,9 @@ function units(state = [], action) {
 
     case 'CREATE_UNIT': {
       const { type, position, factionId, team } = action.payload
+
+      if (units.some(u => samePosition(u.position, position))) throw new DataError('Unit - CREATE_UNIT - a unit is already on the position', { position })
+
       const unit = { type, position, factionId, team, life: 100, played: true, id: createId() }
 
       return [...state, unit]
@@ -19,6 +23,9 @@ function units(state = [], action) {
       const units = state.slice()
       const { unitId } = action.payload
       const unitIndex = units.findIndex(u => u.id === unitId)
+
+      if (unitIndex === -1) throw new DataError('Units - PLAY_UNIT - unit not found', { unitId })
+
       units[unitIndex] = Object.assign({}, units[unitIndex], { played: true })
 
       return units
@@ -28,6 +35,10 @@ function units(state = [], action) {
       const units = state.slice()
       const { unitId, position } = action.payload
       const unitIndex = units.findIndex(u => u.id === unitId)
+
+      if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT - unit not found', { unitId, position })
+      if (units.some(u => u.id !== unitId && samePosition(u.position, position))) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
+
       units[unitIndex] = Object.assign({}, units[unitIndex], { position, previousPosition: units[unitIndex].position })
 
       return units
@@ -39,6 +50,10 @@ function units(state = [], action) {
       const units = state.slice()
       const attackerUnitIndex = units.findIndex(u => u.id === attackerId)
       const defenderUnitIndex = units.findIndex(u => u.id === defenderId)
+
+      if (attackerUnitIndex === -1) throw new DataError('Units - FIRE - Attacker not found', { attackerId })
+      if (defenderUnitIndex === -1) throw new DataError('Units - FIRE - Defender not found', { defenderId })
+
       const nextAttacker = Object.assign({}, units[attackerUnitIndex], { life: units[attackerUnitIndex].life - defenderDamage })
       const nextDefender = Object.assign({}, units[defenderUnitIndex], { life: units[defenderUnitIndex].life - attackerDamage })
 

@@ -1,6 +1,7 @@
 import gameConfiguration from '../gameConfiguration';
 import globalStore from '../../state/store'
 import createAiStore from '../../state/createAiStore'
+import computeWorldStateScore from './computeWorldStateScore'
 import computeMovementPositions, { getSuccessorsFactory } from '../units/computeMovementPositions'
 import computeRangePositions from '../units/computeRangePositions'
 import computeFireDamage from '../units/computeFireDamage';
@@ -18,39 +19,105 @@ const unhash = positionHash => {
   }
 }
 
+// Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
+const nTargets = 2 
+const maxBranchingFactor = 10
+const maxStateTreeDepth = 3
+
 function computeAiActions() {
+  const rootState = globalStore.getState()
+  const rootStore = createAiStore(rootState)
 
-  const initialWorldState = globalStore.getState()
-
-  const aiStore = createAiStore(initialWorldState)
-
-  console.log('aiStore', aiStore)
-
-  const possibleActions = expandPossibleActions(aiStore)
-
-  console.log('possibleActions', possibleActions)
-
-  const possibleActionsCombinaisons = combineArrayItems(possibleActions)
+  const consideredFaction = rootState.currentFaction
   
-  console.log('possibleActionsCombinaisons', possibleActionsCombinaisons)
-  
-  const actionsCombinaisons = excludeImpossibleActionsCombinaisons(aiStore, possibleActionsCombinaisons)
-
-  console.log('actionsCombinaisons', actionsCombinaisons)
-
   const stateTree = new Tree()
 
-  aiStore.stateTreeIndex = stateTree.addNode(aiStore)
+  rootStore.stateTreeIndex = stateTree.addNode(rootStore)
 
-  actionsCombinaisons.forEach(actions => {
-    const store = createAiStore(initialWorldState)
-  })
+  extendStateTree(stateTree, rootStore, consideredFaction)
+
+  // Post-order search on stateTree
+  // https://stackoverflow.com/a/20062584
+  const postOrder = index => {
+    stateTree.getChildren(index).forEach(postOrder)
+
+    const store = stateTree.getData(index)
+    const childrenStores = stateTree.getChildrenData(index) // TODO transform O(n) into O(1)
+    
+    if (!childrenStores.length) {
+      return 
+    }
+    
+    const nodeTypeFn = consideredFaction.team === store.getState().currentFaction.team ? Math.max : Math.min
+    
+    store.score = nodeTypeFn(...childrenStores.map(store => store.score))
+  }
+
+  postOrder(rootStore.stateTreeIndex)
+
+  const rootChildren = stateTree.getChildrenData(rootStore.stateTreeIndex).sort((a, b) => a.score > b.score ? -1 : 1)
+
+  return rootChildren[0].actions
+}
+
+function extendStateTree(stateTree, parentStore, consideredFaction, depth = 0) {
+  if (depth > maxStateTreeDepth) return
+
+  const parentWorldState = parentStore.getState()
   
-  return possibleActions
+  const possibleActions = expandPossibleActions(parentStore)
+  
+  // console.log('possibleActions', possibleActions)
+  
+  const actionsCombinaisons = combineArrayItems(possibleActions)
+  
+  // console.log('possibleActionsCombinaisons', possibleActionsCombinaisons)
+  
+  console.log('consideredFaction', consideredFaction.id, possibleActions.length, actionsCombinaisons.length)
+  // const actionsCombinaisons = excludeImpossibleActionsCombinaisons(parentStore, possibleActionsCombinaisons)
+  
+  // console.log('actionsCombinaisons', actionsCombinaisons.length)
+
+  const stores = []
+
+  actionsCombinaisons.forEach((actions, i) => {
+
+    const store = createAiStore(parentWorldState)
+
+    
+    try {
+      actions.forEach(action => store.dispatch(action))
+    }
+    // The store is impossible (some units are on the same position)
+    catch (error) {
+      return
+    }
+
+    store.dispatch({ type: 'END_PLAYER_TURN' })
+    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+    
+    store.actions = [...actions, { type: 'END_PLAYER_TURN' }, { type: 'BEGIN_PLAYER_TURN' }]
+    store.score = computeWorldStateScore(store)[consideredFaction.id]
+
+    stores.push(store)
+  })
+
+  stores
+    .sort((a, b) => a.score > b.score ? -1 : 1)
+    .forEach((store, i) => {
+      if (i >= maxBranchingFactor) return
+
+      stateTree.addNode(store, parentStore.stateTreeIndex)
+
+      extendStateTree(stateTree, store, consideredFaction, depth + 1)
+    })
 }
 
 // https://stackoverflow.com/a/4331218
 function combineArrayItems(array) {
+  if (array.length === 0) {
+    return []
+  }
   if (array.length === 1) {
     return array[0]
   } 
@@ -67,37 +134,10 @@ function combineArrayItems(array) {
   return result
 }
 
-function excludeImpossibleActionsCombinaisons(store, actionsCombinaisons) {
-  const { units } = store.getState()
-
-  const unitsPositions = units.map(u => hash(u.position))
-
-  return actionsCombinaisons.filter(actions => {
-    const unitsPositionsSet = new Set(unitsPositions)
-
-    for (let i = 0; i < actions.length; i++) {
-      const action = actions[i]
-
-      if (action.type === 'MOVE_UNIT') {
-        const positionHash = hash(action.payload.position)
-
-        if (unitsPositionsSet.has(positionHash)) return false
-
-        unitsPositionsSet.delete(hash(units.find(u => u.id === action.payload.unitId).position))
-
-        unitsPositionsSet.add(positionHash)
-      }
-    }
-
-    return true
-  })
-}
-
-// Branching factor = nUnits ^ nTargets
-const nTargets = 4 // TODO: put in gameConfiguration.ai.nTargetsPerUnits
-
 function expandPossibleActions(store) {
   const { units, currentFaction } = store.getState()
+
+  console.log('____', currentFaction.id)
 
   const possibleUnitTargets = []
 
@@ -118,8 +158,8 @@ function expandPossibleActions(store) {
     possibleUnitTargets.push([unit, chosenTargets])
   })
 
-  console.log('possibleUnitTargets', possibleUnitTargets)
-  console.log('transmorming targets into actions') 
+  // console.log('possibleUnitTargets', possibleUnitTargets)
+  // console.log('transmorming targets into actions') 
 
   const possibleUnitActions = []
 
@@ -137,7 +177,7 @@ function expandPossibleActions(store) {
 
     possibleUnitActions.push(actions)
 
-    console.log('possible actions per unit', unit, actions)
+    // console.log('possible actions per unit', unit, actions)
   })
 
   return possibleUnitActions
@@ -190,6 +230,8 @@ function computePossibleTarget(store, unit) {
         targets.push(['CAPTURE', buidling.id, position, cost / costDivider])
       }
     }
+
+    if (targets.length === nTargets) break
 
     closedSet.add(hash(position))
 

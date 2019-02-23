@@ -1,4 +1,4 @@
-import { takeEvery, put } from 'redux-saga/effects'
+import { takeEvery, put, delay } from 'redux-saga/effects'
 import store from '../store'
 import computeAiActions from '../../lib/ai/computeAiActions'
 
@@ -30,6 +30,11 @@ function* playAi() {
 
     console.log('_____END_AI_____')
     yield put({ type: 'END_AI_COMPUTATION' })
+
+    for (let i = 0; i < actions.length; i++) {
+      yield delay(500)
+      yield put(actions[i])
+    }
 
   } 
 }

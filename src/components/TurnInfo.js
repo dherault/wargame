@@ -7,7 +7,7 @@ import gameConfiguration from '../lib/gameConfiguration'
 
 class TurnInfo extends Component {
 
-  handleNextPlayerClick = () => {
+  handleEndTurnClick = () => {
     const { selectedPosition, selectedUnitId, buildingMenu, unitMenu, dispatch } = this.props
 
     if (unitMenu.awaitFireSelection) dispatch({ type: 'CANCEL_FIRE_SELECTION' })
@@ -28,7 +28,7 @@ class TurnInfo extends Component {
         <div style={{ marginRight: 10 }}>
           turn {turn} - {gameConfiguration.factionsConfiguration[currentFaction.id].name} - {moneyByFaction[currentFaction.id]}$
         </div>
-        <button onClick={this.handleNextPlayerClick}>
+        <button onClick={this.handleEndTurnClick}>
           End Turn
         </button>
       </div>
