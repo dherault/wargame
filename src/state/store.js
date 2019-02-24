@@ -4,7 +4,7 @@ import { all } from 'redux-saga/effects'
 
 import { loadState, saveState } from './persist'
 import createReducer from './createReducer'
-import { createThrottle } from '../lib/utils'
+import { throttle } from '../lib/utils'
 
 import aiComputation from './reducers/aiComputation'
 import buildingMenu from './reducers/buildingMenu'
@@ -80,8 +80,6 @@ const store = createStore(reducer, persistedState, enhancer)
 sagaMiddleware.run(rootSaga)
 
 // Save persisted state
-const throttle = createThrottle()
-
 store.subscribe(throttle(() => saveState(store.getState()), 1000))
 
 // For debug purposes

@@ -43,12 +43,12 @@ export function unhash(positionHash)  {
   }
 }
 
-export function createThrottle() {
+export function throttle(fn, delay) {
   let timeoutId
   
-  return (fn, delay) => {
+  return () => {
     clearTimeout(timeoutId)
 
-    setTimeout(fn, delay)
+    timeoutId = setTimeout(fn, delay)
   }
 }
