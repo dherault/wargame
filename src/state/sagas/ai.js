@@ -2,6 +2,9 @@ import { takeEvery, put, delay } from 'redux-saga/effects'
 import store from '../store'
 import computeAiActions from '../../lib/ai/computeAiActions'
 
+// On every turn's beginning
+// If the player is a computer
+// Compute its move with the AI
 function* playAi() {
   const { currentFaction } = store.getState()
 

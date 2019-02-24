@@ -1,3 +1,10 @@
+/*
+  {
+    x
+    y
+    width
+  }
+*/
 function viewBox(state = {}, action) {
   switch (action.type) {
     case 'UPDATE_VIEW_BOX':

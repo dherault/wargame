@@ -1,3 +1,4 @@
+// Loads the state from localStorage
 export function loadState() {
   try {
     const serializedState = localStorage.getItem('state')
@@ -8,6 +9,7 @@ export function loadState() {
   }
 }
 
+// Saves the state into localStorage
 export function saveState(state) {
   try {
     const serializedState = JSON.stringify(state)
@@ -18,6 +20,7 @@ export function saveState(state) {
   }
 }
 
+// A utility to call from the browser's console when everything seems to fall apart
 window.reset = () => {
   localStorage.removeItem('state')
   window.location.reload()

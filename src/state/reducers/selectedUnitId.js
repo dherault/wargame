@@ -1,3 +1,6 @@
+/*
+  the id of the selectedUnit
+*/
 function selectedUnitId(state = null, action) {
   switch (action.type) {
     case 'SELECT_UNIT_ID':

@@ -1,3 +1,9 @@
+/*
+  {
+    X
+    Y
+  }
+*/
 function selectedPosition(state = null, action) {
   switch (action.type) {
     case 'SELECT_POSITION':

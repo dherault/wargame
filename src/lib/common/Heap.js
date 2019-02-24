@@ -52,6 +52,8 @@ class Heap {
 
     this.percolateDown(1)
 
+    this.hasData[retval[1]] = false
+
     return retval
   }
 
@@ -80,7 +82,7 @@ class Heap {
 
     this.list.splice(this.size, 1)
 
-    if (!this.list.find(item => item[1] === data)) this.hasData[data] = false
+    this.hasData[data] = false
 
     // If the removed element was the last element 
     // the heap is still a heap

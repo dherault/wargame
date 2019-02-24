@@ -1,3 +1,6 @@
+/*
+  The turn number
+*/
 function turn(state = 1, action, globalState) {
   if (action.type === 'END_PLAYER_TURN') {
     const { factions, currentFaction } = globalState

@@ -1,3 +1,4 @@
+// Is the AI computing ? boolean
 function aiComputation(state = false, action) {
   switch (action.type) {
     case 'BEGIN_AI_COMPUTATION':

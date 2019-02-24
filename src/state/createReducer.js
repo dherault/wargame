@@ -1,3 +1,4 @@
+// Replaces redux's combineReducers to enhance reducers
 function createReducer(reducers) {
   const reducersKeys = Object.keys(reducers)
 

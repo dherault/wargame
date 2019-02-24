@@ -1,10 +1,10 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
-import throttle from 'lodash.throttle'
 
 import { loadState, saveState } from './persist'
 import createReducer from './createReducer'
+import { createThrottle } from '../lib/utils'
 
 import aiComputation from './reducers/aiComputation'
 import buildingMenu from './reducers/buildingMenu'
@@ -24,6 +24,8 @@ import worldMap from './reducers/worldMap'
 import aiSaga from './sagas/ai'
 import viewBoxSaga from './sagas/viewBox'
 
+// Reducers must be placed in a certain order
+// See createReducer
 const reducers = {
   aiComputation, 
   buildingMenu, 
@@ -66,7 +68,10 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
   : compose
 
-const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, logger))
+const middleware = process.env.NODE_ENV === 'production' ? applyMiddleware(sagaMiddleware) : applyMiddleware(sagaMiddleware, logger)
+const enhancer = composeEnhancers(middleware)
+
+// We load the store's initial state from localStorage
 const persistedState = loadState()
 // const persistedState = {}
 
@@ -75,6 +80,8 @@ const store = createStore(reducer, persistedState, enhancer)
 sagaMiddleware.run(rootSaga)
 
 // Save persisted state
+const throttle = createThrottle()
+
 store.subscribe(throttle(() => saveState(store.getState()), 1000))
 
 // For debug purposes

@@ -1,3 +1,11 @@
+/*
+  {
+    id
+    team
+    type HUMAN/COMPUTER
+    alive
+  }
+*/
 function currentFaction(state = {}, action, globalState, ongoingState) {
   switch (action.type) {
     case 'SET_CURRENT_FACTION':

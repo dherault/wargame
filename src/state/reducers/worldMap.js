@@ -1,3 +1,6 @@
+/*
+  A grid (array of arrays) of tiles
+*/
 function worldMap(state = null, action) {
   switch (action.type) {
     case 'SET_WORLD_MAP':

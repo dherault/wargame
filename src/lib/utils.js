@@ -29,3 +29,26 @@ export function findById(array, id) {
 export function createId() {
   return Math.random().toString().slice(2)
 }
+
+export function hash(position) {
+  return `${position.x}_${position.y}`
+}
+
+export function unhash(positionHash)  {
+  const [x, y] = positionHash.split('_')
+
+  return {
+    x: parseInt(x),
+    y: parseInt(y),
+  }
+}
+
+export function createThrottle() {
+  let timeoutId
+  
+  return (fn, delay) => {
+    clearTimeout(timeoutId)
+
+    setTimeout(fn, delay)
+  }
+}

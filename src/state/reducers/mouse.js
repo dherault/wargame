@@ -1,7 +1,9 @@
 /*
-  x
-  y
-  rightButtonDown
+  {
+    x
+    y
+    rightButtonDown
+  }
 */
 function mouse(state = { x: 0, y: 0 }, action) {
 

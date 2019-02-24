@@ -18,14 +18,8 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root'),
-  () => {
-    setTimeout(() => {
-      store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
-    }, 200)
-  }
+  document.getElementById('root')
 )
-
-
+  
 // import registerServiceWorker from '.serviceWorker'
 // registerServiceWorker()

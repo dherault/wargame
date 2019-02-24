@@ -103,6 +103,10 @@ describe('Heap', () => {
     assert.isTrue(heap.has(3))
     assert.isTrue(heap.has(4))
     assert.isTrue(heap.has(5))
+
+    heap.extractMin()
+
+    assert.isFalse(heap.has(1))
   })
 
 })

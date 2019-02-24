@@ -1,5 +1,10 @@
 import gameConfiguration from '../../lib/gameConfiguration'
 
+/*
+  {
+    [factionId]: money
+  }
+*/
 function moneyByFaction(state = {}, action, globalState) {
   switch (action.type) {
 

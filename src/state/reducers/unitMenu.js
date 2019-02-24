@@ -1,4 +1,10 @@
-function unitMenu(state = { opened: false }, action) {
+/*
+  {
+    opened
+    awaitFireSelection
+  }
+*/
+function unitMenu(state = { opened: false, awaitFireSelection: false }, action) {
   switch (action.type) {
     case 'OPEN_UNIT_MENU':
       return {

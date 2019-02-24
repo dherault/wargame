@@ -12,7 +12,9 @@ function units(state = [], action, globalState, ongoingState) {
     case 'CREATE_UNIT': {
       const { type, position, factionId, team } = action.payload
 
-      if (units.some(u => samePosition(u.position, position))) throw new DataError('Unit - CREATE_UNIT - a unit is already on the position', { position })
+      // If a unit is on the same position, throw
+      if (state.some(u => samePosition(u.position, position))) throw new DataError('Unit - CREATE_UNIT - a unit is already on the position', { position })
+      // We do not check if the unit is on a forbidden position since it can only be created in a building
 
       const unit = { type, position, factionId, team, life: 100, played: true, id: createId() }
 

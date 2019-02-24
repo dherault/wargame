@@ -1,3 +1,4 @@
+// Is the building menu opened ? boolean
 function buildingMenu(state = { opened: false }, action) {
   switch (action.type) {
     case 'OPEN_BUILDING_MENU':

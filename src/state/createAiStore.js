@@ -18,6 +18,7 @@ const reducers = {
   worldMap,
 }
 
+// A lightweight store of AI computations
 const createAiStore = initialState => createStore(createReducer(reducers), initialState)
 
 export default createAiStore

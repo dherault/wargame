@@ -1,13 +1,19 @@
 /*
-  id
-  team
-  type // HUMAN/COMPUTER
+  {
+    id
+    team
+    type HUMAN/COMPUTER
+    alive
+  }
+  An array of playing factions
 */
 function factions(state = [], action, globalState) {
   switch (action.type) {
     case 'SET_FACTIONS':
       return action.payload
 
+    // At each player's turn end,
+    // Compute weither the factions are still alive or not
     case 'END_PLAYER_TURN': {
       const { units, buildings } = globalState
 
