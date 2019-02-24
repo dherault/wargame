@@ -13,7 +13,7 @@ class TileInfo extends Component {
     
     if (!worldMap) return null
 
-    const tile = worldMap[mouse.y][mouse.x]
+    const tile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
 
     if (!tile) return null
 
