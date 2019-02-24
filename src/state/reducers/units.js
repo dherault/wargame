@@ -4,7 +4,7 @@ import DataError from '../../lib/common/DataError'
 /*
   An array of units
 */
-function units(state = [], action) {
+function units(state = [], action, globalState, ongoingState) {
   switch (action.type) {
     case 'SET_UNITS':
       return action.payload
@@ -73,6 +73,16 @@ function units(state = [], action) {
       // NOTE: you cannot splice both indexes (would lead to index shifting) since both units cannot die in a confrontation
 
       return units
+    }
+
+    case 'CAPTURE': {
+      const { buildings } = ongoingState
+      
+      const remainingFactionIds = buildings
+        .filter(building => building.type === 'HEADQUARTERS')
+        .map(building => building.factionId)
+
+      return state.filter(unit => remainingFactionIds.includes(unit.factionId))
     }
 
     case 'END_PLAYER_TURN':   

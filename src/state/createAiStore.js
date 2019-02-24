@@ -11,10 +11,10 @@ import worldMap from './reducers/worldMap'
 
 const reducers = {
   buildings,
-  currentFaction,
   factions,
+  currentFaction, // must be after factions
   moneyByFaction,
-  units,
+  units, // must be after buildings
   worldMap,
 }
 

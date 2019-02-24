@@ -20,21 +20,24 @@ const unhash = positionHash => {
 }
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
-const nTargets = 2 
-const maxBranchingFactor = 10
-const maxStateTreeDepth = 3
+const nTargets = 3 
+const maxBranchingFactor = 15
 
 function computeAiActions() {
   const rootState = globalStore.getState()
   const rootStore = createAiStore(rootState)
-
-  const consideredFaction = rootState.currentFaction
   
+  const consideredFaction = rootState.currentFaction
+  const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length - 1
+  
+  console.log('consideredFaction', consideredFaction.id)
+  console.log('units', rootState.units)
+
   const stateTree = new Tree()
 
   rootStore.stateTreeIndex = stateTree.addNode(rootStore)
 
-  extendStateTree(stateTree, rootStore, consideredFaction)
+  extendStateTree(stateTree, rootStore, consideredFaction, maxStateTreeDepth)
 
   // Post-order search on stateTree
   // https://stackoverflow.com/a/20062584
@@ -55,52 +58,52 @@ function computeAiActions() {
 
   postOrder(rootStore.stateTreeIndex)
 
-  const rootChildren = stateTree.getChildrenData(rootStore.stateTreeIndex).sort((a, b) => a.score > b.score ? -1 : 1)
+  const selectedChildStore = stateTree.getChildrenData(rootStore.stateTreeIndex).sort((a, b) => a.score > b.score ? -1 : 1)[0]
 
-  return rootChildren[0].actions
+  console.log('stateTree', stateTree)
+
+  return selectedChildStore ? selectedChildStore.actions : []
 }
 
-function extendStateTree(stateTree, parentStore, consideredFaction, depth = 0) {
-  if (depth > maxStateTreeDepth) return
+function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0) {
+  if (depth > maxDepth) return
+
+  console.log('depth', depth, parentStore.getState().currentFaction.id)
 
   const parentWorldState = parentStore.getState()
   
   const possibleActions = expandPossibleActions(parentStore)
-  
-  // console.log('possibleActions', possibleActions)
-  
   const actionsCombinaisons = combineArrayItems(possibleActions)
   
-  // console.log('possibleActionsCombinaisons', possibleActionsCombinaisons)
-  
-  console.log('consideredFaction', consideredFaction.id, possibleActions.length, actionsCombinaisons.length)
-  // const actionsCombinaisons = excludeImpossibleActionsCombinaisons(parentStore, possibleActionsCombinaisons)
-  
-  // console.log('actionsCombinaisons', actionsCombinaisons.length)
+  // console.log('possibleActions', possibleActions)
+  // console.log('actionsCombinaisons', actionsCombinaisons)
 
   const stores = []
+  let caducStores = 0
 
   actionsCombinaisons.forEach((actions, i) => {
 
     const store = createAiStore(parentWorldState)
-
     
     try {
-      actions.forEach(action => store.dispatch(action))
+      actions.forEach(store.dispatch)
     }
-    // The store is impossible (some units are on the same position)
+    // The store is impossible (some units are on the same position, the defender is dead, ...)
     catch (error) {
+      caducStores++
       return
     }
 
     store.dispatch({ type: 'END_PLAYER_TURN' })
     store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
     
-    store.actions = [...actions, { type: 'END_PLAYER_TURN' }, { type: 'BEGIN_PLAYER_TURN' }]
+    store.actions = actions
     store.score = computeWorldStateScore(store)[consideredFaction.id]
 
     stores.push(store)
   })
+
+  console.log(possibleActions.length, actionsCombinaisons.length, stores.length, caducStores)
 
   stores
     .sort((a, b) => a.score > b.score ? -1 : 1)
@@ -109,7 +112,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, depth = 0) {
 
       stateTree.addNode(store, parentStore.stateTreeIndex)
 
-      extendStateTree(stateTree, store, consideredFaction, depth + 1)
+      extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1)
     })
 }
 
@@ -137,8 +140,6 @@ function combineArrayItems(array) {
 function expandPossibleActions(store) {
   const { units, currentFaction } = store.getState()
 
-  console.log('____', currentFaction.id)
-
   const possibleUnitTargets = []
 
   // For each unit, determine a unit or building target
@@ -158,7 +159,7 @@ function expandPossibleActions(store) {
     possibleUnitTargets.push([unit, chosenTargets])
   })
 
-  // console.log('possibleUnitTargets', possibleUnitTargets)
+  console.log('possibleUnitTargets', possibleUnitTargets)
   // console.log('transmorming targets into actions') 
 
   const possibleUnitActions = []
@@ -175,7 +176,7 @@ function expandPossibleActions(store) {
     // dedupe actions
     serializedActions.forEach(serializedAction => actions.push(JSON.parse(serializedAction)))
 
-    possibleUnitActions.push(actions)
+    if (actions.length) possibleUnitActions.push(actions)
 
     // console.log('possible actions per unit', unit, actions)
   })
@@ -208,7 +209,6 @@ function computePossibleTarget(store, unit) {
 
     const rangePositions = computeRangePositions(store, unit, position)
 
-    /* eslint-disable no-loop-func */
     units.forEach(u => {
       const potentialDamages = unitConfiguration.damages[u.type]
 
@@ -260,6 +260,7 @@ function transformTargetIntoActions(store, unit, target) {
   const extremePosition = pathToTarget.reverse().find(position => position === unit.position || possibleMovementPositions.some(p => samePosition(p, position)))
 
   const actions = []
+  let unitIdDead = false
 
   if (extremePosition && !samePosition(unit.position, extremePosition)) {
     actions.push({
@@ -273,14 +274,18 @@ function transformTargetIntoActions(store, unit, target) {
 
   if (extremePosition && samePosition(position, extremePosition)) {
     if (type === 'FIRE') {
+      const damages = computeFireDamage(store, unit.id, targetId, position)
+
       actions.push({
         type,
         payload: {
           attackerId: unit.id,
           defenderId: targetId,
-          damages: computeFireDamage(store, unit.id, targetId, position),
+          damages: damages,
         },
       })
+
+      unitIdDead = damages[1] >= unit.life
     }
   
     if (type === 'CAPTURE') {
@@ -294,12 +299,14 @@ function transformTargetIntoActions(store, unit, target) {
     }
   }
 
-  actions.push({
-    type: 'PLAY_UNIT',
-    payload: {
-      unitId: unit.id,
-    },
-  })
+  if (!unitIdDead) {
+    actions.push({
+      type: 'PLAY_UNIT',
+      payload: {
+        unitId: unit.id,
+      },
+    })
+  }
 
   return actions
 }

@@ -1,11 +1,10 @@
-function currentFaction(state = {}, action, globalState) {
+function currentFaction(state = {}, action, globalState, ongoingState) {
   switch (action.type) {
     case 'SET_CURRENT_FACTION':
       return action.payload
     
     case 'END_PLAYER_TURN':
-      const { factions, units } = globalState
-
+      const { factions } = ongoingState
       let factionIndex = factions.findIndex(faction => faction.id === state.id)
 
       while (true) {
@@ -15,10 +14,7 @@ function currentFaction(state = {}, action, globalState) {
           factionIndex = 0
         }
 
-        // eslint-disable-next-line no-loop-func
-        if (units.some(unit => unit.factionId === factions[factionIndex].id)) {
-          break
-        }
+        if (factions[factionIndex].alive) break
       }
 
       return factions[factionIndex]

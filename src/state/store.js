@@ -28,15 +28,15 @@ const reducers = {
   aiComputation, 
   buildingMenu, 
   buildings,
-  currentFaction,
   factions,
+  currentFaction, // must be after factions
   moneyByFaction,
   mouse,
   selectedPosition,
   selectedUnitId,
   turn,
   unitMenu,
-  units,
+  units, // must be after buildings
   viewBox,
   worldMap,
 }
@@ -67,8 +67,8 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
   : compose
 
 const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware, logger))
-const persistedState = {}
-// const persistedState = loadState()
+const persistedState = loadState()
+// const persistedState = {}
 
 const store = createStore(reducer, persistedState, enhancer)
 

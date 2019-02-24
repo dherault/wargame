@@ -17,7 +17,7 @@ function moneyByFaction(state = {}, action, globalState) {
 
     case 'BEGIN_PLAYER_TURN': {
       const { currentFaction, buildings } = globalState
-      const nCities = buildings.filter(building => building.type === 'CITY' && building.factionId === currentFaction.id).length
+      const nCities = buildings.filter(building => (building.type === 'CITY' || building.type === 'HEADQUARTERS') && building.factionId === currentFaction.id).length
 
       return {
         ...state,

@@ -2,6 +2,7 @@ import store from '../state/store'
 import gameConfiguration from './gameConfiguration'
 import computeMovementPositions from './units/computeMovementPositions'
 import computeRangePositions from './units/computeRangePositions'
+import PolarPoint from './common/PolarPoint'
 import { samePosition, findById } from './utils'
 
 let gradientAnimationStep = 0
@@ -242,9 +243,10 @@ function drawBuilding(_, tileSize, building) {
   const x = building.position.x - viewBox.x
   const y = building.position.y - viewBox.y
   const factionConfiguration = gameConfiguration.factionsConfiguration[building.factionId]
+  const secondaryColor = '#555555'
 
-  _.fillStyle = '#555555'
-  _.strokeStyle = '#555555'
+  _.fillStyle = secondaryColor
+  _.strokeStyle = secondaryColor
   _.lineWidth = 1
   _.beginPath()
   _.rect(x * tileSize, y * tileSize, tileSize, tileSize)
@@ -257,8 +259,13 @@ function drawBuilding(_, tileSize, building) {
 
   switch (building.type) {
 
+    case 'HEADQUARTERS':
+      drawStar(_, 5, (x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.3 * tileSize, secondaryColor)
+
+      break
+
     case 'BASE':
-      _.fillStyle = '#555555'
+      _.fillStyle = secondaryColor
       _.beginPath()
       _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.2 * tileSize, 0, 2 * Math.PI)
       _.closePath()
@@ -269,6 +276,24 @@ function drawBuilding(_, tileSize, building) {
     default:
       break
   }
+}
+
+function drawStar(_, nPoints, cx, cy, radius, color = 'gold') {
+  _.fillStyle = color
+  _.beginPath()
+
+  for (let i = 0; i < nPoints; i++) {
+    const exteriorPoint = new PolarPoint(2 * i * Math.PI / nPoints - Math.PI / 2, radius).toCartesianPoint()
+    const interiorPoint = new PolarPoint(2 * (i + 0.5) * Math.PI / nPoints - Math.PI / 2 , radius / 2).toCartesianPoint()
+
+    if (i === 0) _.moveTo(cx + exteriorPoint.x, cy + exteriorPoint.y)
+    else _.lineTo(cx + exteriorPoint.x, cy + exteriorPoint.y)
+
+    _.lineTo(cx + interiorPoint.x, cy + interiorPoint.y)
+  }
+
+  _.closePath()
+  _.fill()
 }
 
 export default draw

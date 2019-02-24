@@ -1,11 +1,13 @@
 function createReducer(reducers) {
+  const reducersKeys = Object.keys(reducers)
+
   return (state = {}, action) => {
     const nextState = {}
   
     // Adding two extra arguments to reducers:
     // - state previous to action
     // - ongoing modified state
-    Object.keys(reducers).forEach(key => {
+    reducersKeys.forEach(key => {
       nextState[key] = reducers[key](state[key], action, state, nextState)
     })
   

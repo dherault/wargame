@@ -42,6 +42,9 @@ class BuildingMenu extends Component {
     const building = buildings.find(building => samePosition(building.position, selectedPosition))
 
     const movementTypes = buildingTypeToMovementTypes[building.type]
+
+    if (!movementTypes) return null
+    
     const availableUnits = Object.entries(gameConfiguration.unitsConfiguration)
       .filter(([type, unitConfiguration]) => movementTypes.includes(unitConfiguration.movementType))
       .map(([type, unitConfiguration]) => ({

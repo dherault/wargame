@@ -23,13 +23,16 @@ function createNewGame() {
   })
 
   const buildings = [
-    { type: 'CITY', factionId: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: 'RED',  team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: 'RED',  team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: null,   team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'HEADQUARTERS', factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'HEADQUARTERS', factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'HEADQUARTERS', factionId: 'YELLOW', team: 3, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY',         factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY',         factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'CITY',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE',         factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE',         factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'BASE',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
   ]
 
   buildings.forEach(building => {
@@ -54,9 +57,9 @@ function createNewGame() {
   ]
 
   const factions = [
-    { id: 'BLUE', team: 1, type: 'HUMAN' }, 
-    { id: 'RED', team: 2, type: 'COMPUTER' },
-    { id: 'YELLOW', team: 3, type: 'COMPUTER' },
+    { id: 'BLUE',   team: 1, alive: true, type: 'HUMAN' }, 
+    { id: 'RED',    team: 2, alive: true, type: 'HUMAN' },
+    { id: 'YELLOW', team: 3, alive: true, type: 'COMPUTER' },
   ]
 
   const currentFaction = factions[0]
@@ -107,9 +110,6 @@ function createNewGame() {
     payload: moneyByFaction,
   })
 
-  if (currentFaction.type === 'HUMAN') {
-    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
-  }
 }
 
 export default createNewGame

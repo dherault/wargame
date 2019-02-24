@@ -5,7 +5,7 @@ function computeWorldStateScore(store) {
 
   // Build a score per unit and sum up by factionId
   const scoreByFaction = {}
-  const minScoreByFaction = {}
+  const maximizableScoreByFaction = {}
 
   factions.forEach(faction => scoreByFaction[faction.id] = 0)
   units.forEach(unit => scoreByFaction[unit.factionId] += computeUnitScore(store, unit))
@@ -15,15 +15,22 @@ function computeWorldStateScore(store) {
     }
   })
 
+  // No HQ means score = 0
   factions.forEach(faction => {
-    minScoreByFaction[faction.id] = 0
+    if (!buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS')) {
+      scoreByFaction[faction.id] = 0
+    }
+  })
+
+  factions.forEach(faction => {
+    maximizableScoreByFaction[faction.id] = 0
     factions.forEach(f => {
-      if (f.team === faction.team) minScoreByFaction[faction.id] += scoreByFaction[f.id]
-      else minScoreByFaction[faction.id] -= scoreByFaction[f.id]
+      if (f.team === faction.team) maximizableScoreByFaction[faction.id] += scoreByFaction[f.id]
+      else maximizableScoreByFaction[faction.id] -= scoreByFaction[f.id]
     })
   })
 
-  return minScoreByFaction
+  return maximizableScoreByFaction
 }
 
 export function computeUnitScore(store, unit) {

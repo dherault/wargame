@@ -135,6 +135,9 @@ export default {
     BASE: {
       name: 'Base',
     },
+    HEADQUARTERS: {
+      name: 'HQ',
+    },
   },
   factionsConfiguration: {
     BLUE: {

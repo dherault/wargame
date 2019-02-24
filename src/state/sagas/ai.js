@@ -5,38 +5,43 @@ import computeAiActions from '../../lib/ai/computeAiActions'
 function* playAi() {
   const { currentFaction } = store.getState()
 
-  if (currentFaction.type === 'COMPUTER') {
+  if (currentFaction.type !== 'COMPUTER') return 
     
-    yield put({ type: 'BEGIN_AI_COMPUTATION' })
-    console.log('_____BEGIN_AI_____')
+  yield put({ type: 'BEGIN_AI_COMPUTATION' })
+  console.log('_____BEGIN_AI_____')
 
-    // let error
-    // let actions
+  // let error
+  // let actions
 
-    // try {
-    //   actions = computeAiActions()
-    // }
-    // catch(err) {
-    //   error = err
-    // }
-    // finally {
-    //   if (!error) window.reset()
-    //   else console.error(error)
-    // }
+  // try {
+  //   actions = computeAiActions()
+  // }
+  // catch(err) {
+  //   error = err
+  // }
+  // finally {
+  //   if (!error) window.reset()
+  //   else console.error(error)
+  // }
 
-    const actions = computeAiActions()
+  const actions = computeAiActions()
 
-    console.log('ai actions', actions)
+  console.log('ai actions', actions)
 
-    console.log('_____END_AI_____')
-    yield put({ type: 'END_AI_COMPUTATION' })
+  // if (actions.length === 0) throw new Error('no ai actions')
 
-    for (let i = 0; i < actions.length; i++) {
-      yield delay(500)
-      yield put(actions[i])
-    }
+  console.log('_____END_AI_____')
+  yield put({ type: 'END_AI_COMPUTATION' })
 
+  for (let i = 0; i < actions.length; i++) {
+    yield delay(25)
+    yield put(actions[i])
   } 
+
+  setTimeout(() => {
+    store.dispatch({ type: 'END_PLAYER_TURN' })
+    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+  }, 500)
 }
 
 function* aiSaga() {
