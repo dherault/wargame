@@ -17,7 +17,7 @@ function buildings(state = [], action, globalState) {
       const building = buildings[buildingIndex] = Object.assign({}, buildings[buildingIndex])
 
       // We start capturing the building
-      building.capture -= unit.life / 2
+      building.capture -= Math.floor(unit.life / 2)
 
       // If the building is captured
       if (building.capture <= 0) {

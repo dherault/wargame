@@ -17,5 +17,5 @@ export function boundViewBoxY(y, viewBoxWidth) {
 export function boundViewBoxWidth(width) {
   const { worldMap } = store.getState()
 
-  return Math.max(1, Math.min(worldMap[0].length, width))
+  return Math.max(6, Math.min(worldMap[0].length, width))
 }
