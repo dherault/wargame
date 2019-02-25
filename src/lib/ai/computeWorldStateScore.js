@@ -5,6 +5,7 @@ function computeWorldStateScore(store) {
 
   // Build a score per unit and sum up by factionId
   const scoreByFaction = {}
+  const hqCaptureByFaction = {}
   const maximizableScoreByFaction = {}
 
   factions.forEach(faction => scoreByFaction[faction.id] = 0)
@@ -13,12 +14,19 @@ function computeWorldStateScore(store) {
     if (building.factionId !== null) {
       scoreByFaction[building.factionId] += 1000
     }
+    if (building.type === 'HEADQUARTERS') {
+      hqCaptureByFaction[building.factionId] = building.capture
+    }
   })
 
-  // No HQ means score = 0
   factions.forEach(faction => {
-    if (!buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS')) {
+    // No HQ means score = 0
+    if (!hqCaptureByFaction[faction.id]) {
       scoreByFaction[faction.id] = 0
+    }
+    // The score is multiplied by the HQ's capture
+    else {
+      scoreByFaction[faction.id] *= hqCaptureByFaction[faction.id] / 100
     }
   })
 

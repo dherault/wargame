@@ -1,66 +1,7 @@
 import store from '../state/store'
-// import gameConfiguration from './gameConfiguration'
-import generateWorldMap from './world/generateWorldMap'
-import { createId, randomPop } from './utils'
 
-function createNewGame() {
+function createNewGame({ worldMap, buildings, units, factions }) {
   console.log('Creating new game')
-
-  const worldMap = generateWorldMap()
-  
-  const landTiles = []
-  const seaTiles = []
-
-  worldMap.forEach((row, y) => {
-    row.forEach((tile, x) => {
-      if (tile === 'ROAD' || tile === 'PLAIN') {
-        landTiles.push({ x, y })
-      }
-      else if (tile === 'SEA') {
-        seaTiles.push({ x, y })
-      }
-    })
-  })
-
-  const buildings = [
-    { type: 'HEADQUARTERS', factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'HEADQUARTERS', factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'HEADQUARTERS', factionId: 'YELLOW', team: 3, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY',         factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY',         factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE',         factionId: 'BLUE',   team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE',         factionId: 'RED',    team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE',         factionId: null,     team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-  ]
-
-  buildings.forEach(building => {
-    worldMap[building.position.y][building.position.x] = 'BUILDING'
-  })
-
-  const units = [
-    { type: 'INFANTERY', factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'TANK',      factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'ARTILLERY', factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'BLUE',   team: 1, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
-    { type: 'INFANTERY', factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'TANK',      factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'ARTILLERY', factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'RED',    team: 2, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
-    { type: 'INFANTERY', factionId: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(seaTiles),  id: createId() },
-  ]
-
-  const factions = [
-    { id: 'BLUE',   team: 1, alive: true, type: 'HUMAN' }, 
-    { id: 'RED',    team: 2, alive: true, type: 'COMPUTER' },
-    { id: 'YELLOW', team: 3, alive: true, type: 'COMPUTER' },
-  ]
 
   const currentFaction = factions[0]
 
@@ -71,18 +12,6 @@ function createNewGame() {
   store.dispatch({
     type: 'SET_WORLD_MAP',
     payload: worldMap,
-  })
-
-  store.dispatch({
-    type: 'UPDATE_VIEW_BOX',
-    payload: {
-      x: 0,
-      y: 0,
-      goalX: 0,
-      goalY: 0,
-      width: worldMap[0].length,
-      goalWidth: worldMap[0].length,
-    },
   })
 
   store.dispatch({
@@ -110,7 +39,21 @@ function createNewGame() {
     payload: moneyByFaction,
   })
 
-  store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+  store.dispatch({
+    type: 'UPDATE_VIEW_BOX',
+    payload: {
+      x: 0,
+      y: 0,
+      goalX: 0,
+      goalY: 0,
+      width: worldMap[0].length,
+      goalWidth: worldMap[0].length,
+    },
+  })
+
+  store.dispatch({ 
+    type: 'BEGIN_PLAYER_TURN',
+  })
 }
 
 export default createNewGame

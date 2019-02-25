@@ -7,12 +7,7 @@ import 'flexpad/dist/flexpad.min.css'
 import './index.css'
 
 import store from './state/store'
-import createNewGame from './lib/createNewGame'
 import App from './components/App'
-
-if (!store.getState().worldMap) {
-  createNewGame()
-}
 
 ReactDOM.render(
   <Provider store={store}>

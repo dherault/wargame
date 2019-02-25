@@ -1,68 +1,28 @@
 import React, { Component } from 'react'
-import Mousetrap from 'mousetrap'
-import registerCanvas from '../lib/registerCanvas'
+import { connect } from 'react-redux'
 
 import AppMenu from './AppMenu'
-import BuildingMenu from './BuildingMenu'
-import DevPanel from './DevPanel'
-import FireInfo from './FireInfo'
-import TileInfo from './TileInfo'
-import TurnInfo from './TurnInfo'
-import UnitMenu from './UnitMenu'
+import World from './World'
+import NewGameMenu from './NewGameMenu'
 
 import './App.css'
 
 class App extends Component {
 
-  state = {
-    devPanelOpened: process.env.NODE_ENV === 'development',
-  }
-
-  componentDidMount() {
-    console.log('Mounting App', window.innerWidth, window.innerHeight)
-
-    const canvas = document.getElementById('canvas')
-
-    window.addEventListener('resize', () => this.resizeCanvas(canvas))
-
-    this.resizeCanvas(canvas)
-    
-    this.unregisterCanvas = registerCanvas(canvas)
-
-    Mousetrap.bind('ctrl+q', e => {
-      e.preventDefault()
-      this.setState({ devPanelOpened: !this.state.devPanelOpened })
-    })
-  }
-
-  componentWillUnmount() {
-    this.unregisterCanvas()
-  }
-
-  resizeCanvas(canvas) {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-
   render() {
-    const { devPanelOpened } = this.state
+    const { worldMap } = this.props
 
     return (
       <div className="App relative">
-        <canvas
-          id="canvas"
-          className="App-canvas no-select"
-        />
+        {worldMap ? <World /> : <NewGameMenu />}
         <AppMenu />
-        <BuildingMenu />
-        <FireInfo />
-        <TileInfo />
-        <TurnInfo />
-        <UnitMenu />
-        {devPanelOpened && <DevPanel />}
       </div>
     )
   }
 }
 
-export default App
+const mapStateToProps = s => ({
+  worldMap: s.worldMap
+})
+
+export default connect(mapStateToProps)(App)

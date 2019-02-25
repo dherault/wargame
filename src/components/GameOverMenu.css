@@ -1,0 +1,12 @@
+.GameOverMenu {
+  left: 20%;
+  right: 20%;
+  top: 40%;
+  bottom: 40%;
+  background-color: white;
+  padding: 16px;
+}
+
+.GameOverMenu > h1 {
+  text-align: center;
+}

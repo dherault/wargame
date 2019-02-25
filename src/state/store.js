@@ -11,6 +11,7 @@ import buildingMenu from './reducers/buildingMenu'
 import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
+import gameOver from './reducers/gameOver'
 import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
 import selectedPosition from './reducers/selectedPosition'
@@ -39,6 +40,7 @@ const reducers = {
   turn,
   unitMenu,
   units, // must be after buildings
+  gameOver, // must be after buildings and units
   viewBox,
   worldMap,
 }

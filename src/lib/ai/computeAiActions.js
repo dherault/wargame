@@ -95,7 +95,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // eg: [ac, ad, ae, bc, bd, be]
   const actionsCombinaisons = combineArrayItems(possibleActions)
   
-  // console.log('possibleActions', possibleActions)
+  console.log('possibleActions', possibleActions)
   // console.log('actionsCombinaisons', actionsCombinaisons)
 
   // We create a store for each combinaison
@@ -179,7 +179,7 @@ function expandPossibleActions(store) {
     possibleUnitTargets.push([unit, computePossibleTarget(store, unit)])
   })
 
-  // console.log('possibleUnitTargets', possibleUnitTargets)
+  console.log('possibleUnitTargets', possibleUnitTargets)
 
   // Then for each target, we compute the associated actions
   // ie. we need to compute the shortest path to the target
@@ -294,43 +294,47 @@ function transformTargetIntoActions(store, unit, target) {
   
   const extremePosition = pathToTarget.reverse().find(position => position === unit.position || possibleMovementPositions.some(p => samePosition(p, position)))
 
+  // console.log(target, pathToTarget, extremePosition)
+
   const actions = []
   let unitIdDead = false
 
-  if (extremePosition && !samePosition(unit.position, extremePosition)) {
-    actions.push({
-      type: 'MOVE_UNIT',
-      payload: {
-        unitId: unit.id,
-        position: extremePosition,
-      },
-    })
-  }
-
-  if (extremePosition && samePosition(position, extremePosition)) {
-    if (type === 'FIRE') {
-      const damages = computeFireDamage(store, unit.id, targetId, position)
-
+  if (extremePosition) {
+    if (!samePosition(unit.position, extremePosition)) {
       actions.push({
-        type,
+        type: 'MOVE_UNIT',
         payload: {
-          attackerId: unit.id,
-          defenderId: targetId,
-          damages: damages,
-        },
-      })
-
-      unitIdDead = damages[1] >= unit.life
-    }
-  
-    if (type === 'CAPTURE') {
-      actions.push({
-        type,
-        payload: {
-          buildingId: buildings.find(building => samePosition(building.position, position)).id,
           unitId: unit.id,
+          position: extremePosition,
         },
       })
+    }
+
+    if (samePosition(extremePosition, position)) {
+      if (type === 'FIRE') {
+        const damages = computeFireDamage(store, unit.id, targetId, position)
+  
+        actions.push({
+          type,
+          payload: {
+            attackerId: unit.id,
+            defenderId: targetId,
+            damages: damages,
+          },
+        })
+  
+        unitIdDead = damages[1] >= unit.life
+      }
+    
+      if (type === 'CAPTURE') {
+        actions.push({
+          type,
+          payload: {
+            buildingId: buildings.find(building => samePosition(building.position, position)).id,
+            unitId: unit.id,
+          },
+        })
+      }
     }
   }
 
@@ -464,6 +468,8 @@ function aStarSearch(store, unit, startPosition, goalPosition) {
 
     currentPositionHash = hash(parent)
   }
+
+  path.unshift(startPosition)
 
   return path
 }

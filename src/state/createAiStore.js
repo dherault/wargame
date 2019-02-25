@@ -5,6 +5,7 @@ import createReducer from './createReducer'
 import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
+import gameOver from './reducers/gameOver'
 import moneyByFaction from './reducers/moneyByFaction'
 import units from './reducers/units'
 import worldMap from './reducers/worldMap'
@@ -15,6 +16,7 @@ const reducers = {
   currentFaction, // must be after factions
   moneyByFaction,
   units, // must be after buildings
+  gameOver, // must be after buildings and units
   worldMap,
 }
 
