@@ -28,7 +28,7 @@ class TurnInfo extends Component {
         <div style={{ marginRight: 10 }}>
           turn {turn} - {gameConfiguration.factionsConfiguration[currentFaction.id].name} - {moneyByFaction[currentFaction.id]}$
         </div>
-        <button onClick={this.handleEndTurnClick}>
+        <button type="button" onClick={this.handleEndTurnClick}>
           End Turn
         </button>
       </div>

@@ -1,3 +1,4 @@
+/* global describe it */
 import { assert } from 'chai'
 import Heap from '../src/lib/common/Heap'
 
@@ -8,6 +9,7 @@ describe('Heap', () => {
     let error
 
     try {
+      // eslint-disable-next-line no-new
       new Heap()
     }
     catch (err) {

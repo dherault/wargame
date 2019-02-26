@@ -18,7 +18,7 @@ function factions(state = [], action, globalState) {
       const { units, buildings } = globalState
 
       return state.map(faction => Object.assign({}, faction, {
-        alive: units.some(unit => unit.factionId === faction.id) && buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS')
+        alive: units.some(unit => unit.factionId === faction.id) && buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS'),
       }))
     }
 

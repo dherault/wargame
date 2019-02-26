@@ -9,7 +9,7 @@ function viewBox(state = {}, action) {
   switch (action.type) {
     case 'UPDATE_VIEW_BOX':
     case 'RESIZE_VIEW_BOX':
-    return {
+      return {
         ...state,
         ...action.payload,
       }

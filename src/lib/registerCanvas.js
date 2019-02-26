@@ -2,10 +2,10 @@ import Mousetrap from 'mousetrap'
 import store from '../state/store'
 import computeFireDamage from './units/computeFireDamage'
 import computeMovementPositions from './units/computeMovementPositions'
+import computeRangePositions from './units/computeRangePositions'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from './world/boundViewBox'
 import { samePosition, findById } from './utils'
 import draw from './draw'
-import computeRangePositions from './units/computeRangePositions';
 
 // A function called once for registering the canvas event listeners
 function registerCanvas(canvas) {
@@ -31,7 +31,7 @@ function registerCanvas(canvas) {
       payload: {
         x,
         y,
-      }
+      },
     })
   })
 
@@ -45,7 +45,7 @@ function registerCanvas(canvas) {
       payload: {
         x: mouse.x,
         y: mouse.y,
-      }
+      },
     })
   }
 
@@ -83,7 +83,7 @@ function registerCanvas(canvas) {
           if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
             
             store.dispatch({
-              type: 'CANCEL_FIRE_SELECTION'
+              type: 'CANCEL_FIRE_SELECTION',
             })
   
             // Must be after CANCEL_FIRE_SELECTION
@@ -96,7 +96,7 @@ function registerCanvas(canvas) {
               payload: {
                 attackerId: selectedUnitId,
                 defenderId: clickedUnit.id,
-                damages: computeFireDamage(store, selectedUnitId, clickedUnit.id)
+                damages: computeFireDamage(store, selectedUnitId, clickedUnit.id),
               },
             })
 
@@ -111,25 +111,23 @@ function registerCanvas(canvas) {
           }
   
           // If we did not click an ennemy in range
-          else {
-            store.dispatch({
-              type: 'CANCEL_FIRE_SELECTION'
-            })
+          store.dispatch({
+            type: 'CANCEL_FIRE_SELECTION',
+          })
 
-            store.dispatch({
-              type: 'MOVE_UNIT',
-              payload: {
-                unitId: selectedUnitId,
-                position: selectedUnit.previousPosition,
-              },
-            })
+          store.dispatch({
+            type: 'MOVE_UNIT',
+            payload: {
+              unitId: selectedUnitId,
+              position: selectedUnit.previousPosition,
+            },
+          })
 
-            store.dispatch({
-              type: 'DESELECT_UNIT_ID',
-            })
+          store.dispatch({
+            type: 'DESELECT_UNIT_ID',
+          })
 
-            return
-          }
+          return
         }
 
         // If we re-click on the unit we selected
@@ -204,7 +202,7 @@ function registerCanvas(canvas) {
         type: 'UPDATE_MOUSE_STATE',
         payload: {
           rightButtonDown: true,
-        }
+        },
       })
     }
   })
@@ -215,7 +213,7 @@ function registerCanvas(canvas) {
         type: 'UPDATE_MOUSE_STATE',
         payload: {
           rightButtonDown: false,
-        }
+        },
       })
     }
   })

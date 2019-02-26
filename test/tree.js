@@ -1,3 +1,4 @@
+/* global describe it */
 import { assert } from 'chai'
 import Tree from '../src/lib/common/Tree'
 
@@ -8,6 +9,7 @@ describe('Tree', () => {
     let error
 
     try {
+      // eslint-disable-next-line no-new
       new Tree()
     }
     catch (err) {

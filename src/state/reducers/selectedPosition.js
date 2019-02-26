@@ -1,7 +1,7 @@
 /*
   {
-    X
-    Y
+    x
+    y
   }
 */
 function selectedPosition(state = null, action) {

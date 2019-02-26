@@ -4,7 +4,7 @@ function simpleAiAttack() {
   return {
     factions: [
       { id: 'BLUE', team: 1, alive: true, type: 'HUMAN' }, 
-      { id: 'RED',  team: 2, alive: true, type: 'COMPUTER' },
+      { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
     ],
     worldMap: [
       ['BUILDING', 'PLAIN', 'PLAIN'],
@@ -20,7 +20,7 @@ function simpleAiAttack() {
     ],
     units: [
       { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: { x: 1, y: 5 }, id: createId() },
-      { type: 'ARTILLERY', factionId: 'RED',  team: 2, life: 100, played: false, position: { x: 1, y: 0 }, id: createId() },
+      { type: 'ARTILLERY', factionId: 'RED', team: 2, life: 100, played: false, position: { x: 1, y: 0 }, id: createId() },
     ],
     name: 'Simple AI sattack',
     description: 'Only AI plays',

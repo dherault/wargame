@@ -4,7 +4,7 @@ function simpleAiCapture() {
   return {
     factions: [
       { id: 'BLUE', team: 1, alive: true, type: 'HUMAN' }, 
-      { id: 'RED',  team: 2, alive: true, type: 'COMPUTER' },
+      { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
     ],
     worldMap: [
       ['BUILDING', 'PLAIN', 'BUILDING'],
@@ -18,7 +18,7 @@ function simpleAiCapture() {
     ],
     units: [
       { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: { x: 1, y: 2 }, id: createId() },
-      { type: 'INFANTERY', factionId: 'RED',  team: 2, life: 100, played: false, position: { x: 1, y: 0 }, id: createId() },
+      { type: 'INFANTERY', factionId: 'RED', team: 2, life: 100, played: false, position: { x: 1, y: 0 }, id: createId() },
     ],
     name: 'Simple AI capture',
     description: 'Only AI plays',

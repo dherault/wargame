@@ -1,10 +1,10 @@
-import gameConfiguration from '../gameConfiguration';
+import gameConfiguration from '../gameConfiguration'
 import globalStore from '../../state/store'
 import createAiStore from '../../state/createAiStore'
 import computeWorldStateScore from './computeWorldStateScore'
 import computeMovementPositions, { getSuccessorsFactory } from '../units/computeMovementPositions'
 import computeRangePositions from '../units/computeRangePositions'
-import computeFireDamage from '../units/computeFireDamage';
+import computeFireDamage from '../units/computeFireDamage'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
 import { samePosition, hash, unhash } from '../utils'
@@ -101,7 +101,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // We create a store for each combinaison
   const stores = []
 
-  actionsCombinaisons.forEach((actions, i) => {
+  actionsCombinaisons.forEach(actions => {
 
     const store = createAiStore(parentWorldState)
     
@@ -151,11 +151,11 @@ function combineArrayItems(array) {
   } 
 
   const result = []
-  let recursiveCombinaisons = combineArrayItems(array.slice(1))  // Recur with the rest of array
+  const recursiveCombinaisons = combineArrayItems(array.slice(1)) // Recur with the rest of array
 
   for (let i = 0; i < array[0].length; i++) {
     for (let j = 0; j < recursiveCombinaisons.length; j++) {
-      result.push([...array[0][i], ...recursiveCombinaisons[j]]);
+      result.push([...array[0][i], ...recursiveCombinaisons[j]])
     }
   }
 
@@ -242,9 +242,9 @@ function computePossibleTarget(store, unit) {
       const potentialDamages = unitConfiguration.damages[u.type]
 
       if (
-        u.team !== unit.team &&                                                // If a unit from opposite team
+        u.team !== unit.team && // If a unit from opposite team
         rangePositions.some(position => samePosition(position, u.position)) && // is on range at position
-        potentialDamages                                                       // and can take damages
+        potentialDamages // and can take damages
       ) {
         // The target's score here is the ennemy's distance divided by the potential damages
         // We want the smalled cost possible
@@ -319,7 +319,7 @@ function transformTargetIntoActions(store, unit, target) {
           payload: {
             attackerId: unit.id,
             defenderId: targetId,
-            damages: damages,
+            damages,
           },
         })
   

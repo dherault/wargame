@@ -64,7 +64,7 @@ export default {
         FOOT: Infinity,
         WHEEL: Infinity,
         FLY: 1,
-        SAIL:  1,
+        SAIL: 1,
       },
     },
     BUILDING: {
@@ -77,7 +77,7 @@ export default {
         FLY: 1,
         SAIL: 1,
       },
-    }
+    },
   },
   unitsConfiguration: {
     INFANTERY: {

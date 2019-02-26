@@ -41,13 +41,13 @@ function draw(_) {
         continue
       }
 
-      const color = gameConfiguration.terrainConfiguration[tile].color
+      const { color } = gameConfiguration.terrainConfiguration[tile]
 
       _.fillStyle = color
       _.strokeStyle = color
 
       _.beginPath()
-      _.rect((i - viewBox.x % 1) * tileSize, (j - viewBox.y % 1) * tileSize, tileSize, tileSize)
+      _.rect((i - (viewBox.x % 1)) * tileSize, (j - (viewBox.y % 1)) * tileSize, tileSize, tileSize)
       _.closePath()
       _.fill()
       _.stroke()
@@ -87,7 +87,7 @@ function draw(_) {
         gradientAnimationDirection = !gradientAnimationDirection
       }
 
-      const gradient = _.createLinearGradient(width, 0, 0, width);
+      const gradient = _.createLinearGradient(width, 0, 0, width)
           
       gradient.addColorStop(0, rangePositions ? 'rgba(255, 50, 50, 0.85)' : 'rgba(250, 250, 250, 0.85)')
       gradient.addColorStop(gradientAnimationDirection ? 1 - gradientAnimationStep / 100 : gradientAnimationStep / 100, rangePositions ? 'rgba(140, 30, 30, 0.85)' : 'rgba(180, 180, 180, 0.85)')
@@ -141,7 +141,7 @@ function drawUnit(_, tileSize, unit) {
 
     case 'INFANTERY':
       _.beginPath()
-      _.arc((x + 0.5) * tileSize, (y+ 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+      _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
       _.closePath()
       _.fill()
       _.stroke()
@@ -150,7 +150,7 @@ function drawUnit(_, tileSize, unit) {
         _.fillStyle = 'black'
         _.globalAlpha = 0.5
         _.beginPath()
-        _.arc((x + 0.5) * tileSize, (y+ 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+        _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
         _.closePath()
         _.fill()
         _.globalAlpha = 1
@@ -192,7 +192,7 @@ function drawUnit(_, tileSize, unit) {
         _.fill()
         _.globalAlpha = 1
       }
-    break
+      break
 
     case 'SUBMARINE':
       _.beginPath()
@@ -284,7 +284,7 @@ function drawStar(_, nPoints, cx, cy, radius, color = 'gold') {
 
   for (let i = 0; i < nPoints; i++) {
     const exteriorPoint = new PolarPoint(2 * i * Math.PI / nPoints - Math.PI / 2, radius).toCartesianPoint()
-    const interiorPoint = new PolarPoint(2 * (i + 0.5) * Math.PI / nPoints - Math.PI / 2 , radius / 2).toCartesianPoint()
+    const interiorPoint = new PolarPoint(2 * (i + 0.5) * Math.PI / nPoints - Math.PI / 2, radius / 2).toCartesianPoint()
 
     if (i === 0) _.moveTo(cx + exteriorPoint.x, cy + exteriorPoint.y)
     else _.lineTo(cx + exteriorPoint.x, cy + exteriorPoint.y)

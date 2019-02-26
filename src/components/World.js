@@ -32,7 +32,7 @@ class World extends Component {
 
     Mousetrap.bind('ctrl+q', e => {
       e.preventDefault()
-      this.setState({ devPanelOpened: !this.state.devPanelOpened })
+      this.setState(state => ({ devPanelOpened: !state.devPanelOpened }))
     })
   }
 

@@ -61,12 +61,12 @@ class Heap {
     if (2 * i + 1 > this.size) {
       return 2 * i
     }
-    else if (this.list[2 * i][0] < this.list[2 * i + 1][0]) {
+
+    if (this.list[2 * i][0] < this.list[2 * i + 1][0]) {
       return 2 * i
     }
-    else {
-      return 2 * i + 1
-    }
+
+    return 2 * i + 1
   }
 
   has(data) {
@@ -99,8 +99,6 @@ class Heap {
 
     return retval
   }
-
-
 
 }
 

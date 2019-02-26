@@ -34,7 +34,7 @@ export function hash(position) {
   return `${position.x}_${position.y}`
 }
 
-export function unhash(positionHash)  {
+export function unhash(positionHash) {
   const [x, y] = positionHash.split('_')
 
   return {
