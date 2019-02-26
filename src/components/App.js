@@ -22,7 +22,7 @@ class App extends Component {
 }
 
 const mapStateToProps = s => ({
-  worldMap: s.worldMap
+  worldMap: s.worldMap,
 })
 
 export default connect(mapStateToProps)(App)

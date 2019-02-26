@@ -1,6 +1,6 @@
-import { createId } from "../../utils"
+import { createId } from '../utils'
 
-function simpleCapture() {
+function simpleAiCapture() {
   return {
     factions: [
       { id: 'BLUE', team: 1, alive: true, type: 'HUMAN' }, 
@@ -20,9 +20,9 @@ function simpleCapture() {
       { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: { x: 1, y: 2 }, id: createId() },
       { type: 'INFANTERY', factionId: 'RED',  team: 2, life: 100, played: false, position: { x: 1, y: 0 }, id: createId() },
     ],
-    name: 'Simple capture',
+    name: 'Simple AI capture',
     description: 'Only AI plays',
   }
 }
 
-export default simpleCapture
+export default simpleAiCapture

@@ -46,7 +46,7 @@ class BuildingMenu extends Component {
     if (!movementTypes) return null
     
     const availableUnits = Object.entries(gameConfiguration.unitsConfiguration)
-      .filter(([type, unitConfiguration]) => movementTypes.includes(unitConfiguration.movementType))
+      .filter(entry => movementTypes.includes(entry[1].movementType))
       .map(([type, unitConfiguration]) => ({
         type,
         cost: unitConfiguration.cost,

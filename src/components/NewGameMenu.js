@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import maps from '../lib/world/maps'
+import maps from '../lib/maps'
 
 import './NewGameMenu.css'
 import createNewGame from '../lib/createNewGame'

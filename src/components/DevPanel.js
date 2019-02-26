@@ -24,9 +24,9 @@ class DevPanel extends Component {
         {hoveredUnit && (<br />)}
         {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)}`)}
         <br />
-          {scoreEntries.map(([factionId, score]) => (
-            <div key={factionId}>{factionId}: {score}</div>
-          ))}
+        {scoreEntries.map(([factionId, score]) => (
+          <div key={factionId}>{factionId}: {score}</div>
+        ))}
       </div>
     )
   }
