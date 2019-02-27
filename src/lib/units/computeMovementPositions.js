@@ -1,8 +1,6 @@
 import Heap from '../common/Heap'
 import gameConfiguration from '../gameConfiguration'
-import { samePosition } from '../utils'
-
-const hash = position => `${position.x}_${position.y}`
+import { samePosition, hash, unhash } from '../utils'
 
 // Uniform cost search to expand movement positions
 function computeMovementPositions(store, unit) {
@@ -11,15 +9,16 @@ function computeMovementPositions(store, unit) {
   
   const getSuccessors = getSuccessorsFactory(store, unit)
 
-  const positions = []
+  const positions = [unit.position]
   const openSet = new Heap()
   const closedSet = new Set()
 
-  openSet.insert(0, unit.position)
+  openSet.insert(0, hash(unit.position))
 
   while (openSet.size) {
     // Extract first candidate from heap
-    const [cost, position] = openSet.extractMin()
+    const [cost, positionHash] = openSet.extractMin()
+    const position = unhash(positionHash)
 
     // If cost is larger than possible movement, ignore candidate
     if (cost > movement) continue
@@ -33,11 +32,13 @@ function computeMovementPositions(store, unit) {
 
     // For each successor (adjacent position with updated cost)
     getSuccessors(position, cost).forEach(({ position, cost }) => {
-      if (closedSet.has(hash(position))) return
+      const positionHash = hash(position)
+
+      if (closedSet.has(positionHash)) return
 
       // If the position is not already in the heap
-      if (!openSet.list.some(item => item[1] && samePosition(item[1], position))) {
-        openSet.insert(cost, position)
+      if (!openSet.has(positionHash)) {
+        openSet.insert(cost, positionHash)
       }
     })
 

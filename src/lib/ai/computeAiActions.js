@@ -96,6 +96,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   const actionsCombinaisons = combineArrayItems(possibleActions)
   
   console.log('possibleActions', possibleActions)
+  
   // console.log('actionsCombinaisons', actionsCombinaisons)
 
   // We create a store for each combinaison
@@ -133,6 +134,8 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
       // We add the store to the state tree
       stateTree.addNode(store, parentStore.stateTreeIndex)
+
+      if (store.getState().gameOver) return
 
       // We go deeper in extending our children
       extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1)
@@ -252,15 +255,23 @@ function computePossibleTarget(store, unit) {
       }
     })
 
+    const building = buildings.find(building => samePosition(position, building.position))
+
     // Infantery type can also capture building, we add that action to the list if a building is on the position
-    if (unit.type === 'INFANTERY') {
-      const buidling = buildings.find(building => samePosition(position, building.position))
+    if ((unit.type === 'INFANTERY' || unit.type === 'BAZOOKA') && building && building.team !== unit.team) {
+      const costDivider = building.team ? 110 : 100 // priorities opposite team capture
 
-      if (buidling && buidling.team !== unit.team) {
-        const costDivider = buidling.team ? 110 : 100 // priorities opposite team capture
+      targets.push(['CAPTURE', building.id, position, cost / costDivider])
+    }
 
-        targets.push(['CAPTURE', buidling.id, position, cost / costDivider])
-      }
+    // Units can be repaired in a building
+    if (
+      building
+      && unit.life < 100 
+      && building.factionId === unit.factionId 
+      && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(unitConfiguration.movementType)
+    ) {
+      targets.push(['REPAIR', building.id, position, cost / 100])
     }
 
     // If we reach the goal number of targets we stop the computation

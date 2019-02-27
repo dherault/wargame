@@ -34,9 +34,9 @@ class BuildingMenu extends Component {
   }
 
   render() {
-    const { buildings, selectedPosition, buildingMenu, viewBox } = this.props
+    const { buildings, selectedPosition, booleans, viewBox } = this.props
 
-    if (!buildingMenu.opened) return null
+    if (!booleans.isBuildingMenuOpened || !selectedPosition) return null
 
     const tileSize = window.innerWidth / viewBox.width // pixel per tile
     const building = buildings.find(building => samePosition(building.position, selectedPosition))
@@ -76,7 +76,7 @@ class BuildingMenu extends Component {
 }
 
 const mapStateToProps = s => ({
-  buildingMenu: s.buildingMenu,
+  booleans: s.booleans,
   buildings: s.buildings,
   currentFaction: s.currentFaction,
   selectedPosition: s.selectedPosition,

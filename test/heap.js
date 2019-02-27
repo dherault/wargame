@@ -38,17 +38,6 @@ describe('Heap', () => {
     assert.equal(error, undefined)
   })
 
-  it('should have a size', () => {
-    const heap = new Heap()
-    heap.insert(5, 5)
-    heap.insert(2, 2)
-    heap.insert(1, 1)
-    heap.insert(4, 4)
-    heap.insert(3, 3)
-
-    assert.equal(heap.size, 5)
-  })
-
   it('should extract minimum value', () => {
     const heap = new Heap()
     heap.insert(5, 5)
@@ -62,6 +51,21 @@ describe('Heap', () => {
     assert.deepEqual(heap.extractMin(), [3, 3])
     assert.deepEqual(heap.extractMin(), [4, 4])
     assert.deepEqual(heap.extractMin(), [5, 5])
+  })
+
+  it('should have a size', () => {
+    const heap = new Heap()
+    heap.insert(5, 5)
+    heap.insert(2, 2)
+    heap.insert(1, 1)
+    heap.insert(4, 4)
+    heap.insert(3, 3)
+
+    assert.equal(heap.size, 5)
+
+    heap.extractMin()
+
+    assert.equal(heap.size, 4)
   })
 
   it('should delete items by data', () => {

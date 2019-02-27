@@ -11,7 +11,7 @@ import computeWorldStateScore, { computeUnitScore } from '../lib/ai/computeWorld
 class DevPanel extends Component {
 
   render() {
-    const { aiComputation, mouse, units } = this.props
+    const { mouse, units } = this.props
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
     const scorePerFaction = computeWorldStateScore(store)
     const scoreEntries = Object.entries(scorePerFaction)
@@ -19,8 +19,6 @@ class DevPanel extends Component {
     return ( 
       <div className="DevPanel absolute">
         {mouse.x}, {mouse.y}
-        {aiComputation && (<br />)}
-        {aiComputation && '...'}
         {hoveredUnit && (<br />)}
         {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)}`)}
         <br />
@@ -33,9 +31,8 @@ class DevPanel extends Component {
 }
 
 const mapStateToProps = s => ({
-  aiComputation: s.aiComputation,
   mouse: s.mouse,
-  units: s.units
+  units: s.units,
 })
 
 export default connect(mapStateToProps)(DevPanel)

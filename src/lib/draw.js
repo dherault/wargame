@@ -9,7 +9,7 @@ let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 function draw(_) {
-  const { viewBox, mouse, worldMap, buildings, units, currentFaction, selectedUnitId, selectedPosition, unitMenu } = store.getState()
+  const { booleans, viewBox, mouse, worldMap, buildings, units, currentFaction, selectedUnitId, selectedPosition } = store.getState()
   const { width, height } = _.canvas
 
   _.fillStyle = 'black'
@@ -63,17 +63,17 @@ function draw(_) {
     let movementPositions
     let rangePositions
 
-    if (selectedUnitId && !unitMenu.awaitFireSelection) {
+    if (selectedUnitId && !booleans.isFireSelection) {
       const selectedUnit = findById(units, selectedUnitId)
       movementPositions = computeMovementPositions(store, selectedUnit)
     }
 
-    if (unitMenu.awaitFireSelection) {
+    if (booleans.isFireSelection) {
       const selectedUnit = findById(units, selectedUnitId)
       rangePositions = computeRangePositions(store, selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position)))
     }
 
-    if (mouse.rightButtonDown) {
+    if (booleans.isRightButtonDown) {
       const rightClickedUnit = units.find(unit => samePosition(unit.position, mouse))
   
       if (rightClickedUnit) rangePositions = computeRangePositions(store, rightClickedUnit)

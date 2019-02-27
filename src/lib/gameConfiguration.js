@@ -67,7 +67,7 @@ export default {
         SAIL: 1,
       },
     },
-    BUILDING: {
+    BUILDING: { // TODO: separate building into buildings types
       name: 'Building',
       color: '#c1c1c1',
       defense: 3,
@@ -131,12 +131,23 @@ export default {
   buildingsConfiguration: {
     CITY: {
       name: 'City',
+      reparableMovementTypes: ['FOOT', 'WHEEL'],
     },
     BASE: {
       name: 'Base',
+      reparableMovementTypes: ['FOOT', 'WHEEL'],
     },
     HEADQUARTERS: {
       name: 'HQ',
+      reparableMovementTypes: ['FOOT', 'WHEEL'],
+    },
+    PORT: {
+      name: 'Port',
+      reparableMovementTypes: ['SAIL'],
+    },
+    AIRPORT: {
+      name: 'Airport',
+      reparableMovementTypes: ['FLY'],
     },
   },
   factionsConfiguration: {

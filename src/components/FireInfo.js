@@ -11,9 +11,9 @@ import computeFireDamage from '../lib/units/computeFireDamage'
 class FireInfo extends Component {
 
   render() {
-    const { mouse, selectedUnitId, currentFaction, units, unitMenu, viewBox } = this.props
+    const { booleans, mouse, selectedUnitId, currentFaction, units, viewBox } = this.props
 
-    if (!unitMenu.awaitFireSelection) return null
+    if (!booleans.isFireSelection) return null
 
     const selectedUnit = findById(units, selectedUnitId)
     const rangePositions = computeRangePositions(store, selectedUnit)
@@ -33,7 +33,7 @@ class FireInfo extends Component {
         className="FireInfo absolute no-select pointer" 
         style={{ 
           top: (unit.position.y - viewBox.y) * tileSize, 
-          left: (unit.position.x - viewBox.x + 1) * tileSize 
+          left: (unit.position.x - viewBox.x + 1) * tileSize,
         }}
       >
         {attackedDamage} ⇄ {defenderDamage}
@@ -43,10 +43,10 @@ class FireInfo extends Component {
 }
 
 const mapStateToProps = s => ({
+  booleans: s.booleans,
   currentFaction: s.currentFaction,
   mouse: s.mouse,
   selectedUnitId: s.selectedUnitId,
-  unitMenu: s.unitMenu,
   units: s.units,
   viewBox: s.viewBox,
 })

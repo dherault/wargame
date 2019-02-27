@@ -87,6 +87,21 @@ function units(state = [], action, globalState, ongoingState) {
       return state.filter(unit => remainingFactionIds.includes(unit.factionId))
     }
 
+    case 'BEGIN_PLAYER_TURN': {
+      const { currentFaction, buildings } = ongoingState
+      
+      return state.map(unit => {
+
+        const building = buildings.find(building => building.factionId === currentFaction.id && samePosition(building.position, unit.position))
+        
+        if (building) {
+          return Object.assign({}, unit, { life: Math.min(100, unit.life + 20) })
+        }
+
+        return unit
+      })
+    }
+
     case 'END_PLAYER_TURN':   
       return state.map(unit => Object.assign({}, unit, { played: false }))
 

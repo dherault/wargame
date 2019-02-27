@@ -53,7 +53,10 @@ function registerCanvas(canvas) {
     selectMousePosition()
 
     store.dispatch({
-      type: 'OPEN_UNIT_MENU',
+      type: 'SET_BOOLEAN',
+      payload: {
+        isUnitMenuOpened: true,
+      },
     })
   }
 
@@ -66,7 +69,7 @@ function registerCanvas(canvas) {
     if (e.button === 0) {
       console.log('left click')
 
-      const { mouse, buildings, units, selectedUnitId, buildingMenu, unitMenu, selectedPosition } = store.getState()
+      const { booleans, mouse, buildings, units, selectedUnitId, selectedPosition } = store.getState()
       const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
       const clickedBuilding = buildings.find(building => samePosition(building.position, mouse))
       
@@ -75,7 +78,7 @@ function registerCanvas(canvas) {
         const selectedUnit = findById(units, selectedUnitId)
 
         // If we are waiting for fire selection
-        if (unitMenu.awaitFireSelection) {
+        if (booleans.isFireSelection) {
           
           const rangePosition = computeRangePositions(store, selectedUnit)
 
@@ -83,10 +86,13 @@ function registerCanvas(canvas) {
           if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
             
             store.dispatch({
-              type: 'CANCEL_FIRE_SELECTION',
+              type: 'SET_BOOLEAN',
+              payload: {
+                isFireSelection: false,
+              },
             })
   
-            // Must be after CANCEL_FIRE_SELECTION
+            // Must be after isFireSelection: false
             store.dispatch({
               type: 'DESELECT_UNIT_ID',
             })
@@ -112,7 +118,10 @@ function registerCanvas(canvas) {
   
           // If we did not click an ennemy in range
           store.dispatch({
-            type: 'CANCEL_FIRE_SELECTION',
+            type: 'SET_BOOLEAN',
+            payload: {
+              isFireSelection: false,
+            },
           })
 
           store.dispatch({
@@ -123,6 +132,7 @@ function registerCanvas(canvas) {
             },
           })
 
+          // Must be after isFireSelection: false
           store.dispatch({
             type: 'DESELECT_UNIT_ID',
           })
@@ -142,16 +152,26 @@ function registerCanvas(canvas) {
           return openUnitMenu()
         }
 
-        if (unitMenu.opened) {
-          store.dispatch({ type: 'CLOSE_UNIT_MENU' })
+        if (booleans.isUnitMenuOpened) {
+          store.dispatch({
+            type: 'SET_BOOLEAN',
+            payload: {
+              isUnitMenuOpened: false,
+            },
+          })
         }
 
         if (selectedPosition) {
           store.dispatch({ type: 'DESELECT_POSITION' })
         }
 
-        if (unitMenu.awaitFireSelection) {
-          store.dispatch({ type: 'CANCEL_FIRE_SELECTION' })
+        if (booleans.isFireSelection) {
+          store.dispatch({
+            type: 'SET_BOOLEAN',
+            payload: {
+              isFireSelection: false,
+            },
+          })
         }
         
         // Must be after CANCEL_FIRE_SELECTION
@@ -171,19 +191,25 @@ function registerCanvas(canvas) {
         return
       }
 
-      if (clickedBuilding && clickedBuilding.factionId === currentFaction.id && clickedBuilding.type !== 'CITY') {
+      if (clickedBuilding && clickedBuilding.factionId === currentFaction.id && ['BASE', 'PORT', 'AIRPORT'].includes(clickedBuilding.type)) {
         selectMousePosition()
 
         store.dispatch({
-          type: 'OPEN_BUILDING_MENU',
+          type: 'SET_BOOLEAN',
+          payload: {
+            isBuildingMenuOpened: true,
+          },
         })
 
         return
       }
 
-      if (buildingMenu.opened) {
-        store.dispatch({ 
-          type: 'CLOSE_BUILDING_MENU',
+      if (booleans.isBuildingMenuOpened) {
+        store.dispatch({
+          type: 'SET_BOOLEAN',
+          payload: {
+            isBuildingMenuOpened: false,
+          },
         })
       }
 
@@ -199,9 +225,9 @@ function registerCanvas(canvas) {
       console.log('right click')
 
       store.dispatch({
-        type: 'UPDATE_MOUSE_STATE',
+        type: 'SET_BOOLEAN',
         payload: {
-          rightButtonDown: true,
+          isRightButtonDown: true,
         },
       })
     }
@@ -210,9 +236,9 @@ function registerCanvas(canvas) {
   canvas.addEventListener('mouseup', e => {
     if (e.button === 2) {
       store.dispatch({
-        type: 'UPDATE_MOUSE_STATE',
+        type: 'SET_BOOLEAN',
         payload: {
-          rightButtonDown: false,
+          isRightButtonDown: false,
         },
       })
     }
@@ -248,7 +274,7 @@ function registerCanvas(canvas) {
     KEYBOARD EVENTS
   ---------------- */
 
-  Mousetrap.bind('z', () => {
+  Mousetrap.bind(['z', 'up'], () => {
     const { viewBox } = store.getState()
     const goalY = boundViewBoxY(viewBox.goalY - 1)
 
@@ -263,7 +289,7 @@ function registerCanvas(canvas) {
     })
   })
 
-  Mousetrap.bind('s', () => {
+  Mousetrap.bind(['s', 'down'], () => {
     const { viewBox } = store.getState()
     const goalY = boundViewBoxY(viewBox.goalY + 1)
 
@@ -278,7 +304,7 @@ function registerCanvas(canvas) {
     })
   })
 
-  Mousetrap.bind('q', () => {
+  Mousetrap.bind(['q', 'left'], () => {
     const { viewBox } = store.getState()
     const goalX = boundViewBoxX(viewBox.goalX - 1)
 
@@ -293,7 +319,7 @@ function registerCanvas(canvas) {
     })
   })
 
-  Mousetrap.bind('d', () => {
+  Mousetrap.bind(['d', 'right'], () => {
     const { viewBox } = store.getState()
     const goalX = boundViewBoxX(viewBox.goalX + 1)
 

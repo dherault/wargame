@@ -23,5 +23,5 @@ export function saveState(state) {
 // A utility to call from the browser's console when everything seems to fall apart
 window.reset = () => {
   localStorage.removeItem('state')
-  window.location.reload()
+  window.location = '/'
 }

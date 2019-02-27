@@ -14,7 +14,10 @@ class UnitMenu extends Component {
     const { dispatch } = this.props
 
     dispatch({
-      type: 'CLOSE_UNIT_MENU',
+      type: 'SET_BOOLEAN',
+      payload: {
+        isUnitMenuOpened: false,
+      },
     })
   }
 
@@ -47,7 +50,10 @@ class UnitMenu extends Component {
     this.moveUnit()
 
     dispatch({
-      type: 'AWAIT_FIRE_SELECTION',
+      type: 'SET_BOOLEAN',
+      payload: {
+        isFireSelection: true,
+      },
     })
 
     dispatch({
@@ -95,9 +101,9 @@ class UnitMenu extends Component {
   }
 
   render() {
-    const { buildings, units, selectedPosition, selectedUnitId, unitMenu, viewBox } = this.props
+    const { booleans, buildings, units, selectedPosition, selectedUnitId, viewBox } = this.props
 
-    if (!unitMenu.opened) return null
+    if (!booleans.isUnitMenuOpened) return null
 
     const tileSize = window.innerWidth / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)
@@ -141,11 +147,11 @@ class UnitMenu extends Component {
 }
 
 const mapStateToProps = s => ({
+  booleans: s.booleans,
   buildings: s.buildings,
-  units: s.units,
   selectedPosition: s.selectedPosition,
   selectedUnitId: s.selectedUnitId,
-  unitMenu: s.unitMenu,
+  units: s.units,
   viewBox: s.viewBox,
 })
 

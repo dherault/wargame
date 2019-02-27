@@ -15,7 +15,7 @@ const reducers = {
   factions,
   currentFaction, // must be after factions
   moneyByFaction,
-  units, // must be after buildings
+  units, // must be after buildings and currentFaction
   gameOver, // must be after buildings and units
   worldMap,
 }

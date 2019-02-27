@@ -1,9 +1,13 @@
 import random from './random'
-import simpleCapture from './simpleAiCapture'
-import simpleAttack from './simpleAiAttack'
+import simpleAiAttack from './simpleAiAttack'
+import simpleAiCapture from './simpleAiCapture'
+import simpleAiCapture2 from './simpleAiCapture2'
+import simpleAiRepair from './simpleAiRepair'
 
 export default [
   random(), 
-  simpleCapture(),
-  simpleAttack(),
+  simpleAiAttack(),
+  simpleAiCapture(),
+  simpleAiCapture2(),
+  simpleAiRepair(),
 ]

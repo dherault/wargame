@@ -1,13 +1,14 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { all } from 'redux-saga/effects'
+import { connectRouter, routerMiddleware } from 'connected-react-router'
 
-import { loadState, saveState } from './persist'
+import history from '../history'
 import createReducer from './createReducer'
+import { loadState, saveState } from './persist'
 import { throttle } from '../lib/utils'
 
-import aiComputation from './reducers/aiComputation'
-import buildingMenu from './reducers/buildingMenu'
+import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
@@ -17,7 +18,6 @@ import mouse from './reducers/mouse'
 import selectedPosition from './reducers/selectedPosition'
 import selectedUnitId from './reducers/selectedUnitId'
 import turn from './reducers/turn'
-import unitMenu from './reducers/unitMenu'
 import units from './reducers/units'
 import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
@@ -28,8 +28,7 @@ import viewBoxSaga from './sagas/viewBox'
 // Reducers must be placed in a certain order
 // See createReducer
 const reducers = {
-  aiComputation, 
-  buildingMenu, 
+  booleans, 
   buildings,
   factions,
   currentFaction, // must be after factions
@@ -38,11 +37,11 @@ const reducers = {
   selectedPosition,
   selectedUnitId,
   turn,
-  unitMenu,
-  units, // must be after buildings
+  units, // must be after buildings and currentFaction
   gameOver, // must be after buildings and units
   viewBox,
   worldMap,
+  router: connectRouter(history),
 }
 
 const reducer = createReducer(reducers)
@@ -54,7 +53,7 @@ function* rootSaga() {
   ])
 }
 
-function logger() {
+function loggerMiddleware() {
   return next => action => {
     if (action.type !== 'UPDATE_MOUSE_POSITION') {
       console.log('Action', action.type, action.payload)
@@ -70,8 +69,11 @@ const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_E
   ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
   : compose
 
-const middleware = process.env.NODE_ENV === 'production' ? applyMiddleware(sagaMiddleware) : applyMiddleware(sagaMiddleware, logger)
-const enhancer = composeEnhancers(middleware)
+const middlewares = [routerMiddleware(history), sagaMiddleware]
+
+if (process.env.NODE_ENV !== 'production') middlewares.push(loggerMiddleware)
+
+const enhancer = composeEnhancers(applyMiddleware(...middlewares))
 
 // We load the store's initial state from localStorage
 const persistedState = loadState()
