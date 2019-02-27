@@ -1,5 +1,6 @@
 import Mousetrap from 'mousetrap'
 import store from '../state/store'
+import gameConfiguration from './gameConfiguration'
 import computeFireDamage from './units/computeFireDamage'
 import computeMovementPositions from './units/computeMovementPositions'
 import computeRangePositions from './units/computeRangePositions'
@@ -17,12 +18,18 @@ function registerCanvas(canvas) {
 
   /* Mouse move */
 
+  let offsetX
+  let offsetY
+
   canvas.addEventListener('mousemove', e => {
     const { mouse, viewBox } = store.getState()
     const tileSize = canvas.width / viewBox.width // pixel per tile
 
-    const x = Math.floor(e.offsetX / tileSize + viewBox.x)
-    const y = Math.floor(e.offsetY / tileSize + viewBox.y)
+    offsetX = e.offsetX || offsetX
+    offsetY = e.offsetY || offsetY
+
+    const x = Math.floor((offsetX - viewBox.offsetX) / tileSize + viewBox.x)
+    const y = Math.floor((offsetY - viewBox.offsetY) / tileSize + viewBox.y)
 
     if (mouse.x === x && mouse.y === y) return
 
@@ -33,6 +40,8 @@ function registerCanvas(canvas) {
         y,
       },
     })
+
+    
   })
 
   /* Click */
@@ -161,6 +170,15 @@ function registerCanvas(canvas) {
           })
         }
 
+        if (booleans.isBuildingMenuOpened) {
+          store.dispatch({
+            type: 'SET_BOOLEAN',
+            payload: {
+              isBuildingMenuOpened: false,
+            },
+          })
+        }
+      
         if (selectedPosition) {
           store.dispatch({ type: 'DESELECT_POSITION' })
         }
@@ -187,11 +205,32 @@ function registerCanvas(canvas) {
           type: 'SELECT_UNIT_ID',
           payload: clickedUnit.id,
         })
+
+        if (booleans.isBuildingMenuOpened) {
+          store.dispatch({
+            type: 'SET_BOOLEAN',
+            payload: {
+              isBuildingMenuOpened: false,
+            },
+          })
+        }
+
+        if (selectedPosition) {
+          store.dispatch({
+            type: 'DESELECT_POSITION',
+          })
+        }
         
         return
       }
 
-      if (clickedBuilding && clickedBuilding.factionId === currentFaction.id && ['BASE', 'PORT', 'AIRPORT'].includes(clickedBuilding.type)) {
+      // If we click on a creator building without a unit on it
+      if (
+        !clickedUnit
+        && clickedBuilding 
+        && clickedBuilding.factionId === currentFaction.id 
+        && ['BASE', 'PORT', 'AIRPORT'].includes(clickedBuilding.type)
+      ) {
         selectMousePosition()
 
         store.dispatch({
@@ -248,14 +287,14 @@ function registerCanvas(canvas) {
 
   /* Mouse wheel */
 
-  window.addEventListener('wheel', e => {
-    const { viewBox } = store.getState()
-    const goalWidth = boundViewBoxWidth(viewBox.goalWidth + Math.sign(e.deltaY))
+  function zoom(delta) {
+    const { viewBox, mouse } = store.getState()
+    const goalWidth = boundViewBoxWidth(viewBox.goalWidth + delta)
 
     if (goalWidth === viewBox.goalWidth) return
 
-    const goalX = boundViewBoxX(viewBox.goalX, goalWidth)
-    const goalY = boundViewBoxY(viewBox.goalY, goalWidth)
+    const goalX = boundViewBoxX((mouse.x - goalWidth / viewBox.goalWidth * (mouse.x - viewBox.goalX)), goalWidth)
+    const goalY = boundViewBoxY((mouse.y - goalWidth / viewBox.goalWidth * (mouse.y - viewBox.goalY)), goalWidth)
 
     store.dispatch({ 
       type: 'RESIZE_VIEW_BOX', 
@@ -268,15 +307,23 @@ function registerCanvas(canvas) {
         diffGoalY: goalY - viewBox.y,
       },
     })
-  })
+  }
+
+  window.addEventListener('wheel', e => zoom(Math.sign(e.deltaY)))
 
   /* ----------------
     KEYBOARD EVENTS
   ---------------- */
 
+  Mousetrap.bind('+', () => zoom(-1))
+  Mousetrap.bind('-', () => zoom(1))
+
+  const { viewBoxIntervalPeriod, viewBoxIncrements } = gameConfiguration
+  const viewBoxDelay = viewBoxIncrements * viewBoxIntervalPeriod
+
   Mousetrap.bind(['z', 'up'], () => {
     const { viewBox } = store.getState()
-    const goalY = boundViewBoxY(viewBox.goalY - 1)
+    const goalY = boundViewBoxY(Math.round(viewBox.goalY - 1))
 
     if (goalY === viewBox.goalY) return
 
@@ -287,11 +334,13 @@ function registerCanvas(canvas) {
         diffGoalY: goalY - viewBox.y,
       },
     })
+
+    setTimeout(() => canvas.dispatchEvent(new Event('mousemove')), viewBoxDelay)
   })
 
   Mousetrap.bind(['s', 'down'], () => {
     const { viewBox } = store.getState()
-    const goalY = boundViewBoxY(viewBox.goalY + 1)
+    const goalY = boundViewBoxY(Math.round(viewBox.goalY + 1))
 
     if (goalY === viewBox.goalY) return
 
@@ -302,11 +351,13 @@ function registerCanvas(canvas) {
         diffGoalY: goalY - viewBox.y,
       },
     })
+
+    setTimeout(() => canvas.dispatchEvent(new Event('mousemove')), viewBoxDelay)
   })
 
   Mousetrap.bind(['q', 'left'], () => {
     const { viewBox } = store.getState()
-    const goalX = boundViewBoxX(viewBox.goalX - 1)
+    const goalX = boundViewBoxX(Math.round(viewBox.goalX - 1))
 
     if (goalX === viewBox.goalX) return
 
@@ -317,11 +368,13 @@ function registerCanvas(canvas) {
         diffGoalX: goalX - viewBox.x,
       },
     })
+
+    setTimeout(() => canvas.dispatchEvent(new Event('mousemove')), viewBoxDelay)
   })
 
   Mousetrap.bind(['d', 'right'], () => {
     const { viewBox } = store.getState()
-    const goalX = boundViewBoxX(viewBox.goalX + 1)
+    const goalX = boundViewBoxX(Math.round(viewBox.goalX + 1))
 
     if (goalX === viewBox.goalX) return
 
@@ -332,12 +385,14 @@ function registerCanvas(canvas) {
         diffGoalX: goalX - viewBox.x,
       },
     })
+
+    setTimeout(() => canvas.dispatchEvent(new Event('mousemove')), viewBoxDelay)
   })
 
   // Mousetrap.bind('z+q', () => {
   //   const { viewBox } = store.getState()
-  //   const goalY = boundViewBoxY(viewBox.goalY - 1)
-  //   const goalX = boundViewBoxX(viewBox.goalX - 1)
+  //   const goalY = boundViewBoxY(Math.round(viewBox.goalY - 1))
+  //   const goalX = boundViewBoxX(Math.round(viewBox.goalX - 1))
 
   //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
 
@@ -354,8 +409,8 @@ function registerCanvas(canvas) {
 
   // Mousetrap.bind('z+d', () => {
   //   const { viewBox } = store.getState()
-  //   const goalY = boundViewBoxY(viewBox.goalY - 1)
-  //   const goalX = boundViewBoxX(viewBox.goalX + 1)
+  //   const goalY = boundViewBoxY(Math.round(viewBox.goalY - 1))
+  //   const goalX = boundViewBoxX(Math.round(viewBox.goalX + 1))
 
   //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
 
@@ -372,8 +427,8 @@ function registerCanvas(canvas) {
 
   // Mousetrap.bind('s+q', () => {
   //   const { viewBox } = store.getState()
-  //   const goalY = boundViewBoxY(viewBox.goalY + 1)
-  //   const goalX = boundViewBoxX(viewBox.goalX - 1)
+  //   const goalY = boundViewBoxY(Math.round(viewBox.goalY + 1))
+  //   const goalX = boundViewBoxX(Math.round(viewBox.goalX - 1))
 
   //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
 
@@ -390,8 +445,8 @@ function registerCanvas(canvas) {
 
   // Mousetrap.bind('s+d', () => {
   //   const { viewBox } = store.getState()
-  //   const goalY = boundViewBoxY(viewBox.goalY + 1)
-  //   const goalX = boundViewBoxX(viewBox.goalX + 1)
+  //   const goalY = boundViewBoxY(Math.round(viewBox.goalY + 1))
+  //   const goalX = boundViewBoxX(Math.round(viewBox.goalX + 1))
 
   //   if (goalY === viewBox.goalY && goalX === viewBox.goalX) return
 

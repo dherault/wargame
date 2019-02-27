@@ -1,5 +1,4 @@
 import store from '../state/store'
-import { boundViewBoxWidth } from './world/boundViewBox'
 
 function createNewGame({ worldMap, buildings, units, factions }) {
   console.log('Creating new game')
@@ -40,18 +39,8 @@ function createNewGame({ worldMap, buildings, units, factions }) {
     payload: moneyByFaction,
   })
 
-  const width = boundViewBoxWidth(worldMap[0].length)
-
   store.dispatch({
-    type: 'UPDATE_VIEW_BOX',
-    payload: {
-      x: 0,
-      y: 0,
-      goalX: 0,
-      goalY: 0,
-      width,
-      goalWidth: width,
-    },
+    type: 'RESET_VIEW_BOX',
   })
 
   store.dispatch({ 

@@ -308,7 +308,8 @@ function transformTargetIntoActions(store, unit, target) {
   // console.log(target, pathToTarget, extremePosition)
 
   const actions = []
-  let unitIdDead = false
+  let unitIsDead = false
+  let unitIsPlayed = false
 
   if (extremePosition) {
     if (!samePosition(unit.position, extremePosition)) {
@@ -319,6 +320,8 @@ function transformTargetIntoActions(store, unit, target) {
           position: extremePosition,
         },
       })
+
+      unitIsPlayed = true
     }
 
     if (samePosition(extremePosition, position)) {
@@ -334,7 +337,8 @@ function transformTargetIntoActions(store, unit, target) {
           },
         })
   
-        unitIdDead = damages[1] >= unit.life
+        unitIsDead = damages[1] >= unit.life
+        unitIsPlayed = true
       }
     
       if (type === 'CAPTURE') {
@@ -345,11 +349,13 @@ function transformTargetIntoActions(store, unit, target) {
             unitId: unit.id,
           },
         })
+
+        unitIsPlayed = true
       }
     }
   }
 
-  if (!unitIdDead) {
+  if (unitIsPlayed && !unitIsDead) {
     actions.push({
       type: 'PLAY_UNIT',
       payload: {

@@ -32,8 +32,8 @@ class FireInfo extends Component {
       <div 
         className="FireInfo absolute no-select pointer" 
         style={{ 
-          top: (unit.position.y - viewBox.y) * tileSize, 
-          left: (unit.position.x - viewBox.x + 1) * tileSize,
+          left: (unit.position.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
+          top: (unit.position.y - viewBox.y) * tileSize + viewBox.offsetY, 
         }}
       >
         {attackedDamage} ⇄ {defenderDamage}

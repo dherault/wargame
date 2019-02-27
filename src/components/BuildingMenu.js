@@ -28,7 +28,10 @@ class BuildingMenu extends Component {
     })
 
     dispatch({
-      type: 'CLOSE_BUILDING_MENU',
+      type: 'SET_BOOLEAN',
+      payload: {
+        isBuildingMenuOpened: false,
+      },
     })
 
   }
@@ -57,8 +60,8 @@ class BuildingMenu extends Component {
       <div 
         className="BuildingMenu absolute no-select pointer" 
         style={{ 
-          top: (selectedPosition.y - viewBox.y) * tileSize, 
-          left: (selectedPosition.x - viewBox.x + 1) * tileSize,
+          left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
+          top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
         }}
       >
         {availableUnits.map(data => (

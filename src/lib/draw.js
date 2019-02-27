@@ -11,6 +11,7 @@ let gradientAnimationDirection = true
 function draw(_) {
   const { booleans, viewBox, mouse, worldMap, buildings, units, currentFaction, selectedUnitId, selectedPosition } = store.getState()
   const { width, height } = _.canvas
+  const { offsetX, offsetY } = viewBox
 
   _.fillStyle = 'black'
   _.fillRect(0, 0, width, height)
@@ -47,7 +48,7 @@ function draw(_) {
       _.strokeStyle = color
 
       _.beginPath()
-      _.rect((i - (viewBox.x % 1)) * tileSize, (j - (viewBox.y % 1)) * tileSize, tileSize, tileSize)
+      _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
       _.closePath()
       _.fill()
       _.stroke()
@@ -98,7 +99,7 @@ function draw(_) {
       
       (rangePositions || movementPositions).forEach(tile => {
         _.beginPath()
-        _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
+        _.rect((tile.x - viewBox.x) * tileSize + offsetX, (tile.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
         _.closePath()
         _.fill()
         _.stroke()
@@ -115,23 +116,26 @@ function draw(_) {
   /* ---------------------------
     DRAW TILE SELECTION SQUARE
   --------------------------- */
+  
+  const position = selectedPosition || mouse
+  
+  if (worldMap[position.y] && worldMap[position.y][position.x]) {
+    _.lineWidth = 2
+    _.strokeStyle = 'red'
 
-  _.lineWidth = 2
-  _.strokeStyle = 'red'
-
-  const tile = selectedPosition || mouse
-
-  _.beginPath()
-  _.rect((tile.x - viewBox.x) * tileSize, (tile.y - viewBox.y) * tileSize, tileSize, tileSize)
-  _.closePath()
-  _.stroke()
+    _.beginPath()
+    _.rect((position.x - viewBox.x) * tileSize + offsetX, (position.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
+    _.closePath()
+    _.stroke()
+  }
 }
 
 function drawUnit(_, tileSize, unit) {
   const { viewBox } = store.getState()
   // // console.log('unit.position', unit.position)
-  const x = unit.position.x - viewBox.x
+  const x = unit.position.x - viewBox.x 
   const y = unit.position.y - viewBox.y
+  const { offsetX, offsetY } = viewBox
   
   _.fillStyle = gameConfiguration.factionsConfiguration[unit.factionId].color
   _.strokeStyle = '#333333'
@@ -141,7 +145,7 @@ function drawUnit(_, tileSize, unit) {
 
     case 'INFANTERY':
       _.beginPath()
-      _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+      _.arc((x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY, 0.4 * tileSize, 0, 2 * Math.PI)
       _.closePath()
       _.fill()
       _.stroke()
@@ -150,7 +154,7 @@ function drawUnit(_, tileSize, unit) {
         _.fillStyle = 'black'
         _.globalAlpha = 0.5
         _.beginPath()
-        _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.4 * tileSize, 0, 2 * Math.PI)
+        _.arc((x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY, 0.4 * tileSize, 0, 2 * Math.PI)
         _.closePath()
         _.fill()
         _.globalAlpha = 1
@@ -159,7 +163,7 @@ function drawUnit(_, tileSize, unit) {
     
     case 'TANK': 
       _.beginPath()
-      _.rect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+      _.rect((x + 0.1) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY, 0.8 * tileSize, 0.8 * tileSize)
       _.closePath()
       _.fill()
       _.stroke()
@@ -167,17 +171,17 @@ function drawUnit(_, tileSize, unit) {
       if (unit.played) {
         _.fillStyle = 'black'
         _.globalAlpha = 0.5
-        _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+        _.fillRect((x + 0.1) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY, 0.8 * tileSize, 0.8 * tileSize)
         _.globalAlpha = 1
       }
       break
 
     case 'ARTILLERY':
       _.beginPath()
-      _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
-      _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
-      _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
-      _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.moveTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
+      _.lineTo((x + 0.9) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+      _.lineTo((x + 0.1) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+      _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
       _.fill()
       _.stroke()
 
@@ -185,10 +189,10 @@ function drawUnit(_, tileSize, unit) {
         _.fillStyle = 'black'
         _.globalAlpha = 0.5
         _.beginPath()
-        _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
-        _.lineTo((x + 0.9) * tileSize, (y + 0.9) * tileSize)
-        _.lineTo((x + 0.1) * tileSize, (y + 0.9) * tileSize)
-        _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.moveTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
+        _.lineTo((x + 0.9) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+        _.lineTo((x + 0.1) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+        _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
         _.fill()
         _.globalAlpha = 1
       }
@@ -196,11 +200,11 @@ function drawUnit(_, tileSize, unit) {
 
     case 'SUBMARINE':
       _.beginPath()
-      _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
-      _.lineTo((x + 0.9) * tileSize, (y + 0.5) * tileSize)
-      _.lineTo((x + 0.5) * tileSize, (y + 0.9) * tileSize)
-      _.lineTo((x + 0.1) * tileSize, (y + 0.5) * tileSize)
-      _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+      _.moveTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
+      _.lineTo((x + 0.9) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+      _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+      _.lineTo((x + 0.1) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+      _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
       _.fill()
       _.stroke()
 
@@ -208,11 +212,11 @@ function drawUnit(_, tileSize, unit) {
         _.fillStyle = 'black'
         _.globalAlpha = 0.5
         _.beginPath()
-        _.moveTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
-        _.lineTo((x + 0.9) * tileSize, (y + 0.5) * tileSize)
-        _.lineTo((x + 0.5) * tileSize, (y + 0.9) * tileSize)
-        _.lineTo((x + 0.1) * tileSize, (y + 0.5) * tileSize)
-        _.lineTo((x + 0.5) * tileSize, (y + 0.1) * tileSize)
+        _.moveTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
+        _.lineTo((x + 0.9) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+        _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+        _.lineTo((x + 0.1) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+        _.lineTo((x + 0.5) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY)
         _.fill()
         _.globalAlpha = 1
       }
@@ -226,22 +230,25 @@ function drawUnit(_, tileSize, unit) {
   _.textAlign = 'right'
   _.textBaseline = 'alphabetic'
   _.fillStyle = 'white'
-  _.fillRect((x + 0.55) * tileSize, (y + 0.8) * tileSize, 0.45 * tileSize, 0.2 * tileSize)
+  _.fillRect((x + 0.55) * tileSize + offsetX, (y + 0.8) * tileSize + offsetY, 0.45 * tileSize, 0.2 * tileSize)
   _.fillStyle = 'black'
-  _.fillText(unit.life, (x + 0.94) * tileSize, (y + 0.97) * tileSize)
+  _.fillText(unit.life, (x + 0.94) * tileSize + offsetX, (y + 0.97) * tileSize + offsetY)
 
-  _.font = `bold ${tileSize / 3}px lato`
-  _.textAlign = 'center'
-  _.textBaseline = 'middle'
-  _.fillStyle = 'white'
-  _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize, (y + 0.5) * tileSize)
+  if (process.env.NODE_ENV !== 'production') {
+    _.font = `bold ${tileSize / 3}px lato`
+    _.textAlign = 'center'
+    _.textBaseline = 'middle'
+    _.fillStyle = 'white'
+    _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+  }
 
 }
 
 function drawBuilding(_, tileSize, building) {
   const { viewBox } = store.getState()
-  const x = building.position.x - viewBox.x
+  const x = building.position.x - viewBox.x 
   const y = building.position.y - viewBox.y
+  const { offsetX, offsetY } = viewBox
   const factionConfiguration = gameConfiguration.factionsConfiguration[building.factionId]
   const secondaryColor = '#555555'
 
@@ -249,25 +256,25 @@ function drawBuilding(_, tileSize, building) {
   _.strokeStyle = secondaryColor
   _.lineWidth = 1
   _.beginPath()
-  _.rect(x * tileSize, y * tileSize, tileSize, tileSize)
+  _.rect(x * tileSize + offsetX, y * tileSize + offsetY, tileSize, tileSize)
   _.closePath()
   _.fill()
   _.stroke()
 
   _.fillStyle = factionConfiguration ? factionConfiguration.color : gameConfiguration.terrainConfiguration.BUILDING.color
-  _.fillRect((x + 0.1) * tileSize, (y + 0.1) * tileSize, 0.8 * tileSize, 0.8 * tileSize)
+  _.fillRect((x + 0.1) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY, 0.8 * tileSize, 0.8 * tileSize)
 
   switch (building.type) {
 
     case 'HEADQUARTERS':
-      drawStar(_, 5, (x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.3 * tileSize, secondaryColor)
+      drawStar(_, 5, (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY, 0.3 * tileSize, secondaryColor)
 
       break
 
     case 'BASE':
       _.fillStyle = secondaryColor
       _.beginPath()
-      _.arc((x + 0.5) * tileSize, (y + 0.5) * tileSize, 0.2 * tileSize, 0, 2 * Math.PI)
+      _.arc((x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY, 0.2 * tileSize, 0, 2 * Math.PI)
       _.closePath()
       _.fill()
 

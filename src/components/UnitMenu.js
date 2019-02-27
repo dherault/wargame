@@ -113,8 +113,8 @@ class UnitMenu extends Component {
       <div 
         className="UnitMenu absolute no-select pointer" 
         style={{ 
-          top: (selectedPosition.y - viewBox.y) * tileSize, 
-          left: (selectedPosition.x - viewBox.x + 1) * tileSize,
+          left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
+          top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
         }}
       >
         {units.some(unit => // If there is a unit
