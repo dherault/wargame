@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import './BuildingMenu.css'
 
-import { samePosition } from '../lib/utils'
+import { samePosition } from '../lib/common/utils'
 import gameConfiguration from '../lib/gameConfiguration'
 
 const buildingTypeToMovementTypes = {

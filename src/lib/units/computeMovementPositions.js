@@ -1,6 +1,6 @@
 import Heap from '../common/Heap'
 import gameConfiguration from '../gameConfiguration'
-import { samePosition, hash, unhash } from '../utils'
+import { samePosition, hash, unhash } from '../common/utils'
 
 // Uniform cost search to expand movement positions
 function computeMovementPositions(store, unit) {

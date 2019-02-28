@@ -9,7 +9,7 @@ function computeWorldStateScore(store) {
   const maximizableScoreByFaction = {}
 
   factions.forEach(faction => scoreByFaction[faction.id] = 0)
-  units.forEach(unit => scoreByFaction[unit.factionId] += computeUnitScore(store, unit))
+  units.forEach(unit => scoreByFaction[unit.factionId] += computeUnitScore(unit))
   buildings.forEach(building => {
     if (building.factionId !== null) {
       scoreByFaction[building.factionId] += 1000
@@ -41,15 +41,8 @@ function computeWorldStateScore(store) {
   return maximizableScoreByFaction
 }
 
-export function computeUnitScore(store, unit) {
-  const { units } = store.getState()
-  const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]
-
-  let attackableUnitsScore = 0
-
-  units.forEach(u => attackableUnitsScore += unitConfiguration.damages[u.type] || 0)
-
-  return Math.round(unit.life / 100 * attackableUnitsScore)
+export function computeUnitScore(unit) {
+  return unit.life * gameConfiguration.unitsConfiguration[unit.type].power
 }
 
 export default computeWorldStateScore

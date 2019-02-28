@@ -52,3 +52,26 @@ export function throttle(fn, delay) {
     timeoutId = setTimeout(fn, delay)
   }
 }
+
+// transforms [[a, b], [c, d, e]] into [[a, c], [a, d], [a, e], [b, c], [b, d], [b, e]]
+// Where a is an array
+// https://stackoverflow.com/a/4331218
+export function combineArrayItems(array) {
+  if (array.length === 0) {
+    return []
+  }
+  if (array.length === 1) {
+    return array[0].map(item => [item])
+  }
+
+  const result = []
+  const recursiveCombinaisons = combineArrayItems(array.slice(1)) // Recur with the rest of array
+
+  for (let i = 0; i < array[0].length; i++) {
+    for (let j = 0; j < recursiveCombinaisons.length; j++) {
+      result.push([array[0][i], ...recursiveCombinaisons[j]])
+    }
+  }
+
+  return result
+}

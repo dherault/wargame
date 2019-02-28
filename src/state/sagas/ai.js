@@ -1,6 +1,6 @@
 import { takeEvery, put, delay, select } from 'redux-saga/effects'
 import store from '../store'
-import { findById } from '../../lib/utils'
+import { findById } from '../../lib/common/utils'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/world/boundViewBox'
 import computeAiActions from '../../lib/ai/computeAiActions'
 
@@ -73,13 +73,15 @@ function* playAi() {
       if (position1 && position2) {
         const { viewBox } = yield select()
 
+        const margin = 2
         const diffX = Math.abs(position2.x - position1.x)
         const diffY = Math.abs(position2.y - position1.y)
+        const width1 = diffX + 2 * margin
+        const width2 = Math.ceil((diffY + 2 * margin) * window.innerWidth / window.innerHeight)
 
-        const margin = 3
-        const goalWidth = boundViewBoxWidth(Math.max(diffX + 2 * margin, Math.ceil((diffY + 2 * margin) * window.innerWidth / window.innerHeight)))
-        const goalX = boundViewBoxX(Math.min(position1.x, position2.x) - (goalWidth - diffX) / 2 + margin, goalWidth)
-        const goalY = boundViewBoxY(Math.min(position1.y, position2.y) - (goalWidth - diffY) / 2 + margin, goalWidth)
+        const goalWidth = boundViewBoxWidth(Math.max(width1, width2))
+        const goalX = boundViewBoxX(Math.min(position1.x, position2.x) - margin, goalWidth)
+        const goalY = boundViewBoxY(Math.min(position1.y, position2.y) - margin, goalWidth)
 
         yield put({
           type: 'RESIZE_VIEW_BOX',

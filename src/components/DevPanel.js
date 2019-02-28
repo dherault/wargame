@@ -5,7 +5,7 @@ import './DevPanel.css'
 
 // import gameConfiguration from '../lib/gameConfiguration'
 import store from '../state/store'
-import { samePosition } from '../lib/utils'
+import { samePosition } from '../lib/common/utils'
 import computeWorldStateScore, { computeUnitScore } from '../lib/ai/computeWorldStateScore'
 
 class DevPanel extends Component {
@@ -20,7 +20,7 @@ class DevPanel extends Component {
       <div className="DevPanel absolute">
         {mouse.x}, {mouse.y}
         {hoveredUnit && (<br />)}
-        {hoveredUnit && (`${hoveredUnit.type} - ${computeUnitScore(store, hoveredUnit)}`)}
+        {hoveredUnit && (`${hoveredUnit.type}: ${computeUnitScore(hoveredUnit)}`)}
         <br />
         {scoreEntries.map(([factionId, score]) => (
           <div key={factionId}>{factionId}: {score}</div>

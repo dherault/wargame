@@ -5,7 +5,7 @@ import computeFireDamage from './units/computeFireDamage'
 import computeMovementPositions from './units/computeMovementPositions'
 import computeRangePositions from './units/computeRangePositions'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from './world/boundViewBox'
-import { samePosition, findById } from './utils'
+import { samePosition, findById } from './common/utils'
 import draw from './draw'
 
 // A function called once for registering the canvas event listeners

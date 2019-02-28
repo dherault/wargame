@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import './FireInfo.css'
 
 import store from '../state/store'
-import { samePosition, findById } from '../lib/utils'
+import { samePosition, findById } from '../lib/common/utils'
 import computeRangePositions from '../lib/units/computeRangePositions'
 import computeFireDamage from '../lib/units/computeFireDamage'
 

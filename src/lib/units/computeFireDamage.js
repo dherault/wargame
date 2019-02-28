@@ -1,6 +1,6 @@
 import computeRangePositions from './computeRangePositions'
 import gameConfiguration from '../gameConfiguration'
-import { samePosition, findById } from '../utils'
+import { samePosition, findById } from '../common/utils'
 
 // Takes in a attacker id and a defender id
 // Returns an array defining the attack and counter attack damages

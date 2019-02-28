@@ -7,7 +7,7 @@ import computeRangePositions from '../units/computeRangePositions'
 import computeFireDamage from '../units/computeFireDamage'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
-import { samePosition, hash, unhash } from '../utils'
+import { samePosition, hash, unhash, combineArrayItems } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
 const nTargets = 3 
@@ -43,6 +43,7 @@ function computeAiActions() {
   // Add child nodes to the state tree
   extendStateTree(stateTree, rootStore, consideredFaction, maxStateTreeDepth)
 
+  console.log('stateTree', stateTree)
   // Post-order search on stateTree
   // To compute the parents' scores
   // https://stackoverflow.com/a/20062584
@@ -95,33 +96,45 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // eg: [ac, ad, ae, bc, bd, be]
   const actionsCombinaisons = combineArrayItems(possibleActions)
   
-  console.log('possibleActions', possibleActions)
-  
+  // console.log('possibleActions', possibleActions)
   // console.log('actionsCombinaisons', actionsCombinaisons)
 
   // We create a store for each combinaison
   const stores = []
 
-  actionsCombinaisons.forEach(actions => {
+  actionsCombinaisons.forEach(actionsGroups => {
 
     const store = createAiStore(parentWorldState)
-    
-    // We feed our actions to the store
-    try {
-      actions.forEach(store.dispatch)
-    }
-    // Sometimes the action is impossible (some units are on the same position, the defender is dead, ...)
-    catch (error) {
-      return
-    }
+    const finalActions = []
 
-    store.dispatch({ type: 'END_PLAYER_TURN' })
-    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
-    
-    store.actions = actions
-    store.score = computeWorldStateScore(store)[consideredFaction.id]
+    actionsGroups.forEach(actions => {
+      // We feed our actions to the store
+      try {
+        actions.forEach(store.dispatch)
+      }
+      // Sometimes the action is impossible (some units are on the same position, the defender is dead, ...)
+      catch (error) {
+        return
+      }
 
-    stores.push(store)
+      finalActions.push(...actions)
+    })
+
+    if (finalActions.length) {
+      const finalStore = createAiStore(parentWorldState)
+    
+      finalActions.forEach(finalStore.dispatch)
+  
+      finalStore.dispatch({ type: 'END_PLAYER_TURN' })
+      finalStore.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+      
+      finalStore.actions = finalActions
+      finalStore.score = computeWorldStateScore(finalStore)[consideredFaction.id]
+  
+      stores.push(finalStore)
+
+      // console.log('finalActions', finalStore.score, finalActions)
+    }
   })
 
   console.log(possibleActions.length, actionsCombinaisons.length, stores.length)
@@ -133,36 +146,13 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
       if (i >= maxBranchingFactor) return
 
       // We add the store to the state tree
-      stateTree.addNode(store, parentStore.stateTreeIndex)
+      store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex)
 
       if (store.getState().gameOver) return
 
       // We go deeper in extending our children
       extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1)
     })
-}
-
-// transforms [[a, b], [c, d, e]] into [ac, ad, ae, bc, bd, be]
-// Where a is an array and ac is an array containing the elements of a and c
-// https://stackoverflow.com/a/4331218
-function combineArrayItems(array) {
-  if (array.length === 0) {
-    return []
-  }
-  if (array.length === 1) {
-    return array[0]
-  } 
-
-  const result = []
-  const recursiveCombinaisons = combineArrayItems(array.slice(1)) // Recur with the rest of array
-
-  for (let i = 0; i < array[0].length; i++) {
-    for (let j = 0; j < recursiveCombinaisons.length; j++) {
-      result.push([...array[0][i], ...recursiveCombinaisons[j]])
-    }
-  }
-
-  return result
 }
 
 // For a given parent world state, provide the actions per unit 
@@ -182,12 +172,11 @@ function expandPossibleActions(store) {
     possibleUnitTargets.push([unit, computePossibleTarget(store, unit)])
   })
 
-  console.log('possibleUnitTargets', possibleUnitTargets)
+  // console.log('possibleUnitTargets', possibleUnitTargets)
 
   // Then for each target, we compute the associated actions
   // ie. we need to compute the shortest path to the target
   // and advance as much as possible on this path limited by the unit's movement.
-  // A target will correspond to at least two actions (eg: 'FIRE', 'PLAY_UNIT')
 
   // An array of actions
   const possibleUnitActions = []

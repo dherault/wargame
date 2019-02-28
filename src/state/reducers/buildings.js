@@ -1,4 +1,4 @@
-import { findById } from '../../lib/utils'
+import { findById } from '../../lib/common/utils'
 
 /*
   An array of buildings

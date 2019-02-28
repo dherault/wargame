@@ -6,7 +6,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router'
 import history from '../history'
 import createReducer from './createReducer'
 import { loadState, saveState } from './persist'
-import { throttle } from '../lib/utils'
+import { throttle } from '../lib/common/utils'
 
 import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'

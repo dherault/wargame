@@ -3,7 +3,7 @@ import gameConfiguration from './gameConfiguration'
 import computeMovementPositions from './units/computeMovementPositions'
 import computeRangePositions from './units/computeRangePositions'
 import PolarPoint from './common/PolarPoint'
-import { samePosition, findById } from './utils'
+import { samePosition, findById } from './common/utils'
 
 let gradientAnimationStep = 0
 let gradientAnimationDirection = true

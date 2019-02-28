@@ -1,4 +1,4 @@
-export default {
+const gameConfiguration = {
   moneyPerCityPerTurn: 1000,
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
@@ -167,3 +167,10 @@ export default {
     },
   },
 }
+
+// Assign a "power" metric to each unit type
+Object.values(gameConfiguration.unitsConfiguration).forEach(unitConfiguration => {
+  unitConfiguration.power = Object.values(unitConfiguration.damages).reduce((a, b) => a + b, 0)
+})
+
+export default gameConfiguration

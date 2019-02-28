@@ -1,4 +1,4 @@
-import { createId, samePosition } from '../../lib/utils'
+import { createId, samePosition } from '../../lib/common/utils'
 import DataError from '../../lib/common/DataError'
 
 /*

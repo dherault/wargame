@@ -1,4 +1,4 @@
-import { createId } from '../utils'
+import { createId } from '../common/utils'
 
 function simpleAiAttack() {
   return {
