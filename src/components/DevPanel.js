@@ -10,27 +10,52 @@ import computeWorldStateScore, { computeUnitScore } from '../lib/ai/computeWorld
 
 class DevPanel extends Component {
 
+  handleBooleanClick(boolean) {
+    const { booleans, dispatch } = this.props
+
+    dispatch({
+      type: 'SET_BOOLEAN',
+      payload: {
+        [boolean]: !booleans[boolean],
+      },
+    })
+  }
+
   render() {
-    const { mouse, units } = this.props
+    const { booleans, mouse, units } = this.props
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
     const scorePerFaction = computeWorldStateScore(store)
     const scoreEntries = Object.entries(scorePerFaction)
     
     return ( 
       <div className="DevPanel absolute">
-        {mouse.x}, {mouse.y}
-        {hoveredUnit && (<br />)}
-        {hoveredUnit && (`${hoveredUnit.type}: ${computeUnitScore(hoveredUnit)}`)}
-        <br />
+        {booleans.isAiComputing && (
+          <div>Ai is computing...</div>
+        )}
+        <div>
+          {mouse.x}, {mouse.y}
+        </div>
+        {hoveredUnit && (
+          <div>
+            {`${hoveredUnit.type}: ${computeUnitScore(hoveredUnit)}`}
+          </div>
+        )}
         {scoreEntries.map(([factionId, score]) => (
           <div key={factionId}>{factionId}: {score}</div>
         ))}
+        <div className="x1 no-select" onClick={() => this.handleBooleanClick('preventAutoZoom')}>
+          <input readOnly type="checkbox" checked={booleans.preventAutoZoom} /> preventAutoZoom
+        </div>
+        <div className="x1 no-select" onClick={() => this.handleBooleanClick('delayComputerActions')}>
+          <input readOnly type="checkbox" checked={booleans.delayComputerActions} /> delayComputerActions
+        </div>
       </div>
     )
   }
 }
 
 const mapStateToProps = s => ({
+  booleans: s.booleans,
   mouse: s.mouse,
   units: s.units,
 })

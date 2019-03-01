@@ -75,3 +75,17 @@ export function combineArrayItems(array) {
 
   return result
 }
+
+export function sliceRandom(array, n) {
+  const result = []
+
+  for (let i = 0; i < n; i++) {
+    const item = randomPop(array)
+
+    if (typeof item !== 'undefined') {
+      result.push(item)
+    }
+  }
+
+  return result
+}

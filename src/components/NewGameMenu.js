@@ -22,7 +22,7 @@ class NewGameMenu extends Component {
               <div 
                 key={i}
                 className="NewGameMenu-tile"
-                style={{ backgroundColor: gameConfiguration.terrainConfiguration[tile].color}}
+                style={{ backgroundColor: gameConfiguration.terrainConfiguration[tile].color }}
               />
             ))}
           </div>

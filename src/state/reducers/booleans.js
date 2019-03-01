@@ -8,6 +8,8 @@ const initialState = {
   isUnitMenuOpened: false,
   isBuildingMenuOpened: false,
   isFireSelection: false,
+  preventAutoZoom: false,
+  delayComputerActions: true,
 }
 
 function booleans(state = initialState, action) {

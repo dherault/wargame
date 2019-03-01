@@ -9,12 +9,15 @@
   height: 80%;
   background-color: white;
   padding: 16px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .NewGameMenu-item {
   border: 1px solid #333333;
   padding: 8px;
   margin-right: 8px;
+  margin-bottom: 8px;
 }
 
 .NewGameMenu-item > div:first-child {

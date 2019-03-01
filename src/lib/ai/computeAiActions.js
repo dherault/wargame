@@ -7,11 +7,11 @@ import computeRangePositions from '../units/computeRangePositions'
 import computeFireDamage from '../units/computeFireDamage'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
-import { samePosition, hash, unhash, combineArrayItems } from '../common/utils'
+import { samePosition, hash, unhash, combineArrayItems, sliceRandom } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
 const nTargets = 3 
-const maxBranchingFactor = 15
+const maxBranchingFactor = 111
 
 /*
   To compute which actions ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...) the computer takes
@@ -23,7 +23,9 @@ const maxBranchingFactor = 15
   traverse up the tree affecting a score to the parent = min or max of scores of children depending on the node type
   and take the root's child that has the best possible score
   It will determine which state to play, ie. which actions to take to get to this state from our root state
-  more details https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
+  more details:
+  Adversarial search: https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
+  Alpha-beta pruning: https://youtu.be/jvpWtwVSvjA and https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
 */
 function computeAiActions() {
   // First we clone the game state into a lightweight store
@@ -32,7 +34,7 @@ function computeAiActions() {
   const rootStore = createAiStore(rootState)
   
   const consideredFaction = rootState.currentFaction
-  const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length - 1
+  const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length
   
   console.log('consideredFaction', consideredFaction.id)
 
@@ -43,27 +45,7 @@ function computeAiActions() {
   // Add child nodes to the state tree
   extendStateTree(stateTree, rootStore, consideredFaction, maxStateTreeDepth)
 
-  console.log('stateTree', stateTree)
-  // Post-order search on stateTree
-  // To compute the parents' scores
-  // https://stackoverflow.com/a/20062584
-  const postOrder = index => {
-    stateTree.getChildren(index).forEach(postOrder)
-
-    const store = stateTree.getData(index)
-    const childrenStores = stateTree.getChildrenData(index) // TODO transform O(n) into O(1)
-    
-    if (!childrenStores.length) {
-      return 
-    }
-    
-    // Determining the node type based on the team the faction it represents is on
-    const nodeTypeFn = consideredFaction.team === store.getState().currentFaction.team ? Math.max : Math.min
-    
-    store.score = nodeTypeFn(...childrenStores.map(store => store.score))
-  }
-
-  postOrder(rootStore.stateTreeIndex)
+  // console.log('stateTree', stateTree)
 
   // We select the root's child with the highest score
   const childrenStores = stateTree.getChildrenData(rootStore.stateTreeIndex)
@@ -73,20 +55,24 @@ function computeAiActions() {
 
   const selectedChildStore = childrenStores.sort((a, b) => a.score > b.score ? -1 : 1)[0]
 
-  // console.log('stateTree', stateTree)
-
   return selectedChildStore.actions
 }
 
 // Add children for a given parent to the state tree
-function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0) {
-  // Goes recursively as deep as maxDepth
-  if (depth > maxDepth) return
-
-  console.log('depth', depth, parentStore.getState().currentFaction.id)
-
-  const parentWorldState = parentStore.getState()
+function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
+  const parentState = parentStore.getState()
   
+  // console.log('depth', depth, parentState.currentFaction.id)
+  
+  if (depth >= maxDepth || parentState.gameOver) {
+    return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
+  }
+
+  const parentNodeTypeFn = consideredFaction.team === parentState.currentFaction.team ? Math.max : Math.min
+
+  // Value init
+  parentStore.score = parentNodeTypeFn === Math.max ? -Infinity : Infinity
+
   // First we heuristically compute all possible actions to take
   // This will return an array of possible actions per unit
   // eg: [[a, b], [c, d, e]] for two units
@@ -95,64 +81,67 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // They will all lead to a different child world state
   // eg: [ac, ad, ae, bc, bd, be]
   const actionsCombinaisons = combineArrayItems(possibleActions)
-  
+
   // console.log('possibleActions', possibleActions)
-  // console.log('actionsCombinaisons', actionsCombinaisons)
+  // console.log('actionsCombinaisons', actionsCombinaisons.length)
 
+  // We pick maxBranchingFactor combinaisons at random to reduce the branching factor of our state tree
+  const chosenActionsCombinaisons = sliceRandom(actionsCombinaisons, maxBranchingFactor)
+  
+  // console.log('chosenActionsCombinaisons', chosenActionsCombinaisons)
+  
   // We create a store for each combinaison
-  const stores = []
-
-  actionsCombinaisons.forEach(actionsGroups => {
-
-    const store = createAiStore(parentWorldState)
-    const finalActions = []
+  for (let i = 0; i < chosenActionsCombinaisons.length; i++) {
+    const actionsGroups = chosenActionsCombinaisons[i]
+    const tryoutsStore = createAiStore(parentState)
+    const validActions = []
 
     actionsGroups.forEach(actions => {
       // We feed our actions to the store
       try {
-        actions.forEach(store.dispatch)
+        actions.forEach(tryoutsStore.dispatch)
       }
       // Sometimes the action is impossible (some units are on the same position, the defender is dead, ...)
       catch (error) {
         return
       }
 
-      finalActions.push(...actions)
+      validActions.push(...actions)
     })
 
-    if (finalActions.length) {
-      const finalStore = createAiStore(parentWorldState)
+    if (validActions.length) {
+      const store = createAiStore(parentState)
     
-      finalActions.forEach(finalStore.dispatch)
+      validActions.forEach(store.dispatch)
   
-      finalStore.dispatch({ type: 'END_PLAYER_TURN' })
-      finalStore.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+      store.dispatch({ type: 'END_PLAYER_TURN' })
+      store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
       
-      finalStore.actions = finalActions
-      finalStore.score = computeWorldStateScore(finalStore)[consideredFaction.id]
+      store.actions = validActions // Our transition function, i.e. the final result
+      store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex) // We add the store to the state tree
   
-      stores.push(finalStore)
+      const childScore = extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1, alpha, beta)
 
-      // console.log('finalActions', finalStore.score, finalActions)
+      // console.log('back to depth', depth, parentState.currentFaction.id, childScore)
+
+      parentStore.score = parentNodeTypeFn(childScore, parentStore.score)
+
+      if (parentNodeTypeFn === Math.max) {
+        alpha = Math.max(alpha, parentStore.score)
+      }
+      else {
+        beta = Math.min(beta, parentStore.score)
+      }
+
+      if (alpha >= beta) {
+        // console.log('PRUNING!', depth)
+        break
+      }
     }
-  })
-
-  console.log(possibleActions.length, actionsCombinaisons.length, stores.length)
-
-  stores
-    // We sort the stores by score and take the first maxBranchingFactor
-    .sort((a, b) => a.score > b.score ? -1 : 1)
-    .forEach((store, i) => {
-      if (i >= maxBranchingFactor) return
-
-      // We add the store to the state tree
-      store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex)
-
-      if (store.getState().gameOver) return
-
-      // We go deeper in extending our children
-      extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1)
-    })
+  }
+  // console.log(possibleActions.length, actionsCombinaisons.length + chosenActionsCombinaisons.length, chosenActionsCombinaisons.length)
+  
+  return parentStore.score
 }
 
 // For a given parent world state, provide the actions per unit 
