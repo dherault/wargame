@@ -5,8 +5,8 @@ import './FireInfo.css'
 
 import store from '../state/store'
 import { samePosition, findById } from '../lib/common/utils'
-import computeRangePositions from '../lib/units/computeRangePositions'
-import computeFireDamage from '../lib/units/computeFireDamage'
+import computeRangePositions from '../lib/game/computeRangePositions'
+import computeFireDamage from '../lib/game/computeFireDamage'
 
 class FireInfo extends Component {
 

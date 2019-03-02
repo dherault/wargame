@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Mousetrap from 'mousetrap'
-import registerCanvas from '../lib/registerCanvas'
+import hotkeys from 'piano-keys'
+import registerCanvas from '../lib/game/registerCanvas'
 
 import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
@@ -30,7 +30,7 @@ class World extends Component {
     
     this.unregisterCanvas = registerCanvas(canvas)
 
-    Mousetrap.bind('ctrl+q', e => {
+    hotkeys(document.documentElement, 'ctrl+q', e => {
       e.preventDefault()
       this.setState(state => ({ devPanelOpened: !state.devPanelOpened }))
     })

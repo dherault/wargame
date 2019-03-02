@@ -1,10 +1,10 @@
 import gameConfiguration from '../gameConfiguration'
 import globalStore from '../../state/store'
 import createAiStore from '../../state/createAiStore'
+import computeFireDamage from './computeFireDamage'
+import computeRangePositions from './computeRangePositions'
+import computeMovementPositions, { getSuccessorsFactory } from './computeMovementPositions'
 import computeWorldStateScore from './computeWorldStateScore'
-import computeMovementPositions, { getSuccessorsFactory } from '../units/computeMovementPositions'
-import computeRangePositions from '../units/computeRangePositions'
-import computeFireDamage from '../units/computeFireDamage'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
 import { samePosition, hash, unhash, combineArrayItems, sliceRandom } from '../common/utils'
@@ -14,10 +14,10 @@ const nTargets = 3
 const maxBranchingFactor = 111
 
 /*
-  To compute which actions ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...) the computer takes
-  we will perform an adversarial search with alpha-beta pruning (https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
+  To compute which actions  the computer takes ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...)
+  we will perform an adversarial search with alpha-beta pruning
   The idea here is to compute a state tree, ie a tree of world states (stores)
-  Each node is either a max or min node (node type), depending on which player it represents
+  Each node is either a max or min node (node type), depending on which team the player it represents is in
   (player from same team => max node, opposite team => min node)
   We affect a score to each leaf node of the tree
   traverse up the tree affecting a score to the parent = min or max of scores of children depending on the node type
@@ -229,7 +229,7 @@ function computePossibleTarget(store, unit) {
       ) {
         // The target's score here is the ennemy's distance divided by the potential damages
         // We want the smalled cost possible
-        targets.push(['FIRE', u.id, position, cost / potentialDamages])
+        targets.push(['FIRE', u.id, position])
       }
     })
 
@@ -237,9 +237,7 @@ function computePossibleTarget(store, unit) {
 
     // Infantery type can also capture building, we add that action to the list if a building is on the position
     if ((unit.type === 'INFANTERY' || unit.type === 'BAZOOKA') && building && building.team !== unit.team) {
-      const costDivider = building.team ? 110 : 100 // priorities opposite team capture
-
-      targets.push(['CAPTURE', building.id, position, cost / costDivider])
+      targets.push(['CAPTURE', building.id, position])
     }
 
     // Units can be repaired in a building
@@ -249,7 +247,7 @@ function computePossibleTarget(store, unit) {
       && building.factionId === unit.factionId 
       && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(unitConfiguration.movementType)
     ) {
-      targets.push(['REPAIR', building.id, position, cost / 100])
+      targets.push(['REPAIR', building.id, position])
     }
 
     // If we reach the goal number of targets we stop the computation

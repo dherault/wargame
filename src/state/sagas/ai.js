@@ -1,8 +1,8 @@
 import { takeEvery, put, delay, select } from 'redux-saga/effects'
 import store from '../store'
 import { findById } from '../../lib/common/utils'
-import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/world/boundViewBox'
-import computeAiActions from '../../lib/ai/computeAiActions'
+import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/common/world/boundViewBox'
+import computeAiActions from '../../lib/game/computeAiActions'
 
 // On every turn's beginning
 // If the player is a computer

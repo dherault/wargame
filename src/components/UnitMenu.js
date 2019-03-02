@@ -5,7 +5,7 @@ import './UnitMenu.css'
 
 import store from '../state/store'
 import { samePosition, findById } from '../lib/common/utils'
-import computeRangePositions from '../lib/units/computeRangePositions'
+import computeRangePositions from '../lib/game/computeRangePositions'
 import gameConfiguration from '../lib/gameConfiguration'
 
 class UnitMenu extends Component {

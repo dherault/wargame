@@ -1,4 +1,4 @@
-import store from '../../state/store'
+import store from '../../../state/store'
 
 export function boundViewBoxX(x, viewBoxWidth) {
   const { viewBox, worldMap } = store.getState()

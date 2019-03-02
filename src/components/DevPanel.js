@@ -6,7 +6,7 @@ import './DevPanel.css'
 // import gameConfiguration from '../lib/gameConfiguration'
 import store from '../state/store'
 import { samePosition } from '../lib/common/utils'
-import computeWorldStateScore, { computeUnitScore } from '../lib/ai/computeWorldStateScore'
+import computeWorldStateScore, { computeUnitScore } from '../lib/game/computeWorldStateScore'
 
 class DevPanel extends Component {
 

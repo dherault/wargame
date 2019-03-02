@@ -11,6 +11,7 @@ import { throttle } from '../lib/common/utils'
 import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
+import editor from './reducers/editor'
 import factions from './reducers/factions'
 import gameOver from './reducers/gameOver'
 import moneyByFaction from './reducers/moneyByFaction'
@@ -30,6 +31,7 @@ import viewBoxSaga from './sagas/viewBox'
 const reducers = {
   booleans, 
   buildings,
+  editor,
   factions,
   currentFaction, // must be after factions
   moneyByFaction,
