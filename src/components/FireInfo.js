@@ -25,7 +25,7 @@ class FireInfo extends Component {
 
     if (!unit) return null
     
-    const tileSize = window.innerWidth / viewBox.width // pixel per tile
+    const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const [attackedDamage, defenderDamage] = computeFireDamage(store, selectedUnitId, unit.id)
     
     return (

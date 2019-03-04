@@ -105,7 +105,7 @@ class UnitMenu extends Component {
 
     if (!booleans.isUnitMenuOpened) return null
 
-    const tileSize = window.innerWidth / viewBox.width // pixel per tile
+    const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)
     const rangePositions = computeRangePositions(store, selectedUnit, selectedPosition) // range positions at selected position
     

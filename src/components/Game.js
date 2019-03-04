@@ -9,18 +9,18 @@ import './Game.css'
 class Game extends Component {
 
   render() {
-    const { worldMap } = this.props
+    const { currentFaction } = this.props
 
     return (
       <div className="Game relative">
-        {worldMap ? <World /> : <NewGameMenu />}
+        {currentFaction ? <World /> : <NewGameMenu />}
       </div>
     )
   }
 }
 
 const mapStateToProps = s => ({
-  worldMap: s.worldMap,
+  currentFaction: s.currentFaction,
 })
 
 export default connect(mapStateToProps)(Game)

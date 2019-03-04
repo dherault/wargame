@@ -1,4 +1,4 @@
-import store from '../state/store'
+import store from '../../state/store'
 
 function createNewGame({ worldMap, buildings, units, factions }) {
   console.log('Creating new game')

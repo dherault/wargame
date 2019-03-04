@@ -22,9 +22,11 @@ class World extends Component {
   componentDidMount() {
     console.log('Mounting World', window.innerWidth, window.innerHeight)
 
-    const canvas = document.getElementById('canvas')
+    const canvas = document.getElementById('canvas-game')
 
-    window.addEventListener('resize', () => this.resizeCanvas(canvas))
+    this.resizeCanvasListener = () => this.resizeCanvas(canvas)
+
+    window.addEventListener('resize', this.resizeCanvasListener)
 
     this.resizeCanvas(canvas)
     
@@ -38,6 +40,7 @@ class World extends Component {
 
   componentWillUnmount() {
     this.unregisterCanvas()
+    window.removeEventListener('resize', this.resizeCanvasListener)
   }
 
   resizeCanvas(canvas) {
@@ -52,7 +55,7 @@ class World extends Component {
     return (
       <div className="World relative">
         <canvas
-          id="canvas"
+          id="canvas-game"
           className="World-canvas no-select"
         />
         <BuildingMenu />

@@ -1,12 +1,12 @@
 import store from '../../state/store'
-import draw from './draw'
-import registerCanvasFactory from '../registerCanvasFactory'
+import draw from '../common/world/draw'
+import canvasRegistrar from '../canvasRegistrar'
 import computeFireDamage from './computeFireDamage'
 import computeMovementPositions from './computeMovementPositions'
 import computeRangePositions from './computeRangePositions'
 import { samePosition, findById } from '../common/utils'
-import zoom from '../common/world/zoom'
 import registerWorldHotKeys from '../common/world/registerWorldHotKeys'
+import eventHandlers from '../common/world/eventHandlers'
 
 function selectMousePosition() {
   const { mouse } = store.getState()
@@ -32,38 +32,13 @@ function openUnitMenu() {
 }
 
 function registerCanvas(canvas) {
-  let offsetX
-  let offsetY
-
-  return registerCanvasFactory(
+  return canvasRegistrar(
+    canvas,
     draw,
     [
       /* -------------
         MOUSE EVENTS
       ------------- */
-
-      /* Mouse move */
-
-      ['mousemove', e => {
-        const { mouse, viewBox } = store.getState()
-        const tileSize = canvas.width / viewBox.width // pixel per tile
-    
-        offsetX = e.offsetX || offsetX
-        offsetY = e.offsetY || offsetY
-    
-        const x = Math.floor((offsetX - viewBox.offsetX) / tileSize + viewBox.x)
-        const y = Math.floor((offsetY - viewBox.offsetY) / tileSize + viewBox.y)
-    
-        if (mouse.x === x && mouse.y === y) return
-    
-        store.dispatch({
-          type: 'UPDATE_MOUSE_POSITION',
-          payload: {
-            x,
-            y,
-          },
-        })
-      }],
 
       /* Click */
 
@@ -281,16 +256,22 @@ function registerCanvas(canvas) {
         }
       }],
 
-      ['wheel', e => zoom(Math.sign(e.deltaY))],
+      /* Mouse move */
+
+      ['mousemove', eventHandlers.mousemove(canvas)],
+
+      /* Wheel */
+
+      ['wheel', eventHandlers.wheel(canvas)],
 
       /* -------------
         CONTEXT MENU
       ------------- */
 
-      ['contextmenu', e => e.preventDefault()],
+      ['contextmenu', eventHandlers.contextmenu(canvas)],
     ], 
     registerWorldHotKeys
-  )(canvas)
+  )
 }
 
 export default registerCanvas

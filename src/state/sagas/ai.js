@@ -94,7 +94,7 @@ function* playAi() {
           const diffX = Math.abs(position2.x - position1.x)
           const diffY = Math.abs(position2.y - position1.y)
           const width1 = diffX + 2 * margin
-          const width2 = Math.ceil((diffY + 2 * margin) * window.innerWidth / window.innerHeight)
+          const width2 = Math.ceil((diffY + 2 * margin) * window.canvas.width / window.canvas.height)
   
           const goalWidth = boundViewBoxWidth(Math.max(width1, width2))
           const goalX = boundViewBoxX(Math.min(position1.x, position2.x) - margin, goalWidth)

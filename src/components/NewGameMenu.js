@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import maps from '../lib/maps'
 
 import './NewGameMenu.css'
-import createNewGame from '../lib/createNewGame'
+import createNewGame from '../lib/game/createNewGame'
 import gameConfiguration from '../lib/gameConfiguration'
 
 class NewGameMenu extends Component {

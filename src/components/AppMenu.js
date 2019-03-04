@@ -12,7 +12,10 @@ class AppMenu extends Component {
     return (
       <div className="AppMenu absolute x4">
         <button type="button" style={{ marginRight: 10 }} onClick={window.reset}>
-          New Game
+          Reset
+        </button>
+        <button type="button" style={{ marginRight: 10 }} onClick={() => dispatch(push('/'))}>
+          Game
         </button>
         <button type="button" style={{ marginRight: 10 }} onClick={() => dispatch(push('/editor'))}>
           Editor

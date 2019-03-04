@@ -18,9 +18,11 @@ function viewBox(state = {}, action, globalState) {
 
     case 'RESET_VIEW_BOX': {
       const { worldMap } = globalState
-      const viewBoxWidth = worldMap[0].length
-      const tileSize = window.innerWidth / viewBoxWidth // pixel per tile
-      const viewBoxHeight = window.innerHeight / tileSize
+      const viewBoxWidth = Math.max(6, worldMap[0].length)
+      const width = window.canvas ? window.canvas.width : window.innerWidth
+      const height = window.canvas ? window.canvas.height : window.innerHeight
+      const tileSize = width / viewBoxWidth // pixel per tile
+      const viewBoxHeight = height / tileSize
 
       return {
         x: 0,
@@ -32,8 +34,8 @@ function viewBox(state = {}, action, globalState) {
         width: viewBoxWidth,
         goalWidth: viewBoxWidth,
         diffGoalWidth: 0,
-        offsetX: viewBoxWidth > worldMap[0].length ? (window.innerWidth - worldMap[0].length * tileSize) / 2 : 0,
-        offsetY: viewBoxHeight > worldMap.length ? (window.innerHeight - worldMap.length * tileSize) / 2 : 0,
+        offsetX: viewBoxWidth > worldMap[0].length ? (width - worldMap[0].length * tileSize) / 2 : 0,
+        offsetY: viewBoxHeight > worldMap.length ? (height - worldMap.length * tileSize) / 2 : 0,
       }
     }
 
@@ -41,14 +43,14 @@ function viewBox(state = {}, action, globalState) {
     case 'RESIZE_VIEW_BOX': {
       const { worldMap } = globalState
       const viewBoxWidth = action.payload.width || state.width
-      const tileSize = window.innerWidth / viewBoxWidth // pixel per tile
-      const viewBoxHeight = window.innerHeight / tileSize
+      const tileSize = window.canvas.width / viewBoxWidth // pixel per tile
+      const viewBoxHeight = window.canvas.height / tileSize
 
       return {
         ...state,
         ...action.payload,
-        offsetX: viewBoxWidth > worldMap[0].length ? (window.innerWidth - worldMap[0].length * tileSize) / 2 : 0,
-        offsetY: viewBoxHeight > worldMap.length ? (window.innerHeight - worldMap.length * tileSize) / 2 : 0,
+        offsetX: viewBoxWidth > worldMap[0].length ? (window.canvas.width - worldMap[0].length * tileSize) / 2 : 0,
+        offsetY: viewBoxHeight > worldMap.length ? (window.canvas.height - worldMap.length * tileSize) / 2 : 0,
       }
     }
     

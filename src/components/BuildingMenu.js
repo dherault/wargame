@@ -41,7 +41,7 @@ class BuildingMenu extends Component {
 
     if (!booleans.isBuildingMenuOpened || !selectedPosition) return null
 
-    const tileSize = window.innerWidth / viewBox.width // pixel per tile
+    const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const building = buildings.find(building => samePosition(building.position, selectedPosition))
 
     const movementTypes = buildingTypeToMovementTypes[building.type]

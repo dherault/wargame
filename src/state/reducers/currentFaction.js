@@ -6,7 +6,7 @@
     alive
   }
 */
-function currentFaction(state = {}, action, globalState, ongoingState) {
+function currentFaction(state = null, action, globalState, ongoingState) {
   switch (action.type) {
     case 'SET_CURRENT_FACTION':
       return action.payload
