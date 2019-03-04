@@ -49,7 +49,26 @@ function createNewEditor() {
   })
 
   store.dispatch({
+    type: 'DESELECT_UNIT',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_POSITION',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_TERRAIN',
+  })
+
+  store.dispatch({
     type: 'RESET_VIEW_BOX',
+  })
+
+  store.dispatch({
+    type: 'RESET_BOOLEANS',
+    payload: {
+      isEditing: true,
+    },
   })
 }
 

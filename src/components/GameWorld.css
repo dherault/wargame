@@ -1,8 +1,8 @@
-.World {
+.GameWorld {
   overflow: hidden;
 }
 
-.World-canvas {
+.GameWorld-canvas {
   display: block;
   width: 100vw;
   height: 100vh;

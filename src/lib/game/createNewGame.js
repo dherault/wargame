@@ -46,6 +46,21 @@ function createNewGame({ worldMap, buildings, units, factions }) {
   store.dispatch({ 
     type: 'BEGIN_PLAYER_TURN',
   })
+
+  store.dispatch({
+    type: 'DESELECT_UNIT',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_POSITION',
+  })
+
+  store.dispatch({
+    type: 'RESET_BOOLEANS',
+    payload: {
+      isPlaying: true,
+    },
+  })
 }
 
 export default createNewGame

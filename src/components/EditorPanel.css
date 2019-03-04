@@ -36,8 +36,8 @@
 .EditorPanel-terrain-item {
   margin: 4px 4px 0 0;
   padding-top: 4px;
-  border: 1px solid white;
   min-width: 72px;
+  cursor: pointer;
 }
 
 .EditorPanel-terrain-item-tile {

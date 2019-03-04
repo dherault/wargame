@@ -11,16 +11,16 @@ import TileInfo from './TileInfo'
 import TurnInfo from './TurnInfo'
 import UnitMenu from './UnitMenu'
 
-import './World.css'
+import './GameWorld.css'
 
-class World extends Component {
+class GameWorld extends Component {
 
   state = {
     devPanelOpened: process.env.NODE_ENV === 'development',
   }
 
   componentDidMount() {
-    console.log('Mounting World', window.innerWidth, window.innerHeight)
+    console.log('Mounting GameWorld', window.innerWidth, window.innerHeight)
 
     const canvas = document.getElementById('canvas-game')
 
@@ -52,11 +52,13 @@ class World extends Component {
     const { gameOver } = this.props
     const { devPanelOpened } = this.state
 
+    // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
     return (
-      <div className="World relative">
+      <div className="GameWorld relative">
         <canvas
           id="canvas-game"
-          className="World-canvas no-select"
+          className="GameWorld-canvas no-select"
+          tabIndex={0}
         />
         <BuildingMenu />
         <FireInfo />
@@ -74,4 +76,4 @@ const mapStateToProps = s => ({
   gameOver: s.gameOver,
 })
 
-export default connect(mapStateToProps)(World)
+export default connect(mapStateToProps)(GameWorld)

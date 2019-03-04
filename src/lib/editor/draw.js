@@ -1,12 +1,12 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-import { samePosition } from '../common/utils'
+// import { samePosition } from '../common/utils'
 import drawBuilding from '../common/world/drawBuilding'
 import drawUnit from '../common/world/drawUnit'
 
-// The main draw function for the game and editor
+// The main draw function for the editor
 function draw(_) {
-  const { booleans, viewBox, mouse, worldMap, buildings, units, selectedUnitId, selectedPosition } = store.getState()
+  const { viewBox, mouse, worldMap, buildings, units, selectedTerrainType, selectedPosition } = store.getState()
   const { width, height } = _.canvas
   const { offsetX, offsetY } = viewBox
 
@@ -43,6 +43,19 @@ function draw(_) {
       _.fill()
       _.stroke()
     }
+  }
+
+  if (selectedTerrainType && worldMap[mouse.y] && worldMap[mouse.y][mouse.x]) {
+    const { color } = gameConfiguration.terrainConfiguration[selectedTerrainType]
+
+    _.fillStyle = color
+    _.strokeStyle = color
+
+    _.beginPath()
+    _.rect((mouse.x - (viewBox.x % 1)) * tileSize + offsetX, (mouse.y - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
+    _.closePath()
+    _.fill()
+    _.stroke()
   }
 
   /* ---------------

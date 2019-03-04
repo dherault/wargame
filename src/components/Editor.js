@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import createNewEditor from '../lib/editor/createNewEditor'
 import registerCanvas from '../lib/editor/registerCanvas'
 
@@ -10,8 +11,9 @@ class Editor extends Component {
 
   componentDidMount() {
     console.log('Mounting Editor')
+    const { isEditing } = this.props
 
-    createNewEditor()
+    if (!isEditing) createNewEditor()
 
     const canvas = document.getElementById('canvas-editor')
 
@@ -41,6 +43,7 @@ class Editor extends Component {
         <canvas
           id="canvas-editor"
           className="Editor-canvas no-select"
+          tabIndex={0}
         />
         <EditorPanel />
       </div>
@@ -48,4 +51,8 @@ class Editor extends Component {
   }
 }
 
-export default Editor
+const mapStateToProps = s => ({
+  isEditing: s.booleans.isEditing,
+})
+
+export default connect(mapStateToProps)(Editor)

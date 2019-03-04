@@ -9,7 +9,7 @@ import drawUnit from '../common/world/drawUnit'
 let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
-// The main draw function for the game and editor
+// The main draw function for the game
 function draw(_) {
   const { booleans, viewBox, mouse, worldMap, buildings, units, selectedUnitId, selectedPosition } = store.getState()
   const { width, height } = _.canvas

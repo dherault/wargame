@@ -5,6 +5,8 @@ function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () =
 
   // For global canvas access
   window.canvas = canvas
+
+  canvas.focus()
     
   const _ = canvas.getContext('2d')
   const unregisterFn = registerFn(canvas)

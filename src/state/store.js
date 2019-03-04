@@ -16,8 +16,12 @@ import factions from './reducers/factions'
 import gameOver from './reducers/gameOver'
 import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
+import selectedBuildingType from './reducers/selectedBuildingType'
+import selectedFactionId from './reducers/selectedFactionId'
 import selectedPosition from './reducers/selectedPosition'
+import selectedTerrainType from './reducers/selectedTerrainType'
 import selectedUnitId from './reducers/selectedUnitId'
+import selectedUnitType from './reducers/selectedUnitType'
 import turn from './reducers/turn'
 import units from './reducers/units'
 import viewBox from './reducers/viewBox'
@@ -36,8 +40,12 @@ const reducers = {
   currentFaction, // must be after factions
   moneyByFaction,
   mouse,
+  selectedBuildingType,
+  selectedFactionId,
   selectedPosition,
+  selectedTerrainType,
   selectedUnitId,
+  selectedUnitType,
   turn,
   units, // must be after buildings and currentFaction
   gameOver, // must be after buildings and units

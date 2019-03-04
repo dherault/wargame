@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import World from './World'
+import GameWorld from './GameWorld'
 import NewGameMenu from './NewGameMenu'
 
 import './Game.css'
@@ -9,18 +9,18 @@ import './Game.css'
 class Game extends Component {
 
   render() {
-    const { currentFaction } = this.props
+    const { isPlaying } = this.props
 
     return (
       <div className="Game relative">
-        {currentFaction ? <World /> : <NewGameMenu />}
+        {isPlaying ? <GameWorld /> : <NewGameMenu />}
       </div>
     )
   }
 }
 
 const mapStateToProps = s => ({
-  currentFaction: s.currentFaction,
+  isPlaying: s.booleans.isPlaying,
 })
 
 export default connect(mapStateToProps)(Game)

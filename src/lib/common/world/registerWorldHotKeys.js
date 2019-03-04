@@ -11,14 +11,14 @@ function registerWorldHotKeys(canvas) {
     unregisterFunctions.push(hotkeys(...args))
   }
 
-  registerHotKeys(document.documentElement, 'plus', () => zoom(-1))
-  registerHotKeys(document.documentElement, '-', () => zoom(1))
+  registerHotKeys(canvas, 'plus', () => zoom(-1))
+  registerHotKeys(canvas, '-', () => zoom(1))
 
   const { viewBoxIntervalPeriod, viewBoxIncrements } = gameConfiguration
   const viewBoxDelay = viewBoxIncrements * viewBoxIntervalPeriod;
 
   ['z', 'up'].forEach(shortcut => {
-    registerHotKeys(document.documentElement, shortcut, () => {
+    registerHotKeys(canvas, shortcut, () => {
       const { viewBox } = store.getState()
       const goalY = boundViewBoxY(Math.round(viewBox.goalY - 1))
 
@@ -37,7 +37,7 @@ function registerWorldHotKeys(canvas) {
   });
 
   ['s', 'down'].forEach(shortcut => {
-    registerHotKeys(document.documentElement, shortcut, () => {
+    registerHotKeys(canvas, shortcut, () => {
       const { viewBox } = store.getState()
       const goalY = boundViewBoxY(Math.round(viewBox.goalY + 1))
 
@@ -56,7 +56,7 @@ function registerWorldHotKeys(canvas) {
   });
 
   ['q', 'left'].forEach(shortcut => {
-    registerHotKeys(document.documentElement, shortcut, () => {
+    registerHotKeys(canvas, shortcut, () => {
       const { viewBox } = store.getState()
       const goalX = boundViewBoxX(Math.round(viewBox.goalX - 1))
 
@@ -75,7 +75,7 @@ function registerWorldHotKeys(canvas) {
   });
 
   ['d', 'right'].forEach(shortcut => {
-    registerHotKeys(document.documentElement, shortcut, () => {
+    registerHotKeys(canvas, shortcut, () => {
       const { viewBox } = store.getState()
       const goalX = boundViewBoxX(Math.round(viewBox.goalX + 1))
 

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import gameConfiguration from '../lib/gameConfiguration'
 
 import './EditorPanel.css'
-import worldMap from '../state/reducers/worldMap';
 
 class EditorPanel extends Component {
 
@@ -49,7 +48,24 @@ class EditorPanel extends Component {
     })
   }
 
+  handleTerrainSelection = terrain => {
+    const { selectedTerrainType, dispatch } = this.props
+
+    if (selectedTerrainType === terrain) {
+      dispatch({
+        type: 'DESELECT_TERRAIN',
+      })
+    }
+    else {
+      dispatch({
+        type: 'SELECT_TERRAIN',
+        payload: terrain,
+      })
+    }
+  }
+
   render() {
+    const { selectedTerrainType } = this.props
     const { width, height } = this.state
 
     return (
@@ -88,9 +104,16 @@ class EditorPanel extends Component {
             {Object.entries(gameConfiguration.terrainConfiguration).map(([type, configuration]) => {
 
               if (gameConfiguration.buildingTerrains.includes(type)) return null
-
+              
               return (
-                <div key={type} className="EditorPanel-terrain-item y8">
+                <div 
+                  key={type} 
+                  className="EditorPanel-terrain-item no-select y8"
+                  style={{ 
+                    border: `1px solid ${selectedTerrainType === type ? '#d4d4d4' : 'white'}`, 
+                  }}
+                  onClick={() => this.handleTerrainSelection(type)}
+                >
                   <div className="EditorPanel-terrain-item-tile" style={{ backgroundColor: configuration.color }} />
                   <div>
                     {configuration.name}
@@ -113,6 +136,7 @@ class EditorPanel extends Component {
 
 const mapStateToProps = s => ({
   factions: s.factions,
+  selectedTerrainType: s.selectedTerrainType,
   worldMap: s.worldMap,
 })
 
