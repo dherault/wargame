@@ -14,13 +14,14 @@ export function boundViewBoxY(y, viewBoxWidth) {
   return Math.max(0, Math.min(worldMap.length - viewBoxHeight + 1, y))
 }
 
-export function boundViewBoxWidth(width) {
-  const { worldMap } = store.getState()
+export const minViewBoxWidth = 6
 
-  const bound1 = 6
-  // const bound1 = Math.min(6, worldMap[0].length)
-  // const bound2 = Math.max(worldMap[0].length, worldMap.length * window.canvas.width / window.canvas.height)
-  const bound2 = worldMap[0].length
+export function boundViewBoxWidth(width) {
+  const { worldMap, router } = store.getState()
+
+  const bound = router.location.pathname === '/editor'
+    ? Math.max(worldMap[0].length, worldMap.length * window.canvas.width / window.canvas.height)
+    : worldMap[0].length
   
-  return Math.max(bound1, Math.min(bound2, width))
+  return Math.max(minViewBoxWidth, Math.min(bound, width))
 }

@@ -1,5 +1,5 @@
 // import store from '../../state/store'
-import draw from '../common/world/draw'
+import draw from './draw'
 import canvasRegistrar from '../canvasRegistrar'
 // import { samePosition, findById } from '../common/utils'
 import registerWorldHotKeys from '../common/world/registerWorldHotKeys'
