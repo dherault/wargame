@@ -19,7 +19,7 @@ function drawBuilding(_, tileSize, building) {
   _.fill()
   _.stroke()
 
-  _.fillStyle = factionConfiguration ? factionConfiguration.color : gameConfiguration.terrainConfiguration.BUILDING.color
+  _.fillStyle = factionConfiguration ? factionConfiguration.color : gameConfiguration.terrainConfiguration[building.type].color
   _.fillRect((x + 0.1) * tileSize + offsetX, (y + 0.1) * tileSize + offsetY, 0.8 * tileSize, 0.8 * tileSize)
 
   switch (building.type) {

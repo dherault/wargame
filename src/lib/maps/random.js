@@ -53,7 +53,7 @@ function generateWorldMap(width = 20, seaWidth = 3) {
   ]
 
   buildings.forEach(building => {
-    worldMap[building.position.y][building.position.x] = 'BUILDING'
+    worldMap[building.position.y][building.position.x] = building.type
   })
 
   const units = [

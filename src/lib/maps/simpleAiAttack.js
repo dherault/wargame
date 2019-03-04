@@ -7,12 +7,12 @@ function simpleAiAttack() {
       { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
     ],
     worldMap: [
-      ['BUILDING', 'PLAIN', 'PLAIN'],
+      ['HEADQUARTERS', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['SEA', 'SEA', 'SEA'],
-      ['BUILDING', 'PLAIN', 'PLAIN'],
+      ['HEADQUARTERS', 'PLAIN', 'PLAIN'],
     ],
     buildings: [
       { type: 'HEADQUARTERS', team: 1, factionId: 'BLUE', capture: 100, position: { x: 0, y: 5 }, id: createId() },

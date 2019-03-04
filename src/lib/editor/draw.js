@@ -32,14 +32,6 @@ function draw(_) {
 
       if (!tile) continue 
 
-      if (tile === 'BUILDING') {
-        const building = buildings.find(building => samePosition(building.position, { x, y }))
-
-        drawBuilding(_, tileSize, building)
-
-        continue
-      }
-
       const { color } = gameConfiguration.terrainConfiguration[tile]
 
       _.fillStyle = color
@@ -52,6 +44,12 @@ function draw(_) {
       _.stroke()
     }
   }
+
+  /* ---------------
+    DRAW BUILDINGS
+  --------------- */
+
+  buildings.forEach(building => drawBuilding(_, tileSize, building))
 
   /* -----------
     DRAW UNITS

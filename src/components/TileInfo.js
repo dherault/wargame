@@ -20,11 +20,10 @@ class TileInfo extends Component {
     const tileConfiguration = gameConfiguration.terrainConfiguration[tile]
     const unit = units.find(unit => samePosition(unit.position, mouse))
     const building = buildings.find(building => samePosition(building.position, mouse))
-    const tileName = building ? gameConfiguration.buildingsConfiguration[building.type].name : tileConfiguration.name
 
     return ( 
       <div className="TileInfo absolute x4">
-        {tileName} (defense {tileConfiguration.defense}) 
+        {tileConfiguration.name} (defense {tileConfiguration.defense}) 
         {building && ` - capture ${building.capture}`} 
         {unit && ` - ${gameConfiguration.unitsConfiguration[unit.type].name}`}
       </div>

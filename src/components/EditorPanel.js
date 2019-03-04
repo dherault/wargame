@@ -87,7 +87,7 @@ class EditorPanel extends Component {
           <div className="EditorPanel-terrain x77">
             {Object.entries(gameConfiguration.terrainConfiguration).map(([type, configuration]) => {
 
-              if (type === 'BUILDING') return null
+              if (gameConfiguration.buildingTerrains.includes(type)) return null
 
               return (
                 <div key={type} className="EditorPanel-terrain-item y8">

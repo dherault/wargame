@@ -2,6 +2,7 @@ const gameConfiguration = {
   moneyPerCityPerTurn: 1000,
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
+  buildingTerrains: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',
@@ -69,8 +70,52 @@ const gameConfiguration = {
         SAIL: 1,
       },
     },
-    BUILDING: { // TODO: separate building into buildings types
-      name: 'Building',
+    HEADQUARTERS: {
+      name: 'HQ',
+      color: '#c1c1c1',
+      defense: 3,
+      movementCost: {
+        FOOT: 1,
+        WHEEL: 1,
+        FLY: 1,
+        SAIL: Infinity,
+      },
+    },
+    CITY: {
+      name: 'City',
+      color: '#c1c1c1',
+      defense: 3,
+      movementCost: {
+        FOOT: 1,
+        WHEEL: 1,
+        FLY: 1,
+        SAIL: Infinity,
+      },
+    },
+    BASE: {
+      name: 'Base',
+      color: '#c1c1c1',
+      defense: 3,
+      movementCost: {
+        FOOT: 1,
+        WHEEL: 1,
+        FLY: 1,
+        SAIL: Infinity,
+      },
+    },
+    AIRPORT: {
+      name: 'Airport',
+      color: '#c1c1c1',
+      defense: 3,
+      movementCost: {
+        FOOT: 1,
+        WHEEL: 1,
+        FLY: 1,
+        SAIL: Infinity,
+      },
+    },
+    PORT: {
+      name: 'Port',
       color: '#c1c1c1',
       defense: 3,
       movementCost: {

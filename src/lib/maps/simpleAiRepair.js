@@ -7,7 +7,7 @@ function simpleAiCapture() {
       { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
     ],
     worldMap: [
-      ['BUILDING', 'SEA', 'SEA', 'BUILDING'],
+      ['HEADQUARTERS', 'SEA', 'SEA', 'HEADQUARTERS'],
       ['PLAIN', 'SEA', 'SEA', 'PLAIN'],
       ['PLAIN', 'SEA', 'SEA', 'PLAIN'],
     ],

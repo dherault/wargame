@@ -11,7 +11,7 @@ function simpleAiAttack() {
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['SEA', 'SEA', 'SEA'],
-      ['BUILDING', 'BUILDING', 'PLAIN'],
+      ['HEADQUARTERS', 'HEADQUARTERS', 'PLAIN'],
     ],
     buildings: [
       { type: 'HEADQUARTERS', team: 1, factionId: 'BLUE', capture: 100, position: { x: 0, y: 4 }, id: createId() },

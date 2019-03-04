@@ -7,9 +7,9 @@ function simpleAiCapture() {
       { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
     ],
     worldMap: [
-      ['BUILDING', 'PLAIN', 'BUILDING'],
+      ['HEADQUARTERS', 'PLAIN', 'CITY'],
       ['SEA', 'SEA', 'SEA'],
-      ['BUILDING', 'PLAIN', 'PLAIN'],
+      ['HEADQUARTERS', 'PLAIN', 'PLAIN'],
     ],
     buildings: [
       { type: 'HEADQUARTERS', team: 2, factionId: 'RED', capture: 100, position: { x: 0, y: 2 }, id: createId() },
