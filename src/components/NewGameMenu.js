@@ -2,15 +2,62 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import maps from '../lib/maps'
-
-import './NewGameMenu.css'
 import createNewGame from '../lib/game/createNewGame'
 import gameConfiguration from '../lib/gameConfiguration'
+import { cloneArrayOfObjects } from '../lib/common/utils'
+
+import './NewGameMenu.css'
+
+import FactionTypeSelector from './FactionTypeSelector'
 
 class NewGameMenu extends Component {
 
-  handleMapClick(mapDefinition) {
-    createNewGame(mapDefinition)
+  state = {
+    selectedMapDefinition: null,
+  }
+
+  updateSelectedMapDefinitionFactions = factions => {
+    const { selectedMapDefinition } = this.state
+
+    console.log('factions', factions)
+    this.setState({
+      selectedMapDefinition: {
+        ...selectedMapDefinition,
+        factions,
+      },
+    })
+  }
+
+  handleFactionTypeSelectorSubmit = () => {
+    const { selectedMapDefinition } = this.state
+    
+    const factionsById = {}
+    const mapdefinition = Object.assign({}, selectedMapDefinition)
+
+    mapdefinition.factions.forEach(faction => {
+      factionsById[faction.id] = faction
+    })
+
+    mapdefinition.units = cloneArrayOfObjects(mapdefinition.units)
+    mapdefinition.building = cloneArrayOfObjects(mapdefinition.buildings)
+
+    mapdefinition.units.forEach(unit => {
+      unit.team = factionsById[unit.factionId].team
+    })
+
+    mapdefinition.buildings.forEach(building => {
+      const faction = factionsById[building.factionId]
+      
+      building.team = faction ? faction.team : 0
+    })
+
+    createNewGame(mapdefinition)
+  }
+
+  handleFactionTypeSelectorCancel = () => {
+    this.setState({
+      selectedMapDefinition: null,
+    })
   }
 
   createWorldMapMiniature(worldMap) {
@@ -32,15 +79,17 @@ class NewGameMenu extends Component {
   }
 
   render() {
+    const { selectedMapDefinition } = this.state
+
     return (
-      <div className="NewGameMenu x5">
+      <div className="NewGameMenu x5 relative">
         <div className="NewGameMenu-inner">
           <h1>New Game</h1>
           <div className="x77">
             {maps.map((mapDefinition, i) => (
               <div 
                 key={i} 
-                onClick={() => this.handleMapClick(mapDefinition)}
+                onClick={() => this.setState({ selectedMapDefinition: mapDefinition })}
                 className="NewGameMenu-item y8"
               >
                 <div>{mapDefinition.name}</div>
@@ -50,6 +99,14 @@ class NewGameMenu extends Component {
             ))}
           </div>
         </div>
+        {selectedMapDefinition && (
+          <FactionTypeSelector 
+            factions={selectedMapDefinition.factions} 
+            updateFactions={this.updateSelectedMapDefinitionFactions}
+            submit={this.handleFactionTypeSelectorSubmit}
+            cancel={this.handleFactionTypeSelectorCancel}
+          />
+        )}
       </div>
     )
   }

@@ -69,7 +69,12 @@ function registerCanvas(canvas) {
       ['mousemove', () => {
         const { booleans, mouse, selectedTerrainType, worldMap } = store.getState()
 
-        if (booleans.isLeftButtonDown && selectedTerrainType && worldMap[mouse.y] && worldMap[mouse.y][mouse.x] !== selectedTerrainType) {
+        if (
+          booleans.isLeftButtonDown 
+          && selectedTerrainType 
+          && worldMap[mouse.y] 
+          && worldMap[mouse.y][mouse.x] !== selectedTerrainType
+        ) {
           updateWorldMapWithSelectedTerrain()
         }
       }],
