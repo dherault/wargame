@@ -23,10 +23,11 @@ import selectedUnitId from './reducers/selectedUnitId'
 import selectedUnitType from './reducers/selectedUnitType'
 import turn from './reducers/turn'
 import units from './reducers/units'
+import userMapDefinitions from './reducers/userMapDefinitions'
 import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
 
-import aiSaga from './sagas/ai'
+import turnSaga from './sagas/turn'
 import viewBoxSaga from './sagas/viewBox'
 
 // Reducers must be placed in a certain order
@@ -47,6 +48,7 @@ const reducers = {
   turn,
   units, // must be after buildings and currentFaction
   gameOver, // must be after buildings and units
+  userMapDefinitions,
   viewBox,
   worldMap,
   router: connectRouter(history),
@@ -56,7 +58,7 @@ const reducer = createReducer(reducers)
 
 function* rootSaga() {
   yield all([
-    aiSaga(),
+    turnSaga(),
     viewBoxSaga(),
   ])
 }

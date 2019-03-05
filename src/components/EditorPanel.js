@@ -17,6 +17,7 @@ class EditorPanel extends Component {
       width: worldMap[0].length,
       height: worldMap.length,
       name: 'My map',
+      description: '',
     }
 
     this.ref = React.createRef()
@@ -26,6 +27,10 @@ class EditorPanel extends Component {
     const { factions } = this.props
 
     const validations = []
+
+    if (factions.length < 2) {
+      validations.push('You need at least two factions to play')
+    }
 
     for (let i = 0; i < factions.length; i++) {
       const faction = factions[i]
@@ -216,9 +221,26 @@ class EditorPanel extends Component {
     }
   }
 
+  handleSubmitClick = () => {
+    const { worldMap, factions, buildings, units, dispatch } = this.props
+    const { name, description } = this.state
+
+    dispatch({
+      type: 'ADD_USER_MAP_DEFINITION',
+      payload: {
+        worldMap,
+        factions,
+        buildings,
+        units,
+        name,
+        description,
+      },
+    })
+  }
+
   render() {
     const { factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = this.props
-    const { width, height, name } = this.state
+    const { width, height, name, description } = this.state
 
     const validations = this.validateMap()
 
@@ -355,7 +377,20 @@ class EditorPanel extends Component {
           </header>
           <div className="EditorPanel-save">
             <div>
-              <input type="text" value={name} onChange={e => this.setState({ name: e.target.value })} />
+              <input 
+                type="text" 
+                value={name} 
+                onChange={e => this.setState({ name: e.target.value })} 
+                placeholder="name"
+              />
+            </div>
+            <div>
+              <textarea 
+                className="EditorPanel-save-textarea"
+                value={description} 
+                onChange={e => this.setState({ description: e.target.value })} 
+                placeholder="description"
+              />
             </div>
             <div className="EditorPanel-save-validation">
               {validations.map(validation => (
@@ -364,7 +399,7 @@ class EditorPanel extends Component {
                 </div>
               ))}
             </div>
-            <button type="button" disabled={!!validations.length}>
+            <button type="button" disabled={!!validations.length} onClick={this.handleSubmitClick}>
               Save map
             </button>
           </div>

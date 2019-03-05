@@ -27,7 +27,7 @@ function updateFactions() {
 
   const factionIds = new Set()
 
-  buildings.forEach(building => factionIds.add(building.factionId))
+  buildings.forEach(building => building.factionId && factionIds.add(building.factionId))
   units.forEach(unit => factionIds.add(unit.factionId))
 
   const nextFactions = []

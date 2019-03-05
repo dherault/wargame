@@ -135,8 +135,13 @@ function* playAi() {
   }
 }
 
+function focusCanvas() {
+  window.canvas.focus()
+}
+
 function* aiSaga() {
   yield takeEvery('BEGIN_PLAYER_TURN', playAi)
+  yield takeEvery('BEGIN_PLAYER_TURN', focusCanvas)
 }
 
 export default aiSaga

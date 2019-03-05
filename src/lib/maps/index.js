@@ -1,3 +1,4 @@
+import duel from './duel'
 import random from './random'
 import simpleAiAttack from './simpleAiAttack'
 import simpleAiAttack2 from './simpleAiAttack2'
@@ -9,6 +10,7 @@ import viewBoxOffset1 from './viewBoxOffset1'
 import viewBoxOffset2 from './viewBoxOffset2'
 
 export default [
+  duel(),
   random(), 
   simpleAiAttack(),
   simpleAiAttack2(),
