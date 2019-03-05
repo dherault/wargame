@@ -5,8 +5,10 @@ function prepareMap({ worldMap, factions, buildings, units }) {
   const nextBuidlings = cloneArrayOfObjects(buildings)
   const nextUnits = cloneArrayOfObjects(units)
 
-  nextFactions.forEach(faction => {
+  nextFactions.forEach((faction, i) => {
     if (typeof faction.alive !== 'boolean') faction.alive = true
+    if (!faction.type) faction.type = faction.id === 'BLUE' ? 'HUMAN' : 'COMPUTER'
+    if (!faction.team) faction.team = i + 1
   })
 
   nextBuidlings.forEach(building => {

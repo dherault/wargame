@@ -80,7 +80,7 @@ class NewGameMenu extends Component {
       <div className="NewGameMenu x5 relative">
         <div className="NewGameMenu-inner">
           <h1>New Game</h1>
-          {userMapDefinitions.length && (
+          {!!userMapDefinitions.length && (
             <div>
               <h2>User created maps</h2>
               <div className="x77">
