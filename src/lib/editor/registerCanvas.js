@@ -1,23 +1,42 @@
 import store from '../../state/store'
 import draw from './draw'
-import canvasRegistrar from '../canvasRegistrar'
-// import { samePosition, findById } from '../common/utils'
+import gameConfiguration from '../gameConfiguration'
+import canvasRegistrar from '../common/canvasRegistrar'
+import { samePosition } from '../common/utils'
 import registerWorldHotKeys from '../common/world/registerWorldHotKeys'
 import eventHandlers from '../common/world/eventHandlers'
 
-function updateWorldMapWithSelectedTerrain() {
-  const { worldMap, mouse, selectedTerrainType } = store.getState()
+function updateWorldMapWithTerrain(terrainType) {
+  const { worldMap, mouse } = store.getState()
 
   if (!(worldMap[mouse.y] && worldMap[mouse.y][mouse.x])) return
 
   const nextWorldMap = worldMap.slice()
 
   nextWorldMap[mouse.y] = nextWorldMap[mouse.y].slice()
-  nextWorldMap[mouse.y][mouse.x] = selectedTerrainType
+  nextWorldMap[mouse.y][mouse.x] = terrainType
 
   store.dispatch({
     type: 'SET_WORLD_MAP',
     payload: nextWorldMap,
+  })
+}
+
+function updateFactions() {
+  const { units, buildings } = store.getState()
+
+  const factionIds = new Set()
+
+  buildings.forEach(building => factionIds.add(building.factionId))
+  units.forEach(unit => factionIds.add(unit.factionId))
+
+  const nextFactions = []
+
+  factionIds.forEach(factionId => nextFactions.push({ id: factionId }))
+
+  store.dispatch({
+    type: 'SET_FACTIONS',
+    payload: nextFactions,
   })
 }
 
@@ -43,10 +62,79 @@ function registerCanvas(canvas) {
             },
           })
 
-          const { selectedTerrainType } = store.getState()
+          const { mouse, buildings, units, worldMap, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = store.getState()
+
+          const tile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
+
+          if (!tile) return
+
+          let existingBuildingIndex = buildings.findIndex(building => samePosition(building.position, mouse))
 
           if (selectedTerrainType) {
-            updateWorldMapWithSelectedTerrain()
+            updateWorldMapWithTerrain(selectedTerrainType)
+
+            if (existingBuildingIndex !== -1) {
+              const nextBuildings = buildings.slice()
+
+              nextBuildings.splice(existingBuildingIndex, 1)
+
+              store.dispatch({
+                type: 'SET_BUILDINGS',
+                payload: nextBuildings,
+              })
+            }
+          }
+
+          if (selectedBuildingType) {
+            updateWorldMapWithTerrain(selectedBuildingType)
+
+            if (existingBuildingIndex === -1) {
+              existingBuildingIndex = buildings.length
+            }
+
+            const nextBuildings = buildings.slice()
+
+            nextBuildings[existingBuildingIndex] = { 
+              type: selectedBuildingType, 
+              factionId: selectedFactionId, 
+              position: mouse, 
+            }
+
+            store.dispatch({
+              type: 'SET_BUILDINGS',
+              payload: nextBuildings,
+            })
+
+            updateFactions()
+          }
+
+          if (selectedUnitType) {
+            const movementCost = gameConfiguration.terrainConfiguration[tile].movementCost[gameConfiguration.unitsConfiguration[selectedUnitType].movementType]
+
+            if (movementCost !== Infinity) {
+              let existingUnitIndex = units.findIndex(unit => samePosition(unit.position, mouse))
+  
+              if (existingUnitIndex === -1) {
+                existingUnitIndex = units.length
+              }
+  
+              const nextUnits = units.slice()
+  
+              nextUnits[existingUnitIndex] = {
+                id: Math.random().toString().slice(2), // TODO: remove id
+                type: selectedUnitType,
+                factionId: selectedFactionId,
+                position: mouse,
+                life: 100,
+              }
+  
+              store.dispatch({
+                type: 'SET_UNITS',
+                payload: nextUnits,
+              })
+  
+              updateFactions()
+            }
           }
         }
       }],
@@ -75,7 +163,7 @@ function registerCanvas(canvas) {
           && worldMap[mouse.y] 
           && worldMap[mouse.y][mouse.x] !== selectedTerrainType
         ) {
-          updateWorldMapWithSelectedTerrain()
+          updateWorldMapWithTerrain(selectedTerrainType)
         }
       }],
 

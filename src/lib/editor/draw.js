@@ -6,7 +6,7 @@ import drawUnit from '../common/world/drawUnit'
 
 // The main draw function for the editor
 function draw(_) {
-  const { viewBox, mouse, worldMap, buildings, units, selectedTerrainType, selectedPosition } = store.getState()
+  const { viewBox, mouse, worldMap, buildings, units, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, selectedPosition } = store.getState()
   const { width, height } = _.canvas
   const { offsetX, offsetY } = viewBox
 
@@ -15,6 +15,7 @@ function draw(_) {
   
   const tileSize = width / viewBox.width // pixel per tile
   const viewBoxHeight = Math.ceil(height / tileSize) // tiles
+  const mouseTile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
 
   // console.log('tileSize', viewBox.width)
   _.lineWidth = 1
@@ -45,7 +46,25 @@ function draw(_) {
     }
   }
 
-  if (selectedTerrainType && worldMap[mouse.y] && worldMap[mouse.y][mouse.x]) {
+  /* ---------------
+    DRAW BUILDINGS
+  --------------- */
+
+  buildings.forEach(building => drawBuilding(_, tileSize, building))
+
+  /* ---------------
+    DRAW SELECTION
+  --------------- */
+
+  if (selectedBuildingType && mouseTile) {
+    drawBuilding(_, tileSize, {
+      type: selectedBuildingType,
+      factionId: selectedFactionId,
+      position: mouse,
+    })
+  }
+
+  if (selectedTerrainType && mouseTile) {
     const { color } = gameConfiguration.terrainConfiguration[selectedTerrainType]
 
     _.fillStyle = color
@@ -58,17 +77,21 @@ function draw(_) {
     _.stroke()
   }
 
-  /* ---------------
-    DRAW BUILDINGS
-  --------------- */
-
-  buildings.forEach(building => drawBuilding(_, tileSize, building))
-
   /* -----------
     DRAW UNITS
   ----------- */
 
   units.forEach(unit => drawUnit(_, tileSize, unit)) 
+
+  if (selectedUnitType && mouseTile) {
+    drawUnit(_, tileSize, {
+      type: selectedUnitType,
+      factionId: selectedFactionId,
+      position: mouse,
+      life: 100,
+      id: '0',
+    })
+  }
 
   /* ---------------------------
     DRAW TILE SELECTION SQUARE

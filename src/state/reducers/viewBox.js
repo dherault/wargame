@@ -21,8 +21,7 @@ function viewBox(state = {}, action, globalState) {
     case 'RESET_VIEW_BOX': {
       const { worldMap } = globalState
       const viewBoxWidth = Math.max(minViewBoxWidth, worldMap[0].length)
-      const width = window.canvas ? window.canvas.width : window.innerWidth
-      const height = window.canvas ? window.canvas.height : window.innerHeight
+      const { width, height } = window.canvas
       const tileSize = width / viewBoxWidth // pixel per tile
       const viewBoxHeight = height / tileSize
 

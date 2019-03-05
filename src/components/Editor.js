@@ -9,12 +9,14 @@ import EditorPanel from './EditorPanel'
 
 class Editor extends Component {
 
+  constructor(props) {
+    super(props)
+
+    if (!props.isEditing) createNewEditor()
+  }
+
   componentDidMount() {
     console.log('Mounting Editor')
-    const { isEditing } = this.props
-
-    if (!isEditing) createNewEditor()
-
     const canvas = document.getElementById('canvas-editor')
 
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
@@ -37,6 +39,7 @@ class Editor extends Component {
   }
 
   render() {
+    const { isEditing } = this.props
 
     return (
       <div className="Editor">
@@ -45,7 +48,7 @@ class Editor extends Component {
           className="Editor-canvas no-select"
           tabIndex={0}
         />
-        <EditorPanel />
+        {isEditing && <EditorPanel />}
       </div>
     )
   }

@@ -39,10 +39,6 @@ function createNewGame({ worldMap, buildings, units, factions }) {
     payload: moneyByFaction,
   })
 
-  store.dispatch({
-    type: 'RESET_VIEW_BOX',
-  })
-
   store.dispatch({ 
     type: 'BEGIN_PLAYER_TURN',
   })

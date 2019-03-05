@@ -6,6 +6,8 @@
   background-color: white;
   height: 100vh;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+  max-height: 100vh;
+  overflow-y: scroll;
 }
 
 .EditorPanel > section > header {
@@ -43,4 +45,36 @@
 .EditorPanel-terrain-item-tile {
   width: 32px;
   height: 32px;
+}
+
+.EditorPanel-buildings {
+  margin: 8px;
+}
+
+.EditorPanel-buildings-item {
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.EditorPanel-units {
+  margin: 8px;
+}
+
+.EditorPanel-units-item {
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.EditorPanel-factions {
+  padding: 8px;
+}
+
+.EditorPanel-save {
+  padding: 8px;
+}
+
+.EditorPanel-save-validation {
+  color: red;
 }

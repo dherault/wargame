@@ -1,6 +1,6 @@
 import store from '../../state/store'
 import draw from './draw'
-import canvasRegistrar from '../canvasRegistrar'
+import canvasRegistrar from '../common/canvasRegistrar'
 import computeFireDamage from './computeFireDamage'
 import computeMovementPositions from './computeMovementPositions'
 import computeRangePositions from './computeRangePositions'

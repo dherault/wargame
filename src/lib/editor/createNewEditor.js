@@ -61,7 +61,19 @@ function createNewEditor() {
   })
 
   store.dispatch({
-    type: 'RESET_VIEW_BOX',
+    type: 'DESELECT_FACTION_ID',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_TERRAIN_TYPE',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_BUILDING_TYPE',
+  })
+
+  store.dispatch({
+    type: 'DESELECT_UNIT_TYPE',
   })
 
   store.dispatch({

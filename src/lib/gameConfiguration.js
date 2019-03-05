@@ -176,16 +176,16 @@ const gameConfiguration = {
     },
   },
   buildingsConfiguration: {
+    HEADQUARTERS: {
+      name: 'HQ',
+      reparableMovementTypes: ['FOOT', 'WHEEL'],
+    },
     CITY: {
       name: 'City',
       reparableMovementTypes: ['FOOT', 'WHEEL'],
     },
     BASE: {
       name: 'Base',
-      reparableMovementTypes: ['FOOT', 'WHEEL'],
-    },
-    HEADQUARTERS: {
-      name: 'HQ',
       reparableMovementTypes: ['FOOT', 'WHEEL'],
     },
     PORT: {

@@ -1,4 +1,4 @@
-import { randomArray, randomPop, createId } from '../common/utils'
+import { randomArray, randomPop } from '../common/utils'
 
 const tilesTypes = [
   'PLAIN',
@@ -40,16 +40,16 @@ function generateWorldMap(width = 20, seaWidth = 3) {
   }
 
   const buildings = [
-    { type: 'HEADQUARTERS', factionId: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'HEADQUARTERS', factionId: 'RED', team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'HEADQUARTERS', factionId: 'YELLOW', team: 3, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: 'RED', team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: null, team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'CITY', factionId: null, team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: 'BLUE', team: 1, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: 'RED', team: 2, capture: 100, position: randomPop(landTiles), id: createId() },
-    { type: 'BASE', factionId: null, team: 0, capture: 100, position: randomPop(landTiles), id: createId() },
+    { type: 'HEADQUARTERS', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'HEADQUARTERS', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'HEADQUARTERS', factionId: 'YELLOW', position: randomPop(landTiles) },
+    { type: 'CITY', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'CITY', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'CITY', factionId: null, position: randomPop(landTiles) },
+    { type: 'CITY', factionId: null, position: randomPop(landTiles) },
+    { type: 'BASE', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'BASE', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'BASE', factionId: null, position: randomPop(landTiles) },
   ]
 
   buildings.forEach(building => {
@@ -57,26 +57,26 @@ function generateWorldMap(width = 20, seaWidth = 3) {
   })
 
   const units = [
-    { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'TANK', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'ARTILLERY', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'BLUE', team: 1, life: 100, played: false, position: randomPop(seaTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'TANK', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'ARTILLERY', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'RED', team: 2, life: 100, played: false, position: randomPop(seaTiles), id: createId() },
-    { type: 'INFANTERY', factionId: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(landTiles), id: createId() },
-    { type: 'SUBMARINE', factionId: 'YELLOW', team: 3, life: 100, played: false, position: randomPop(seaTiles), id: createId() },
+    { type: 'INFANTERY', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'INFANTERY', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'INFANTERY', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'TANK', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'ARTILLERY', factionId: 'BLUE', position: randomPop(landTiles) },
+    { type: 'SUBMARINE', factionId: 'BLUE', position: randomPop(seaTiles) },
+    { type: 'INFANTERY', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'INFANTERY', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'INFANTERY', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'TANK', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'ARTILLERY', factionId: 'RED', position: randomPop(landTiles) },
+    { type: 'SUBMARINE', factionId: 'RED', position: randomPop(seaTiles) },
+    { type: 'INFANTERY', factionId: 'YELLOW', position: randomPop(landTiles) },
+    { type: 'SUBMARINE', factionId: 'YELLOW', position: randomPop(seaTiles) },
   ]
 
   const factions = [
-    { id: 'BLUE', team: 1, alive: true, type: 'HUMAN' }, 
-    { id: 'RED', team: 2, alive: true, type: 'COMPUTER' },
-    { id: 'YELLOW', team: 3, alive: true, type: 'COMPUTER' },
+    { id: 'BLUE', team: 1, type: 'HUMAN' }, 
+    { id: 'RED', team: 2, type: 'COMPUTER' },
+    { id: 'YELLOW', team: 3, type: 'COMPUTER' },
   ]
 
   return { 

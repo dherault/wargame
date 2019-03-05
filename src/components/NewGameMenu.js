@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import maps from '../lib/maps'
+import prepareMap from '../lib/game/prepareMap'
 import createNewGame from '../lib/game/createNewGame'
 import gameConfiguration from '../lib/gameConfiguration'
-import { cloneArrayOfObjects } from '../lib/common/utils'
 
 import './NewGameMenu.css'
 
@@ -30,28 +30,8 @@ class NewGameMenu extends Component {
 
   handleFactionTypeSelectorSubmit = () => {
     const { selectedMapDefinition } = this.state
-    
-    const factionsById = {}
-    const mapdefinition = Object.assign({}, selectedMapDefinition)
 
-    mapdefinition.factions.forEach(faction => {
-      factionsById[faction.id] = faction
-    })
-
-    mapdefinition.units = cloneArrayOfObjects(mapdefinition.units)
-    mapdefinition.building = cloneArrayOfObjects(mapdefinition.buildings)
-
-    mapdefinition.units.forEach(unit => {
-      unit.team = factionsById[unit.factionId].team
-    })
-
-    mapdefinition.buildings.forEach(building => {
-      const faction = factionsById[building.factionId]
-      
-      building.team = faction ? faction.team : 0
-    })
-
-    createNewGame(mapdefinition)
+    createNewGame(prepareMap(selectedMapDefinition))
   }
 
   handleFactionTypeSelectorCancel = () => {
