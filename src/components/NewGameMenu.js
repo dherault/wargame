@@ -5,6 +5,7 @@ import maps from '../lib/maps'
 import prepareMap from '../lib/game/prepareMap'
 import createNewGame from '../lib/game/createNewGame'
 import gameConfiguration from '../lib/gameConfiguration'
+import { samePosition } from '../lib/common/utils'
 
 import './NewGameMenu.css'
 
@@ -48,24 +49,36 @@ class NewGameMenu extends Component {
         className="NewGameMenu-item y8"
       >
         <div>{mapDefinition.name}</div>
-        <div>{this.renderWorldMapMiniature(mapDefinition.worldMap)}</div>
+        <div>{this.renderWorldMapMiniature(mapDefinition)}</div>
         <div>{mapDefinition.description}</div>
       </div>
     )
   }
 
-  renderWorldMapMiniature(worldMap) {
+  renderWorldMapMiniature({ worldMap, buildings }) {
     return (
       <div>
         {worldMap.map((row, j) => (
           <div key={j} className="x4">
-            {row.map((tile, i) => (
-              <div 
-                key={i}
-                className="NewGameMenu-tile"
-                style={{ backgroundColor: gameConfiguration.terrainConfiguration[tile].color }}
-              />
-            ))}
+            {row.map((tile, i) => {
+              let { color } = gameConfiguration.terrainConfiguration[tile]
+
+              if (gameConfiguration.buildingTerrains.includes(tile)) {
+                const { factionId } = buildings.find(building => samePosition(building.position, { x: i, y: j }))
+
+                if (factionId !== null) {
+                  ({ color } = gameConfiguration.factionsConfiguration[factionId])
+                }
+              }
+
+              return (
+                <div 
+                  key={i}
+                  className="NewGameMenu-tile"
+                  style={{ backgroundColor: color }}
+                />
+              )
+            })}
           </div>
         ))}
       </div>

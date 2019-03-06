@@ -8,16 +8,15 @@ function simpleAiAttack() {
       ['HEADQUARTERS', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
       ['PLAIN', 'PLAIN', 'PLAIN'],
-      ['PLAIN', 'PLAIN', 'PLAIN'],
       ['SEA', 'SEA', 'SEA'],
       ['HEADQUARTERS', 'PLAIN', 'PLAIN'],
     ],
     buildings: [
-      { type: 'HEADQUARTERS', factionId: 'BLUE', position: { x: 0, y: 5 } },
+      { type: 'HEADQUARTERS', factionId: 'BLUE', position: { x: 0, y: 4 } },
       { type: 'HEADQUARTERS', factionId: 'RED', position: { x: 0, y: 0 } },
     ],
     units: [
-      { type: 'INFANTERY', factionId: 'BLUE', position: { x: 1, y: 5 } },
+      { type: 'INFANTERY', factionId: 'BLUE', position: { x: 1, y: 4 } },
       { type: 'ARTILLERY', factionId: 'RED', position: { x: 1, y: 0 } },
     ],
     name: 'Simple AI sattack',

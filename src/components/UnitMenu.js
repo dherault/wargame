@@ -19,6 +19,8 @@ class UnitMenu extends Component {
         isUnitMenuOpened: false,
       },
     })
+
+    window.canvas.focus()
   }
 
   moveUnit = () => {
@@ -129,7 +131,7 @@ class UnitMenu extends Component {
         {buildings.some(building => // If there is a building
           building.team !== selectedUnit.team // From opposite or no team
           && samePosition(selectedPosition, building.position) // at selected position
-          && selectedUnit.type === 'INFANTERY' // and the selected unit can capture it
+          && (selectedUnit.type === 'INFANTERY' || selectedUnit.type === 'MECH') // and the selected unit can capture it
         ) && (
           <div className="UnitMenu-item" onClick={this.handleCaptureClick}>
             Capture

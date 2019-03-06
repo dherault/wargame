@@ -34,6 +34,7 @@ class BuildingMenu extends Component {
       },
     })
 
+    window.canvas.focus()
   }
 
   render() {

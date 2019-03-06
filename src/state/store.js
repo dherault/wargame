@@ -28,13 +28,14 @@ import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
 
 import turnSaga from './sagas/turn'
+import unitsSaga from './sagas/units'
 import viewBoxSaga from './sagas/viewBox'
 
 // Reducers must be placed in a certain order
 // See createReducer
-const reducers = {
+const reducer = createReducer({
   booleans, 
-  buildings,
+  buildings, // must be before units
   factions,
   currentFaction, // must be after factions
   moneyByFaction,
@@ -52,13 +53,12 @@ const reducers = {
   viewBox,
   worldMap,
   router: connectRouter(history),
-}
-
-const reducer = createReducer(reducers)
+})
 
 function* rootSaga() {
   yield all([
     turnSaga(),
+    unitsSaga(),
     viewBoxSaga(),
   ])
 }

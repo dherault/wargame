@@ -1,3 +1,4 @@
+import gameConfiguration from '../../lib/gameConfiguration'
 import { createId, samePosition } from '../../lib/common/utils'
 import DataError from '../../lib/common/DataError'
 
@@ -47,8 +48,7 @@ function units(state = [], action, globalState, ongoingState) {
     }
 
     case 'FIRE': {
-      const { attackerId, defenderId, damages } = action.payload
-      const [attackerDamage, defenderDamage] = damages
+      const { attackerId, defenderId, damages: [attackerDamage, defenderDamage] } = action.payload
       const units = state.slice()
       const attackerUnitIndex = units.findIndex(u => u.id === attackerId)
       const defenderUnitIndex = units.findIndex(u => u.id === defenderId)
@@ -56,23 +56,25 @@ function units(state = [], action, globalState, ongoingState) {
       if (attackerUnitIndex === -1) throw new DataError('Units - FIRE - Attacker not found', { attackerId })
       if (defenderUnitIndex === -1) throw new DataError('Units - FIRE - Defender not found', { defenderId })
 
-      const nextAttacker = Object.assign({}, units[attackerUnitIndex], { life: units[attackerUnitIndex].life - defenderDamage })
-      const nextDefender = Object.assign({}, units[defenderUnitIndex], { life: units[defenderUnitIndex].life - attackerDamage })
+      units[attackerUnitIndex] = { 
+        ...units[attackerUnitIndex],
+        life: units[attackerUnitIndex].life - defenderDamage,
+      }
+      units[defenderUnitIndex] = { 
+        ...units[defenderUnitIndex],
+        life: units[defenderUnitIndex].life - attackerDamage,
+      }
 
-      if (nextAttacker.life > 0) {
-        units[attackerUnitIndex] = nextAttacker
-      }
-      else {
-        units.splice(attackerUnitIndex, 1)
-      }
+      // If life <= 0, unitSaga will trigger KILL_UNIT
+      return units
+    }
 
-      if (nextDefender.life > 0) {
-        units[defenderUnitIndex] = nextDefender
-      }
-      else {
-        units.splice(defenderUnitIndex, 1)
-      }
-      // NOTE: you cannot splice both indexes (would lead to index shifting) since both units cannot die in a confrontation
+    case 'KILL_UNIT': {
+      const { unitId } = action.payload
+      const units = state.slice()
+      const unitIndex = units.findIndex(u => u.id === unitId)
+
+      units.splice(unitIndex, 1)
 
       return units
     }
@@ -87,6 +89,7 @@ function units(state = [], action, globalState, ongoingState) {
       return state.filter(unit => remainingFactionIds.includes(unit.factionId))
     }
 
+    // On every turn beginning we repair the units on cities
     case 'BEGIN_PLAYER_TURN': {
       const { currentFaction, buildings } = ongoingState
       
@@ -94,8 +97,17 @@ function units(state = [], action, globalState, ongoingState) {
 
         const building = buildings.find(building => building.factionId === currentFaction.id && samePosition(building.position, unit.position))
         
+        // A building can only repair certain movement types
         if (building) {
-          return Object.assign({}, unit, { life: Math.min(100, unit.life + 20) })
+          const { reparableMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
+          const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
+
+          if (reparableMovementTypes.includes(movementType)) {
+            return { 
+              ...unit,
+              life: Math.min(100, unit.life + 20),
+            }
+          }
         }
 
         return unit

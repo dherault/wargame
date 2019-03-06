@@ -3,6 +3,7 @@ const gameConfiguration = {
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
   buildingTerrains: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
+  captureUnits: ['INFANTERY', 'MECH'],
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',

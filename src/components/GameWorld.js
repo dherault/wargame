@@ -21,7 +21,6 @@ class GameWorld extends Component {
 
   componentDidMount() {
     console.log('Mounting GameWorld', window.innerWidth, window.innerHeight)
-
     const canvas = document.getElementById('canvas-game')
 
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)

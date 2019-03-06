@@ -136,7 +136,9 @@ function* playAi() {
 }
 
 function focusCanvas() {
-  window.canvas.focus()
+  if (window.canvas) {
+    window.canvas.focus()
+  }
 }
 
 function* aiSaga() {

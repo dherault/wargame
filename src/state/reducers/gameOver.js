@@ -13,7 +13,7 @@ function gameOver(state = false, action, globalState, ongoingState) {
       return remainingHqTeams.size === 1
     }
 
-    case 'FIRE': {
+    case 'KILL_UNIT': {
       const { units } = ongoingState
       const remainingUnitsTeams = new Set()
 

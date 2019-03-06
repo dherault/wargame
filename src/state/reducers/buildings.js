@@ -1,4 +1,5 @@
-import { findById } from '../../lib/common/utils'
+import gameConfiguration from '../../lib/gameConfiguration'
+import { findById, samePosition } from '../../lib/common/utils'
 
 /*
   An array of buildings
@@ -34,16 +35,63 @@ function buildings(state = [], action, globalState) {
 
           buildings.forEach((building, i) => {
             if (building.factionId === previousFactionId) {
-              buildings[i] = Object.assign({}, building, {
+              buildings[i] = {
+                ...building,
                 team: 0,
                 factionId: null,
-              })
+              }
             }
           })
         }
       }
 
       return buildings
+    }
+
+    case 'MOVE_UNIT': {
+      const { unitId } = action.payload
+      const unit = findById(globalState.units, unitId)
+      const buildingIndex = state.findIndex(building => samePosition(building.position, unit.position))
+
+      if (
+        buildingIndex !== -1 // If a unit on a building has moved
+        && (unit.type === 'INFANTERY' || unit.type === 'MECH') // And can capture
+      ) {
+        const nextState = state.slice()
+        
+        nextState[buildingIndex] = {
+          ...nextState[buildingIndex],
+          capture: 100,
+        }
+
+        return nextState
+      }
+
+      return state
+    }
+
+    case 'KILL_UNIT': {
+      const { unitId } = action.payload
+      const unit = findById(globalState.units, unitId)
+
+      const buildingIndex = state.findIndex(building => samePosition(building.position, unit.position))
+
+      if (
+        gameConfiguration.captureUnits.includes(unit.type) // If the unit that died could capture
+        && buildingIndex !== -1 // And was on a building
+        && state[buildingIndex].capture < 100 // That was under capture
+      ) {
+        const nextState = state.slice()
+
+        nextState[buildingIndex] = {
+          ...nextState[buildingIndex],
+          capture: 100,
+        }
+
+        return nextState
+      }
+
+      return state
     }
 
     default:
