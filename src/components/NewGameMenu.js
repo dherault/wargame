@@ -9,12 +9,13 @@ import { samePosition } from '../lib/common/utils'
 
 import './NewGameMenu.css'
 
-import FactionTypeSelector from './FactionTypeSelector'
+import NewGameSelector from './NewGameSelector'
 
 class NewGameMenu extends Component {
 
   state = {
     selectedMapDefinition: null,
+    isFogOfWar: false,
   }
 
   updateSelectedMapDefinitionFactions = factions => {
@@ -29,15 +30,16 @@ class NewGameMenu extends Component {
     })
   }
 
-  handleFactionTypeSelectorSubmit = () => {
-    const { selectedMapDefinition } = this.state
+  handleNewGameSelectorSubmit = () => {
+    const { selectedMapDefinition, isFogOfWar } = this.state
 
-    createNewGame(prepareMap(selectedMapDefinition))
+    createNewGame(prepareMap(selectedMapDefinition), isFogOfWar)
   }
 
-  handleFactionTypeSelectorCancel = () => {
+  handleNewGameSelectorCancel = () => {
     this.setState({
       selectedMapDefinition: null,
+      isFogOfWar: false,
     })
   }
 
@@ -63,7 +65,7 @@ class NewGameMenu extends Component {
             {row.map((tile, i) => {
               let { color } = gameConfiguration.terrainConfiguration[tile]
 
-              if (gameConfiguration.buildingTerrains.includes(tile)) {
+              if (gameConfiguration.buildingTerrainTypes.includes(tile)) {
                 const { factionId } = buildings.find(building => samePosition(building.position, { x: i, y: j }))
 
                 if (factionId !== null) {
@@ -87,7 +89,7 @@ class NewGameMenu extends Component {
 
   render() {
     const { userMapDefinitions } = this.props
-    const { selectedMapDefinition } = this.state
+    const { selectedMapDefinition, isFogOfWar } = this.state
 
     return (
       <div className="NewGameMenu x5 relative">
@@ -109,11 +111,13 @@ class NewGameMenu extends Component {
           </div>
         </div>
         {selectedMapDefinition && (
-          <FactionTypeSelector 
+          <NewGameSelector 
             factions={selectedMapDefinition.factions} 
             updateFactions={this.updateSelectedMapDefinitionFactions}
-            submit={this.handleFactionTypeSelectorSubmit}
-            cancel={this.handleFactionTypeSelectorCancel}
+            isFogOfWar={isFogOfWar}
+            handleIsFogOfWarChange={isFogOfWar => this.setState({ isFogOfWar })}
+            submit={this.handleNewGameSelectorSubmit}
+            cancel={this.handleNewGameSelectorCancel}
           />
         )}
       </div>

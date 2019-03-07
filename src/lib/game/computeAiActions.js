@@ -236,7 +236,7 @@ function computePossibleTarget(store, unit) {
     const building = buildings.find(building => samePosition(position, building.position))
 
     // Infantery type can also capture building, we add that action to the list if a building is on the position
-    if ((unit.type === 'INFANTERY' || unit.type === 'MECH') && building && building.team !== unit.team) {
+    if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && building && building.team !== unit.team) {
       targets.push(['CAPTURE', building.id, position])
     }
 

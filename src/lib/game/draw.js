@@ -1,8 +1,9 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-import computeMovementPositions from './computeMovementPositions'
 import computeRangePositions from './computeRangePositions'
-import { samePosition, findById } from '../common/utils'
+import computeMovementPositions from './computeMovementPositions'
+import computeVisionPositionsHashes from './computeVisionPositionHashes'
+import { samePosition, findById, hash } from '../common/utils'
 import drawBuilding from '../common/world/drawBuilding'
 import drawUnit from '../common/world/drawUnit'
 
@@ -21,8 +22,15 @@ function draw(_) {
   const tileSize = width / viewBox.width // pixel per tile
   const viewBoxHeight = Math.ceil(height / tileSize) // tiles
 
-  // console.log('tileSize', viewBox.width)
   _.lineWidth = 1
+
+  let visionPositionHashes
+
+  if (booleans.isFogOfWar) {
+    visionPositionHashes = computeVisionPositionsHashes(store)
+
+    // console.log('visionPositionHashes', visionPositionHashes)
+  }
 
   /* ----------------
     DRAW BACKGROUND
@@ -47,6 +55,20 @@ function draw(_) {
       _.closePath()
       _.fill()
       _.stroke()
+
+      if (booleans.isFogOfWar && !visionPositionHashes.has(hash({ x, y }))) {
+        _.fillStyle = 'black'
+        _.strokeStyle = 'black'
+        _.globalAlpha = 0.33
+
+        _.beginPath()
+        _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
+        _.closePath()
+        _.fill()
+        _.stroke()
+
+        _.globalAlpha = 1
+      }
     }
   }
 
@@ -109,7 +131,11 @@ function draw(_) {
     DRAW UNITS
   ----------- */
 
-  units.forEach(unit => drawUnit(_, tileSize, unit)) 
+  units.forEach(unit => {
+    if (!booleans.isFogOfWar || visionPositionHashes.has(hash(unit.position))) {
+      drawUnit(_, tileSize, unit)
+    }
+  }) 
 
   /* ---------------------------
     DRAW TILE SELECTION SQUARE

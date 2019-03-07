@@ -279,7 +279,7 @@ class EditorPanel extends Component {
           <div className="EditorPanel-terrain x77">
             {Object.entries(gameConfiguration.terrainConfiguration).map(([type, configuration]) => {
 
-              if (gameConfiguration.buildingTerrains.includes(type)) return null
+              if (gameConfiguration.buildingTerrainTypes.includes(type)) return null
               
               return (
                 <div 

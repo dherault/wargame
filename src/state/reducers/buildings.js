@@ -55,7 +55,7 @@ function buildings(state = [], action, globalState) {
 
       if (
         buildingIndex !== -1 // If a unit on a building has moved
-        && (unit.type === 'INFANTERY' || unit.type === 'MECH') // And can capture
+        && gameConfiguration.infanteryUnitTypes.includes(unit.type) // And can capture
       ) {
         const nextState = state.slice()
         
@@ -77,7 +77,7 @@ function buildings(state = [], action, globalState) {
       const buildingIndex = state.findIndex(building => samePosition(building.position, unit.position))
 
       if (
-        gameConfiguration.captureUnits.includes(unit.type) // If the unit that died could capture
+        gameConfiguration.infanteryUnitTypes.includes(unit.type) // If the unit that died could capture
         && buildingIndex !== -1 // And was on a building
         && state[buildingIndex].capture < 100 // That was under capture
       ) {

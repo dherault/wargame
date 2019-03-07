@@ -1,6 +1,6 @@
 import store from '../../state/store'
 
-function createNewGame({ worldMap, buildings, units, factions }) {
+function createNewGame({ worldMap, buildings, units, factions }, isFogOfWar = false) {
   console.log('Creating new game')
 
   const currentFaction = factions[0]
@@ -54,6 +54,7 @@ function createNewGame({ worldMap, buildings, units, factions }) {
   store.dispatch({
     type: 'RESET_BOOLEANS',
     payload: {
+      isFogOfWar,
       isPlaying: true,
     },
   })

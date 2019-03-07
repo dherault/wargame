@@ -128,10 +128,11 @@ function* playAi() {
   const { gameOver } = yield select()
 
   if (!gameOver) {
-    setTimeout(() => {
-      store.dispatch({ type: 'END_PLAYER_TURN' })
-      store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
-    }, 500)
+    yield delay(500)
+
+    yield put({ type: 'END_PLAYER_TURN' })
+    yield put({ type: 'BEGIN_PLAYER_TURN' })
+    yield put({ type: 'RESET_VIEW_BOX' })
   }
 }
 

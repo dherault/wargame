@@ -43,6 +43,16 @@ export function unhash(positionHash) {
   }
 }
 
+export function hashPositionAndDistance(position, distance = 0) {
+  return `${position.x}_${position.y}_${distance}`
+}
+
+export function unhashPositionAndDistance(string) {
+  const [x, y, distance] = string.split('_')
+
+  return [{ x: parseInt(x), y: parseInt(y) }, parseInt(distance)]
+}
+
 export function throttle(fn, delay) {
   let timeoutId
   

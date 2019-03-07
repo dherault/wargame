@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import './FactionTypeSelector.css'
+import './NewGameSelector.css'
 
 import { cloneArrayOfObjects } from '../lib/common/utils'
 import gameConfiguration from '../lib/gameConfiguration'
 
-class FactionTypeSelector extends Component {
+class NewGameSelector extends Component {
 
   handleFactionChange(factionId, payload) {
     const { factions, updateFactions } = this.props
@@ -23,11 +23,11 @@ class FactionTypeSelector extends Component {
   }
 
   render() {
-    const { factions, submit, cancel } = this.props
+    const { factions, isFogOfWar, handleIsFogOfWarChange, submit, cancel } = this.props
 
     return (
-      <div className="FactionTypeSelector x5">
-        <div className="FactionTypeSelector-inner">
+      <div className="NewGameSelector x5">
+        <div className="NewGameSelector-inner">
           <ul>
             {factions.map(faction => (
               <li key={faction.id}>
@@ -44,6 +44,10 @@ class FactionTypeSelector extends Component {
               </li>
             ))}
           </ul>
+          <div>
+            <input type="checkbox" value={isFogOfWar} onChange={e => handleIsFogOfWarChange(e.target.checked)} />
+            Fog of war
+          </div>
           <button type="button" onClick={submit}>
             Go
           </button>
@@ -56,4 +60,4 @@ class FactionTypeSelector extends Component {
   }
 }
 
-export default connect()(FactionTypeSelector)
+export default connect()(NewGameSelector)

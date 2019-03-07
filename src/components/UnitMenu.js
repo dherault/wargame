@@ -131,7 +131,7 @@ class UnitMenu extends Component {
         {buildings.some(building => // If there is a building
           building.team !== selectedUnit.team // From opposite or no team
           && samePosition(selectedPosition, building.position) // at selected position
-          && (selectedUnit.type === 'INFANTERY' || selectedUnit.type === 'MECH') // and the selected unit can capture it
+          && gameConfiguration.infanteryUnitTypes.includes(selectedUnit.type) // and the selected unit can capture it
         ) && (
           <div className="UnitMenu-item" onClick={this.handleCaptureClick}>
             Capture

@@ -1,12 +1,7 @@
 import gameConfiguration from '../gameConfiguration'
+import { hashPositionAndDistance as hash, unhashPositionAndDistance as unhash } from '../common/utils'
 
-const hash = (position, distance = 0) => `${position.x}_${position.y}_${distance}`
-const unhash = string => {
-  const [x, y, distance] = string.split('_')
-
-  return [{ x: parseInt(x), y: parseInt(y) }, parseInt(distance)]
-}
-
+// Breath-first search
 function computeRangePositions(store, unit, initialPosition) {
   const { range } = gameConfiguration.unitsConfiguration[unit.type]
 
@@ -26,7 +21,6 @@ function computeRangePositions(store, unit, initialPosition) {
     closedSet.add(hash(position))
 
     getSuccessors(store, position, distance, closedSet).forEach(positionAndDistanceHash => {
-
       if (openSet.indexOf(positionAndDistanceHash) === -1) {
         openSet.push(positionAndDistanceHash)
       }
@@ -37,7 +31,7 @@ function computeRangePositions(store, unit, initialPosition) {
   return positions
 }
 
-function getSuccessors(store, position, distance, closedSet) {
+export function getSuccessors(store, position, distance, closedSet) {
   const { worldMap } = store.getState()
   const { x, y } = position
   const successors = []

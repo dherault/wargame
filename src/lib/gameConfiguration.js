@@ -1,9 +1,11 @@
 const gameConfiguration = {
-  moneyPerCityPerTurn: 1000,
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
-  buildingTerrains: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
-  captureUnits: ['INFANTERY', 'MECH'],
+  moneyPerCityPerTurn: 1000,
+  buildingTerrainTypes: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
+  infanteryUnitTypes: ['INFANTERY', 'MECH'],
+  hideoutTerrainTypes: ['FOREST', 'REEF'],
+  infanteryVisionBonusOnMountains: 3,
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',
@@ -133,6 +135,7 @@ const gameConfiguration = {
       movementType: 'FOOT',
       movement: 3,
       range: [1, 1],
+      vision: 2,
       cost: 1000,
       damages: {
         INFANTERY: 55,
@@ -145,6 +148,7 @@ const gameConfiguration = {
       movementType: 'WHEEL',
       movement: 6,
       range: [1, 1],
+      vision: 3,
       cost: 7000,
       damages: {
         INFANTERY: 75,
@@ -157,6 +161,7 @@ const gameConfiguration = {
       movementType: 'WHEEL',
       movement: 5,
       range: [2, 3],
+      vision: 1,
       cost: 6000,
       damages: {
         INFANTERY: 90,
@@ -170,6 +175,7 @@ const gameConfiguration = {
       movementType: 'SAIL',
       movement: 5,
       range: [1, 1],
+      vision: 2,
       cost: 20000,
       damages: {
         SUBMARINE: 60,
@@ -215,6 +221,7 @@ const gameConfiguration = {
 }
 
 // Assign a "power" metric to each unit type
+// See computeWorldStateScore.js
 Object.values(gameConfiguration.unitsConfiguration).forEach(unitConfiguration => {
   unitConfiguration.power = Object.values(unitConfiguration.damages).reduce((a, b) => a + b, 0)
 })
