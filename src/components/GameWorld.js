@@ -15,12 +15,9 @@ import './GameWorld.css'
 
 class GameWorld extends Component {
 
-  state = {
-    devPanelOpened: process.env.NODE_ENV === 'development',
-  }
-
   componentDidMount() {
     console.log('Mounting GameWorld', window.innerWidth, window.innerHeight)
+    const { dispatch } = this.props
     const canvas = document.getElementById('canvas-game')
 
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
@@ -31,13 +28,21 @@ class GameWorld extends Component {
     
     this.unregisterCanvas = registerCanvas(canvas)
 
-    this.props.dispatch({ 
+    dispatch({ 
       type: 'RESET_VIEW_BOX',
     })
 
     hotkeys(document.documentElement, 'ctrl+q', e => {
+      const { isDevPanelOpened } = this.props
+
       e.preventDefault()
-      this.setState(state => ({ devPanelOpened: !state.devPanelOpened }))
+      
+      dispatch({
+        type: 'SET_BOOLEAN',
+        payload: {
+          isDevPanelOpened: !isDevPanelOpened,
+        },
+      })
     })
   }
 
@@ -52,8 +57,7 @@ class GameWorld extends Component {
   }
 
   render() {
-    const { gameOver } = this.props
-    const { devPanelOpened } = this.state
+    const { gameOver, isDevPanelOpened } = this.props
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
     return (
@@ -68,7 +72,7 @@ class GameWorld extends Component {
         <TileInfo />
         <TurnInfo />
         <UnitMenu />
-        {devPanelOpened && <DevPanel />}
+        {isDevPanelOpened && <DevPanel />}
         {gameOver && <GameOverMenu />}
       </div>
     )
@@ -77,6 +81,7 @@ class GameWorld extends Component {
 
 const mapStateToProps = s => ({
   gameOver: s.gameOver,
+  isDevPanelOpened: s.booleans.isDevPanelOpened,
 })
 
 export default connect(mapStateToProps)(GameWorld)

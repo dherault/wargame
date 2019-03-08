@@ -6,7 +6,7 @@ const unitsImageTileWidth = 64
 const unitsImageTileHeight = 64
 
 function drawUnit(_, tileSize, images, unit) {
-  const { viewBox } = store.getState()
+  const { viewBox, booleans: { isDevPanelOpened } } = store.getState()
   const x = unit.position.x - viewBox.x 
   const y = unit.position.y - viewBox.y
   const { offsetX, offsetY } = viewBox
@@ -17,7 +17,7 @@ function drawUnit(_, tileSize, images, unit) {
   _.strokeStyle = '#333333'
   _.lineWidth = 2
 
-  const flipped = true
+  const flipped = true // TODO flip
 
   _.save()
 
@@ -39,25 +39,28 @@ function drawUnit(_, tileSize, images, unit) {
 
   _.restore()
 
-
   // Draw life amount
   if (unit.life !== 100) {
-    _.font = `bold ${tileSize / 5}px lato`
+    _.font = `bold ${tileSize / 4}px lato`
     _.textAlign = 'right'
     _.textBaseline = 'alphabetic'
     _.fillStyle = 'white'
-    _.fillRect((x + 0.55) * tileSize + offsetX, (y + 0.8) * tileSize + offsetY, 0.45 * tileSize, 0.2 * tileSize)
-    _.fillStyle = 'black'
-    _.fillText(unit.life, (x + 0.94) * tileSize + offsetX, (y + 0.97) * tileSize + offsetY)
+    _.strokeStyle = 'black'
+    _.lineWidth = 4
+    _.strokeText(unit.life, (x + 0.9) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
+    _.fillText(unit.life, (x + 0.9) * tileSize + offsetX, (y + 0.9) * tileSize + offsetY)
   }
 
-  // if (process.env.NODE_ENV !== 'production') {
-  //   _.font = `bold ${tileSize / 3}px lato`
-  //   _.textAlign = 'center'
-  //   _.textBaseline = 'middle'
-  //   _.fillStyle = 'white'
-  //   _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
-  // }
+  if (isDevPanelOpened) {
+    _.font = `bold ${tileSize / 3}px lato`
+    _.textAlign = 'center'
+    _.textBaseline = 'middle'
+    _.fillStyle = 'white'
+    _.strokeStyle = 'black'
+    _.lineWidth = 4
+    _.strokeText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+    _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+  }
 }
 
 export default drawUnit

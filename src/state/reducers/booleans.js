@@ -10,6 +10,7 @@ const initialState = {
   isRightButtonDown: false,
   isUnitMenuOpened: false,
   isBuildingMenuOpened: false,
+  isDevPanelOpened: false,
   isFireSelection: false,
   isDeletingUnits: false,
   isFogOfWar: false,
