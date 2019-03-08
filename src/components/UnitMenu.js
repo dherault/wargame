@@ -103,6 +103,8 @@ class UnitMenu extends Component {
   }
 
   render() {
+    if (!window.canvas) return null
+    
     const { booleans, buildings, units, selectedPosition, selectedUnitId, viewBox } = this.props
 
     if (!booleans.isUnitMenuOpened) return null

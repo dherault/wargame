@@ -17,6 +17,8 @@ function drawUnit(_, tileSize, images, unit) {
   _.strokeStyle = '#333333'
   _.lineWidth = 2
 
+  _.save()
+
   _.drawImage(
     unit.played ? images[gameConfiguration.playedUnitsImageSource] : images[gameConfiguration.unitsImageSource], 
     dx + unitsImageMargin, 
@@ -47,6 +49,8 @@ function drawUnit(_, tileSize, images, unit) {
   //   _.fillStyle = 'white'
   //   _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
   // }
+
+  _.restore()
 }
 
 export default drawUnit

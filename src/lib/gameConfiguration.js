@@ -8,6 +8,7 @@ const gameConfiguration = {
   infanteryVisionBonusOnMountains: 3,
   unitsImageSource: '/images/units.png',
   playedUnitsImageSource: '/images/units_played.png',
+  unitsImageWidth: 871,
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',

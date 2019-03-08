@@ -38,6 +38,8 @@ class BuildingMenu extends Component {
   }
 
   render() {
+    if (!window.canvas) return null
+    
     const { buildings, selectedPosition, booleans, viewBox } = this.props
 
     if (!booleans.isBuildingMenuOpened || !selectedPosition) return null
