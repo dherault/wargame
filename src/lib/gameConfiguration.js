@@ -179,7 +179,7 @@ const gameConfiguration = {
         BATTLE_HELICOPTER: 9,
         TRANSPORT_HELICOPTER: 35,
       },
-      unitsImageDx: 0,
+      unitsImageDx: 68,
       unitsImageDy: 0,
     },
     RECON: {
@@ -204,7 +204,7 @@ const gameConfiguration = {
         BATTLE_HELICOPTER: 10,
         TRANSPORT_HELICOPTER: 35,
       },
-      unitsImageDx: 0,
+      unitsImageDx: 135,
       unitsImageDy: 0,
     },
     TANK: {
@@ -262,11 +262,11 @@ const gameConfiguration = {
         LANDER: 35,
         SUBMARINE: 10,
       },
-      unitsImageDx: 202,
+      unitsImageDx: 269,
       unitsImageDy: 0,
     },
     NEO_TANK: {
-      name: 'Heavy Tank',
+      name: 'Neo Tank',
       movementType: 'WHEEL',
       movement: 6,
       range: [1, 1],
@@ -291,7 +291,7 @@ const gameConfiguration = {
         LANDER: 40,
         SUBMARINE: 15,
       },
-      unitsImageDx: 202,
+      unitsImageDx: 336,
       unitsImageDy: 0,
     },
     ARMORED_PERSONNEL_CARRIER: {
@@ -302,7 +302,7 @@ const gameConfiguration = {
       vision: 1,
       cost: 5000,
       damages: {},
-      unitsImageDx: 202,
+      unitsImageDx: 469,
       unitsImageDy: 0,
     },
     ARTILLERY: {
@@ -356,7 +356,7 @@ const gameConfiguration = {
         LANDER: 60,
         SUBMARINE: 85,
       },
-      unitsImageDx: 536,
+      unitsImageDx: 603,
       unitsImageDy: 0,
     },
     ANTI_AIR_TANK: {
@@ -383,7 +383,7 @@ const gameConfiguration = {
         BATTLE_HELICOPTER: 120,
         TRANSPORT_HELICOPTER: 120,
       },
-      unitsImageDx: 536,
+      unitsImageDx: 670,
       unitsImageDy: 0,
     },
     ANTI_AIR_MISSILE_LAUNCHER: {
@@ -399,7 +399,7 @@ const gameConfiguration = {
         BATTLE_HELICOPTER: 120,
         TRANSPORT_HELICOPTER: 120,
       },
-      unitsImageDx: 536,
+      unitsImageDx: 737,
       unitsImageDy: 0,
     },
     FIGHTER: {
@@ -415,8 +415,8 @@ const gameConfiguration = {
         BATTLE_HELICOPTER: 100,
         TRANSPORT_HELICOPTER: 100,
       },
-      unitsImageDx: 536,
-      unitsImageDy: 0,
+      unitsImageDx: 0,
+      unitsImageDy: 66,
     },
     BOMBER: {
       name: 'Bomber',
@@ -442,8 +442,8 @@ const gameConfiguration = {
         LANDER: 95,
         SUBMARINE: 95,
       },
-      unitsImageDx: 536,
-      unitsImageDy: 0,
+      unitsImageDx: 67,
+      unitsImageDy: 66,
     },
     BATTLE_HELICOPTER: {
       name: 'Battle Helicopter',
@@ -471,8 +471,8 @@ const gameConfiguration = {
         LANDER: 25,
         SUBMARINE: 25,
       },
-      unitsImageDx: 536,
-      unitsImageDy: 0,
+      unitsImageDx: 134,
+      unitsImageDy: 66,
     },
     TRANSPORT_HELICOPTER: {
       name: 'Transport Helicopter',
@@ -483,7 +483,7 @@ const gameConfiguration = {
       cost: 5000,
       damages: {},
       unitsImageDx: 202,
-      unitsImageDy: 0,
+      unitsImageDy: 66,
     },
     BATTLESHIP: {
       name: 'Battleship',
@@ -509,8 +509,8 @@ const gameConfiguration = {
         LANDER: 95,
         SUBMARINE: 95,
       },
-      unitsImageDx: 536,
-      unitsImageDy: 0,
+      unitsImageDx: 402,
+      unitsImageDy: 66,
     },
     CRUISER: {
       name: 'Cruiser',
@@ -526,8 +526,8 @@ const gameConfiguration = {
         TRANSPORT_HELICOPTER: 115,
         SUBMARINE: 90,
       },
-      unitsImageDx: 536,
-      unitsImageDy: 0,
+      unitsImageDx: 469,
+      unitsImageDy: 66,
     },
     LANDER: {
       name: 'Lander',
@@ -537,8 +537,8 @@ const gameConfiguration = {
       vision: 1,
       cost: 12000,
       damages: {},
-      unitsImageDx: 202,
-      unitsImageDy: 0,
+      unitsImageDx: 536,
+      unitsImageDy: 66,
     },
     SUBMARINE: {
       name: 'Submarine',
@@ -580,15 +580,15 @@ const gameConfiguration = {
     },
   },
   factionsConfiguration: {
-    BLUE: {
-      name: 'Blue Nation',
-      color: '#4286f4',
-      unitsImageDy: 132,
-    },
     RED: {
       name: 'Red Nation',
       color: '#d61919',
       unitsImageDy: 0,
+    },
+    BLUE: {
+      name: 'Blue Nation',
+      color: '#4286f4',
+      unitsImageDy: 132,
     },
     YELLOW: {
       name: 'Yellow Nation',
@@ -598,7 +598,7 @@ const gameConfiguration = {
     GREEN: {
       name: 'Green Nation',
       color: '#3d9134',
-      unitsImageDy: 265,
+      unitsImageDy: 264,
     },
   },
 }

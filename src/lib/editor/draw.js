@@ -11,7 +11,7 @@ const imagesSources = [
 
 // The main draw function for the editor
 function draw(_) {
-  const { viewBox, mouse, worldMap, buildings, units, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, selectedPosition } = store.getState()
+  const { viewBox, mouse, booleans, worldMap, buildings, units, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, selectedPosition } = store.getState()
   const { width, height } = _.canvas
   const { offsetX, offsetY } = viewBox
 
@@ -106,14 +106,28 @@ function draw(_) {
     const position = selectedPosition || mouse
     
     if (worldMap[position.y] && worldMap[position.y][position.x]) {
+      const x = (position.x - viewBox.x) * tileSize + offsetX
+      const y = (position.y - viewBox.y) * tileSize + offsetY
+
       _.lineWidth = 2
       _.strokeStyle = 'red'
-  
+
       _.beginPath()
-      _.rect((position.x - viewBox.x) * tileSize + offsetX, (position.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
+      _.rect(x, y, tileSize, tileSize)
       _.closePath()
       _.stroke()
+
+      if (booleans.isDeletingUnits) {
+        _.beginPath()
+        _.moveTo(x, y)
+        _.lineTo(x + tileSize, y + tileSize)
+        _.moveTo(x + tileSize, y)
+        _.lineTo(x, y + tileSize)
+        _.closePath()
+        _.stroke()
+      }
     }
+
   })
 }
 

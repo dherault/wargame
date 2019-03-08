@@ -127,20 +127,55 @@ class EditorPanel extends Component {
     })
   }
 
-  handleTerrainTypeSelection = terrainType => {
-    const { selectedTerrainType, selectedBuildingType, selectedUnitType, dispatch } = this.props
+  deselectTerrainType() {
+    const { selectedTerrainType, dispatch } = this.props
+
+    if (selectedTerrainType) {
+      dispatch({
+        type: 'DESELECT_TERRAIN_TYPE',
+      })
+    }
+  }
+
+  deselectBuildingType() {
+    const { selectedBuildingType, dispatch } = this.props
 
     if (selectedBuildingType) {
       dispatch({
         type: 'DESELECT_BUILDING_TYPE',
       })
     }
+  }
+
+  deselectUnitType() {
+    const { selectedUnitType, dispatch } = this.props
 
     if (selectedUnitType) {
       dispatch({
         type: 'DESELECT_UNIT_TYPE',
       })
     }
+  }
+
+  stopDeletingUnits() {
+    const { booleans: { isDeletingUnits }, dispatch } = this.props
+
+    if (isDeletingUnits) {
+      dispatch({
+        type: 'SET_BOOLEAN',
+        payload: {
+          isDeletingUnits: false,
+        },
+      })
+    }
+  }
+
+  handleTerrainTypeSelection = terrainType => {
+    const { selectedTerrainType, dispatch } = this.props
+
+    this.deselectBuildingType()
+    this.deselectUnitType()
+    this.stopDeletingUnits()
 
     if (selectedTerrainType === terrainType) {
       dispatch({
@@ -156,19 +191,11 @@ class EditorPanel extends Component {
   }
 
   handleBuildingSelection = (factionId, buildingType) => {
-    const { selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, dispatch } = this.props
+    const { selectedBuildingType, selectedFactionId, dispatch } = this.props
 
-    if (selectedTerrainType) {
-      dispatch({
-        type: 'DESELECT_TERRAIN_TYPE',
-      })
-    }
-
-    if (selectedUnitType) {
-      dispatch({
-        type: 'DESELECT_UNIT_TYPE',
-      })
-    }
+    this.deselectTerrainType()
+    this.deselectUnitType()
+    this.stopDeletingUnits()
 
     dispatch({
       type: 'SELECT_FACTION_ID',
@@ -189,19 +216,11 @@ class EditorPanel extends Component {
   }
 
   handleUnitSelection = (factionId, unitType) => {
-    const { selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, dispatch } = this.props
+    const { selectedUnitType, selectedFactionId, dispatch } = this.props
 
-    if (selectedTerrainType) {
-      dispatch({
-        type: 'DESELECT_TERRAIN_TYPE',
-      })
-    }
-
-    if (selectedBuildingType) {
-      dispatch({
-        type: 'DESELECT_BUILDING_TYPE',
-      })
-    }
+    this.deselectTerrainType()
+    this.deselectBuildingType()
+    this.stopDeletingUnits()
 
     dispatch({
       type: 'SELECT_FACTION_ID',
@@ -219,6 +238,21 @@ class EditorPanel extends Component {
         payload: unitType,
       })
     }
+  }
+
+  handleDeleteUnitClick = () => {
+    const { booleans, dispatch } = this.props
+
+    this.deselectTerrainType()
+    this.deselectBuildingType()
+    this.deselectUnitType()
+
+    dispatch({
+      type: 'SET_BOOLEAN',
+      payload: {
+        isDeletingUnits: !booleans.isDeletingUnits,
+      },
+    })
   }
 
   handleSubmitClick = () => {
@@ -356,6 +390,9 @@ class EditorPanel extends Component {
               </div>
             ))}
           </div>
+          <div>
+            <button type="button" onClick={this.handleDeleteUnitClick}>Delete units</button>
+          </div>
         </section>
 
         <section>
@@ -410,6 +447,7 @@ class EditorPanel extends Component {
 }
 
 const mapStateToProps = s => ({
+  booleans: s.booleans,
   buildings: s.buildings,
   factions: s.factions,
   selectedBuildingType: s.selectedBuildingType,

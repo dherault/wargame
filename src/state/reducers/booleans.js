@@ -11,6 +11,7 @@ const initialState = {
   isUnitMenuOpened: false,
   isBuildingMenuOpened: false,
   isFireSelection: false,
+  isDeletingUnits: false,
   isFogOfWar: false,
   preventAutoZoom: false,
   delayComputerActions: true,

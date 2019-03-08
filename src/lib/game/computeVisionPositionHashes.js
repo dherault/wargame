@@ -1,7 +1,6 @@
 import gameConfiguration from '../gameConfiguration'
 import { hashPositionAndDistance as hash, unhashPositionAndDistance as unhash, hash as simpleHash, samePosition } from '../common/utils'
 import { getSuccessors } from './computeRangePositions'
-import buildings from '../../state/reducers/buildings';
 
 function computeVisionPositionsHashes(store) {
   const { buildings, units, worldMap, currentFaction: { team } } = store.getState()

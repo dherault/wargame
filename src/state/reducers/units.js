@@ -69,6 +69,7 @@ function units(state = [], action, globalState, ongoingState) {
       return units
     }
 
+    case 'DELETE_UNIT':
     case 'KILL_UNIT': {
       const { unitId } = action.payload
       const units = state.slice()

@@ -62,7 +62,7 @@ function registerCanvas(canvas) {
             },
           })
 
-          const { mouse, buildings, units, worldMap, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = store.getState()
+          const { mouse, booleans, buildings, units, worldMap, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = store.getState()
 
           const tile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
 
@@ -135,6 +135,51 @@ function registerCanvas(canvas) {
   
               updateFactions()
             }
+          }
+
+          if (booleans.isDeletingUnits) {
+            const unit = units.find(unit => samePosition(unit.position, mouse))
+
+            if (unit) {
+              store.dispatch({
+                type: 'DELETE_UNIT',
+                payload: {
+                  unitId: unit.id,
+                },
+              })
+            }
+          }
+        }
+        else if (e.button === 2) {
+          console.log('right click')
+
+          const { booleans, selectedTerrainType, selectedBuildingType, selectedUnitType  } = store.getState()
+
+          if (selectedTerrainType) {
+            store.dispatch({
+              type: 'DESELECT_TERRAIN_TYPE',
+            })
+          }
+      
+          if (selectedBuildingType) {
+            store.dispatch({
+              type: 'DESELECT_BUILDING_TYPE',
+            })
+          }
+      
+          if (selectedUnitType) {
+            store.dispatch({
+              type: 'DESELECT_UNIT_TYPE',
+            })
+          }
+      
+          if (booleans.isDeletingUnits) {
+            store.dispatch({
+              type: 'SET_BOOLEAN',
+              payload: {
+                isDeletingUnits: false,
+              },
+            })
           }
         }
       }],

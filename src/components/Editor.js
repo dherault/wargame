@@ -6,6 +6,7 @@ import registerCanvas from '../lib/editor/registerCanvas'
 import './Editor.css'
 
 import EditorPanel from './EditorPanel'
+import TileInfo from './TileInfo'
 
 class Editor extends Component {
 
@@ -49,6 +50,7 @@ class Editor extends Component {
           tabIndex={0}
         />
         {isEditing && <EditorPanel />}
+        <TileInfo />
       </div>
     )
   }
