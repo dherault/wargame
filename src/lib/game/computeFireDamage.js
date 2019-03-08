@@ -35,10 +35,10 @@ function computeAttackDamage(store, attacker, defender, defenderPosition) {
   const { worldMap } = store.getState()
   const position = defenderPosition || defender.position
   const defenderTile = worldMap[position.y][position.x]
-
+  const defenderMovementType = gameConfiguration.unitsConfiguration[defender.type].movementType
   const initialDamage = gameConfiguration.unitsConfiguration[attacker.type].damages[defender.type] || 0
   const lifeModifier = attacker.life / 100
-  const terrainModifier = 1 - gameConfiguration.terrainConfiguration[defenderTile].defense / 10
+  const terrainModifier = defenderMovementType === 'FLY' ? 1 : 1 - gameConfiguration.terrainConfiguration[defenderTile].defense / 10
   
   return Math.round(initialDamage * lifeModifier * terrainModifier)
 }

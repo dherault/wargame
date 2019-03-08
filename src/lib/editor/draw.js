@@ -18,6 +18,9 @@ function draw(_) {
   _.fillStyle = 'black'
   _.fillRect(0, 0, width, height)
   
+  // No data displays only a black screen
+  if (!worldMap) return
+  
   const tileSize = width / viewBox.width // pixel per tile
   const viewBoxHeight = Math.ceil(height / tileSize) // tiles
   const mouseTile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]

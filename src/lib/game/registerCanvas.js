@@ -1,4 +1,5 @@
 import store from '../../state/store'
+import gameConfiguration from '../gameConfiguration'
 import draw from './draw'
 import canvasRegistrar from '../common/canvasRegistrar'
 import computeFireDamage from './computeFireDamage'
@@ -209,7 +210,7 @@ function registerCanvas(canvas) {
             !clickedUnit
             && clickedBuilding 
             && clickedBuilding.factionId === currentFaction.id 
-            && ['BASE', 'PORT', 'AIRPORT'].includes(clickedBuilding.type)
+            && gameConfiguration.creationBuildingTypes.includes(clickedBuilding.type)
           ) {
             selectMousePosition()
     

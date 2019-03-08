@@ -1,32 +1,27 @@
 function gameOver(state = false, action, globalState, ongoingState) {
-  switch (action.type) {
-    case 'CAPTURE': {
-      const { buildings } = ongoingState
-      const remainingHqTeams = new Set()
+  if (['KILL_UNIT', 'CAPTURE', 'SET_UNITS', 'SET_BUILDINGS'].includes(action.type)) {
+    const { buildings, units, turn } = ongoingState
 
-      buildings.forEach(building => {
-        if (building.type === 'HEADQUARTERS') {
-          remainingHqTeams.add(building.team)
-        }
-      })
+    if (turn === 1) return false
+    
+    const remainingHqTeams = new Set()
 
-      return remainingHqTeams.size === 1
-    }
+    buildings.forEach(building => {
+      if (building.type === 'HEADQUARTERS') {
+        remainingHqTeams.add(building.team)
+      }
+    })
 
-    case 'KILL_UNIT': {
-      const { units } = ongoingState
-      const remainingUnitsTeams = new Set()
+    const remainingUnitsTeams = new Set()
 
-      units.forEach(unit => {
-        remainingUnitsTeams.add(unit.team)
-      })
+    units.forEach(unit => {
+      remainingUnitsTeams.add(unit.team)
+    })
 
-      return remainingUnitsTeams.size === 1
-    }
-
-    default:
-      return state
+    return remainingHqTeams.size <= 1 || remainingUnitsTeams.size <= 1
   }
+
+  return state
 }
 
 export default gameOver

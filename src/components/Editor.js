@@ -10,23 +10,20 @@ import TileInfo from './TileInfo'
 
 class Editor extends Component {
 
-  constructor(props) {
-    super(props)
-
-    if (!props.isEditing) createNewEditor()
-  }
-
   componentDidMount() {
     console.log('Mounting Editor')
+    const { isEditing } = this.props
     const canvas = document.getElementById('canvas-editor')
-
+    
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
-
+    
     window.addEventListener('resize', this.resizeCanvasListener)
-
+    
     this.resizeCanvas(canvas)
     
     this.unregisterCanvas = registerCanvas(canvas)
+
+    if (!isEditing) createNewEditor()
   }
 
   componentWillUnmount() {

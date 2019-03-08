@@ -36,18 +36,9 @@ function drawUnit(_, tileSize, images, unit) {
     tileSize, 
     tileSize
   )
-  // _.drawImage(
-  //   unit.played ? images[gameConfiguration.playedUnitsImageSource] : images[gameConfiguration.unitsImageSource], 
-  //   // dx + unitsImageMargin, 
-  //   -(dx + unitsImageMargin), 
-  //   dy + factionDy + unitsImageMargin, 
-  //   unitsImageTileWidth, 
-  //   unitsImageTileHeight, 
-  //   x * tileSize + offsetX, 
-  //   y * tileSize + offsetY, 
-  //   tileSize, 
-  //   tileSize
-  // )
+
+  _.restore()
+
 
   // Draw life amount
   if (unit.life !== 100) {
@@ -67,8 +58,6 @@ function drawUnit(_, tileSize, images, unit) {
   //   _.fillStyle = 'white'
   //   _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
   // }
-
-  _.restore()
 }
 
 export default drawUnit

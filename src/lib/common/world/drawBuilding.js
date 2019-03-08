@@ -38,6 +38,22 @@ function drawBuilding(_, tileSize, building) {
 
       break
     
+    case 'PORT': 
+      _.fillStyle = secondaryColor
+      _.fillRect((x + 0.3) * tileSize + offsetX, (y + 0.3) * tileSize + offsetY, 0.4 * tileSize, 0.4 * tileSize)
+      break
+
+    case 'AIRPORT':
+      _.fillStyle = secondaryColor
+      _.beginPath()
+      _.moveTo((x + 0.5) * tileSize + offsetX, (y + 0.3) * tileSize + offsetY)
+      _.lineTo((x + 0.7) * tileSize + offsetX, (y + 0.7) * tileSize + offsetY)
+      _.lineTo((x + 0.3) * tileSize + offsetX, (y + 0.7) * tileSize + offsetY)
+      _.closePath()
+      _.fill()
+
+      break
+    
     default:
       break
   }

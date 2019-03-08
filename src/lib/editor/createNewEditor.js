@@ -76,6 +76,10 @@ function createNewEditor() {
     type: 'DESELECT_UNIT_TYPE',
   })
 
+  store.dispatch({ 
+    type: 'RESET_VIEW_BOX',
+  })
+
   store.dispatch({
     type: 'RESET_BOOLEANS',
     payload: {

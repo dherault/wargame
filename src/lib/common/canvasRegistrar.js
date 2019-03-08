@@ -1,5 +1,3 @@
-import store from '../../state/store'
-
 function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () => null) {
   
   // A function called once for registering the canvas event listeners
@@ -8,9 +6,6 @@ function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () =
   // For global canvas access, do not remove
   window.canvas = canvas
 
-  // Once the canvas is set up, we can reset the view box
-  store.dispatch({ type: 'RESET_VIEW_BOX' })
-    
   const _ = canvas.getContext('2d')
   const unregisterFn = registerFn(canvas)
 
