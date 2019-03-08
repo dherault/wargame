@@ -17,7 +17,13 @@ function drawUnit(_, tileSize, images, unit) {
   _.strokeStyle = '#333333'
   _.lineWidth = 2
 
+  const flipped = true
+
   _.save()
+
+  if (flipped) {
+    _.scale(-1, 1)
+  }
 
   _.drawImage(
     unit.played ? images[gameConfiguration.playedUnitsImageSource] : images[gameConfiguration.unitsImageSource], 
@@ -25,11 +31,23 @@ function drawUnit(_, tileSize, images, unit) {
     dy + factionDy + unitsImageMargin, 
     unitsImageTileWidth, 
     unitsImageTileHeight, 
-    x * tileSize + offsetX, 
+    flipped ? -((x + 1) * tileSize + offsetX) : x * tileSize + offsetX, 
     y * tileSize + offsetY, 
     tileSize, 
     tileSize
   )
+  // _.drawImage(
+  //   unit.played ? images[gameConfiguration.playedUnitsImageSource] : images[gameConfiguration.unitsImageSource], 
+  //   // dx + unitsImageMargin, 
+  //   -(dx + unitsImageMargin), 
+  //   dy + factionDy + unitsImageMargin, 
+  //   unitsImageTileWidth, 
+  //   unitsImageTileHeight, 
+  //   x * tileSize + offsetX, 
+  //   y * tileSize + offsetY, 
+  //   tileSize, 
+  //   tileSize
+  // )
 
   // Draw life amount
   if (unit.life !== 100) {

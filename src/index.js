@@ -10,7 +10,7 @@ import './index.css'
 
 import history from './history'
 import store from './state/store'
-import { register as registerServiceWorker } from './serviceWorker'
+// import { register as registerServiceWorker } from './serviceWorker'
 
 import Game from './components/Game'
 import Editor from './components/Editor'
@@ -31,4 +31,4 @@ ReactDOM.render(
   document.getElementById('root')
 )
   
-registerServiceWorker()
+// registerServiceWorker()
