@@ -8,6 +8,10 @@ body {
   height: 100vh;
 }
 
+canvas:focus {
+  outline: none;
+}
+
 /* Utilities */
 
 .relative {
