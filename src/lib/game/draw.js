@@ -97,7 +97,8 @@ function draw(_) {
 
     if (booleans.isFireSelection) {
       const selectedUnit = findById(units, selectedUnitId)
-      rangePositions = computeRangePositions(store, selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position)))
+      
+      rangePositions = computeRangePositions(store, selectedUnit).filter(position => units.some(unit => unit.team !== selectedUnit.team && samePosition(unit.position, position) && !!gameConfiguration.unitsConfiguration[selectedUnit.type].damages[unit.type]))
     }
 
     if (booleans.isRightButtonDown) {

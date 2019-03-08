@@ -31,6 +31,31 @@ function openUnitMenu() {
   })
 }
 
+function cancelFireSelection() {
+  const { units, selectedUnitId } = store.getState()
+  const selectedUnit = findById(units, selectedUnitId)
+
+  store.dispatch({
+    type: 'SET_BOOLEAN',
+    payload: {
+      isFireSelection: false,
+    },
+  })
+
+  store.dispatch({
+    type: 'MOVE_UNIT',
+    payload: {
+      unitId: selectedUnitId,
+      position: selectedUnit.previousPosition,
+    },
+  })
+
+  // Must be after isFireSelection: false
+  store.dispatch({
+    type: 'DESELECT_UNIT_ID',
+  })
+}
+
 function registerCanvas(canvas) {
   return canvasRegistrar(
     canvas,
@@ -99,25 +124,7 @@ function registerCanvas(canvas) {
               }
       
               // If we did not click an ennemy in range
-              store.dispatch({
-                type: 'SET_BOOLEAN',
-                payload: {
-                  isFireSelection: false,
-                },
-              })
-    
-              store.dispatch({
-                type: 'MOVE_UNIT',
-                payload: {
-                  unitId: selectedUnitId,
-                  position: selectedUnit.previousPosition,
-                },
-              })
-    
-              // Must be after isFireSelection: false
-              store.dispatch({
-                type: 'DESELECT_UNIT_ID',
-              })
+              cancelFireSelection()
     
               return
             }
@@ -235,6 +242,7 @@ function registerCanvas(canvas) {
         // If right click
         else if (e.button === 2) {
           console.log('right click')
+          const { booleans, selectedUnitId } = store.getState()
     
           store.dispatch({
             type: 'SET_BOOLEAN',
@@ -242,6 +250,10 @@ function registerCanvas(canvas) {
               isRightButtonDown: true,
             },
           })
+
+          if (selectedUnitId && booleans.isFireSelection) {
+            cancelFireSelection()
+          }
         }
       }],
 

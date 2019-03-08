@@ -36,7 +36,7 @@ function computeAttackDamage(store, attacker, defender, defenderPosition) {
   const position = defenderPosition || defender.position
   const defenderTile = worldMap[position.y][position.x]
 
-  const initialDamage = gameConfiguration.unitsConfiguration[attacker.type].damages[defender.type]
+  const initialDamage = gameConfiguration.unitsConfiguration[attacker.type].damages[defender.type] || 0
   const lifeModifier = attacker.life / 100
   const terrainModifier = 1 - gameConfiguration.terrainConfiguration[defenderTile].defense / 10
   

@@ -7,10 +7,13 @@ import store from '../state/store'
 import { samePosition, findById } from '../lib/common/utils'
 import computeRangePositions from '../lib/game/computeRangePositions'
 import computeFireDamage from '../lib/game/computeFireDamage'
+import gameConfiguration from '../lib/gameConfiguration';
 
 class FireInfo extends Component {
 
   render() {
+    if (!window.canvas) return null
+
     const { booleans, mouse, selectedUnitId, currentFaction, units, viewBox } = this.props
 
     if (!booleans.isFireSelection) return null
@@ -21,6 +24,7 @@ class FireInfo extends Component {
       unit.team !== currentFaction.team // From opposite team
       && samePosition(unit.position, mouse) // At mouse position 
       && rangePositions.some(position => samePosition(unit.position, position)) // In range
+      && gameConfiguration.unitsConfiguration[selectedUnit.type].damages[unit.type] // That can be damaged
     )
 
     if (!unit) return null

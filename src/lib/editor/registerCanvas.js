@@ -153,7 +153,7 @@ function registerCanvas(canvas) {
         else if (e.button === 2) {
           console.log('right click')
 
-          const { booleans, selectedTerrainType, selectedBuildingType, selectedUnitType  } = store.getState()
+          const { booleans, selectedTerrainType, selectedBuildingType, selectedUnitType } = store.getState()
 
           if (selectedTerrainType) {
             store.dispatch({
