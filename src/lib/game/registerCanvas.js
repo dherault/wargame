@@ -104,22 +104,26 @@ function registerCanvas(canvas) {
                 store.dispatch({
                   type: 'DESELECT_UNIT_ID',
                 })
+
+                const damages = computeFireDamage(store, selectedUnitId, clickedUnit.id)
     
                 store.dispatch({
                   type: 'FIRE',
                   payload: {
                     attackerId: selectedUnitId,
                     defenderId: clickedUnit.id,
-                    damages: computeFireDamage(store, selectedUnitId, clickedUnit.id),
+                    damages,
                   },
                 })
-    
-                store.dispatch({
-                  type: 'PLAY_UNIT',
-                  payload: {
-                    unitId: selectedUnitId,
-                  },
-                })
+                
+                if (selectedUnit.life > damages[1]) {
+                  store.dispatch({
+                    type: 'PLAY_UNIT',
+                    payload: {
+                      unitId: selectedUnitId,
+                    },
+                  })
+                }
       
                 return
               }

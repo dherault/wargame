@@ -32,7 +32,13 @@ function updateFactions() {
 
   const nextFactions = []
 
-  factionIds.forEach(factionId => nextFactions.push({ id: factionId }))
+  let i = 0
+
+  factionIds.forEach(factionId => nextFactions.push({ 
+    id: factionId,
+    type: factionId === 'RED' ? 'HUMAN' : 'COMPUTER',
+    team: ++i,
+  }))
 
   store.dispatch({
     type: 'SET_FACTIONS',

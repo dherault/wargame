@@ -66,9 +66,13 @@ class UnitMenu extends Component {
   }
 
   handleCaptureClick = () => {
-    const { buildings, selectedPosition, selectedUnitId, dispatch } = this.props
+    const { buildings, units, selectedPosition, selectedUnitId, dispatch } = this.props
     
-    this.moveUnit()
+    const unit = findById(units, selectedUnitId)
+
+    if (!samePosition(unit.position, selectedPosition)) {
+      this.moveUnit()
+    }
 
     dispatch({
       type: 'CAPTURE',

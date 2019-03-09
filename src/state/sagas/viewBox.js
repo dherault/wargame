@@ -1,6 +1,7 @@
 import { takeEvery } from 'redux-saga/effects'
 import store from '../store'
 import gameConfiguration from '../../lib/gameConfiguration'
+import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/common/world/boundViewBox'
 
 let interval
 const { viewBoxIntervalPeriod, viewBoxIncrements } = gameConfiguration
@@ -46,9 +47,9 @@ function resizeViewBox() {
     store.dispatch({
       type: 'UPDATE_VIEW_BOX',
       payload: {
-        width: nextWidth,
-        x: nextX,
-        y: nextY,
+        width: boundViewBoxWidth(nextWidth), // TODO remove bounding if bug still happens
+        x: boundViewBoxX(nextX, nextWidth),
+        y: boundViewBoxY(nextY, nextWidth),
       },
     })
   }, viewBoxIntervalPeriod)

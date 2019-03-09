@@ -86,6 +86,23 @@ export function combineArrayItems(array) {
   return result
 }
 
+export function randomSlice(array, n) {
+  const result = []
+
+  for (let i = 0; i < n; i++) {
+    const item = randomPop(array)
+
+    if (typeof item !== 'undefined') {
+      result.push(item)
+    }
+    else {
+      break
+    }
+  }
+
+  return result
+}
+
 export function sliceRandom(array, n) {
   const result = []
 
@@ -98,4 +115,8 @@ export function sliceRandom(array, n) {
   }
 
   return result
+}
+
+export function manhattanDistance(p1, p2) {
+  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
 }

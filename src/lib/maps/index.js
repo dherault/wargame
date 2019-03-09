@@ -1,6 +1,9 @@
 import duel from './duel'
+import fourLeafBattle from './fourLeafBattle'
 import showOff from './showOff'
 import random from './random'
+import aiDecisionMaking1 from './aiDecisionMaking1'
+import aiDecisionMaking2 from './aiDecisionMaking2'
 import simpleAiAttack from './simpleAiAttack'
 import simpleAiAttack2 from './simpleAiAttack2'
 import simpleAiAttack3 from './simpleAiAttack3'
@@ -11,11 +14,16 @@ import simpleAiCollision from './simpleAiCollision'
 import simpleAiRepair from './simpleAiRepair'
 import viewBoxOffset1 from './viewBoxOffset1'
 import viewBoxOffset2 from './viewBoxOffset2'
+import suicideBug from './suicideBug'
+import captureBug from './captureBug'
 
 export default [
   duel(),
+  fourLeafBattle(),
   showOff(),
   random(), 
+  aiDecisionMaking1(),
+  aiDecisionMaking2(),
   simpleAiAttack(),
   simpleAiAttack2(),
   simpleAiAttack3(),
@@ -26,4 +34,6 @@ export default [
   simpleAiRepair(),
   viewBoxOffset1(),
   viewBoxOffset2(),
+  suicideBug(),
+  captureBug(),
 ]

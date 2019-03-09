@@ -1,5 +1,4 @@
 import { takeEvery, put, delay, select } from 'redux-saga/effects'
-import store from '../store'
 import { findById } from '../../lib/common/utils'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/common/world/boundViewBox'
 import computeAiActions from '../../lib/game/computeAiActions'
@@ -8,7 +7,7 @@ import computeAiActions from '../../lib/game/computeAiActions'
 // If the player is a computer
 // Compute its move with the AI
 function* playAi() {
-  const { currentFaction, units, booleans: { preventAutoZoom, delayComputerActions } } = store.getState()
+  const { currentFaction, units, booleans: { preventAutoZoom, delayComputerActions } } = yield select()
 
   if (currentFaction.type !== 'COMPUTER') return 
     

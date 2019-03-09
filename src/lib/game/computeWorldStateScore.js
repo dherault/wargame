@@ -1,4 +1,5 @@
 import gameConfiguration from '../gameConfiguration'
+import { samePosition } from '../common/utils'
 
 function computeWorldStateScore(store) {
   const { units, buildings, factions } = store.getState()
@@ -11,11 +12,15 @@ function computeWorldStateScore(store) {
   factions.forEach(faction => scoreByFaction[faction.id] = 0)
   units.forEach(unit => scoreByFaction[unit.factionId] += computeUnitScore(unit))
   buildings.forEach(building => {
-    if (building.factionId !== null) {
+    if (building.factionId !== null && building.capture === 100) {
       scoreByFaction[building.factionId] += 1000
     }
     if (building.type === 'HEADQUARTERS') {
       hqCaptureByFaction[building.factionId] = building.capture
+    }
+    else if (building.capture < 100) {
+      const capturingUnit = units.find(u => samePosition(u.position, building.position))
+      scoreByFaction[capturingUnit.factionId] += (100 - building.capture) * 10
     }
   })
 

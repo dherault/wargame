@@ -99,7 +99,7 @@ function units(state = [], action, globalState, ongoingState) {
         const building = buildings.find(building => building.factionId === currentFaction.id && samePosition(building.position, unit.position))
         
         // A building can only repair certain movement types
-        if (building) {
+        if (building && building.factionId === unit.factionId) {
           const { reparableMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
           const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
 

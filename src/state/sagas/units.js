@@ -1,10 +1,9 @@
-import { takeEvery, put } from 'redux-saga/effects'
-import store from '../store'
+import { takeEvery, put, select } from 'redux-saga/effects'
 import { findById } from '../../lib/common/utils'
 
 function* killUnit(action) {
   const { attackerId, defenderId } = action.payload
-  const { units } = store.getState()
+  const units = yield select(s => s.units)
 
   const attacker = findById(units, attackerId)
   const defender = findById(units, defenderId)
@@ -15,6 +14,7 @@ function* killUnit(action) {
   if (defender && defender.life <= 0) deadUnitId = defenderId
 
   if (deadUnitId) {
+
     yield put({
       type: 'KILL_UNIT',
       payload: {

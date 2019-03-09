@@ -30,13 +30,25 @@ function* rootSaga() {
   ])
 }
 
+// function loggerMiddleware() {
+//   return next => action => {
+//     console.log('Action', action.type, action.payload)
+
+//     return next(action)
+//   }
+// }
+
 // A lightweight store of AI computations
 const createAiStore = initialState => {
   const sagaMiddleware = createSagaMiddleware()
 
   const enhancer = compose(applyMiddleware(sagaMiddleware))
+  // const enhancer = compose(applyMiddleware(sagaMiddleware, loggerMiddleware))
   
   const store = createStore(reducer, initialState, enhancer)
+
+  // To store the AI actions
+  store.actions = []
 
   sagaMiddleware.run(rootSaga)
 

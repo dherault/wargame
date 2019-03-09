@@ -7,12 +7,26 @@ import computeMovementPositions, { getSuccessorsFactory } from './computeMovemen
 import computeWorldStateScore from './computeWorldStateScore'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
-import { samePosition, hash, unhash, createId, randomSlice } from '../common/utils'
+import { samePosition, hash, unhash, combineArrayItems, sliceRandom } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
-const nTargets = 2 
+const nTargets = 3 
 const maxBranchingFactor = 111
 
+/*
+  To compute which actions  the computer takes ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...)
+  we will perform an adversarial search with alpha-beta pruning
+  The idea here is to compute a state tree, ie a tree of world states (stores)
+  Each node is either a max or min node (node type), depending on which team the player it represents is in
+  (player from same team => max node, opposite team => min node)
+  We affect a score to each leaf node of the tree
+  traverse up the tree affecting a score to the parent = min or max of scores of children depending on the node type
+  and take the root's child that has the best possible score
+  It will determine which state to play, ie. which actions to take to get to this state from our root state
+  more details:
+  Adversarial search: https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
+  Alpha-beta pruning: https://youtu.be/jvpWtwVSvjA and https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
+*/
 function computeAiActions() {
   // First we clone the game state into a lightweight store
   // It will be our root world state
@@ -20,8 +34,8 @@ function computeAiActions() {
   const rootStore = createAiStore(rootState)
   
   const consideredFaction = rootState.currentFaction
-  // const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length - 1
-  const maxStateTreeDepth = 0
+  const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length - 1
+  // const maxStateTreeDepth = 1
 
   console.log('consideredFaction', consideredFaction.id)
 
@@ -45,12 +59,13 @@ function computeAiActions() {
   return selectedChildStore.actions
 }
 
+// Add children for a given parent to the state tree
 function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
   const parentState = parentStore.getState()
   
-  console.log('depth', depth, parentState.currentFaction.id)
+  // console.log('depth', depth, parentState.currentFaction.id)
   
-  if (depth > maxDepth || parentState.gameOver) {
+  if (depth >= maxDepth || parentState.gameOver) {
     return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
   }
 
@@ -59,111 +74,129 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // Value init
   parentStore.score = parentNodeTypeFn === Math.max ? -Infinity : Infinity
 
-  let stores = [parentStore]
+  // First we heuristically compute all possible actions to take
+  // This will return an array of possible actions per unit
+  // eg: [[a, b], [c, d, e]] for two units
+  const possibleActions = expandPossibleActions(parentStore)
+  // Then we combine them into lots of possible actions for all units
+  // They will all lead to a different child world state
+  // eg: [ac, ad, ae, bc, bd, be]
+  const actionsCombinaisons = combineArrayItems(possibleActions)
 
-  function recurseOnUnits(units) {
-    if (!units.length) return
+  // console.log('possibleActions', possibleActions)
+  // console.log('actionsCombinaisons', actionsCombinaisons.length)
 
-    const selectedUnit = units[0]
-    const nextStores = []
-
-    stores.forEach(store => {
-      const targets = randomSlice(computePossibleTargets(store, selectedUnit), nTargets)
-
-      if (!targets.length) return
-
-      // console.log('possible targets', selectedUnit.id, targets)
-
-      // Dedupe actions
-      const serializedActionsGroups = new Set()
-
-      targets.forEach(target => {
-        serializedActionsGroups.add(JSON.stringify(transformTargetIntoActions(store, selectedUnit, target)))
-      })
-
-      const actionsGroups = []
-
-      // dedupe actionsGroups
-      serializedActionsGroups.forEach(serializedAction => actionsGroups.push(JSON.parse(serializedAction)))
-
-      // console.log('actionsGroups', actionsGroups)
-
-      if (!actionsGroups.length) return
-
-      actionsGroups.forEach(actions => {
-        if (!actions.length) return
-
-        const nextStore = createAiStore(store.getState())
-
-        nextStore.actions = [...store.actions, ...actions]
-        
-        nextStore.id = createId()
-
-        actions.forEach(nextStore.dispatch)
-
-        nextStores.push(nextStore)
-      })
-    })
-
-    if (nextStores.length) {
-      stores = nextStores
-    }
-
-    recurseOnUnits(units.slice(1))
-  } 
-
-  const units = parentState.units
-    .filter(u => u.factionId === parentState.currentFaction.id)
-    .sort((a, b) => {
-      const aConfiguration = gameConfiguration.unitsConfiguration[a.type]
-      const bConfiguration = gameConfiguration.unitsConfiguration[b.type]
-
-      return aConfiguration.range[1] > bConfiguration.range[1] || aConfiguration.power > bConfiguration.power ? -1 : 1
-
-      // TODO: if unit is blocked, return +1 or more
-    })
-
-  recurseOnUnits(units)
-
-  const selectedStores = randomSlice(stores, maxBranchingFactor)
-
-  // console.log('selectedStores', selectedStores)
-
-  for (let i = 0; i < selectedStores.length; i++) {
-    const store = selectedStores[i]
-
-    store.dispatch({ type: 'END_PLAYER_TURN' })
-    store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
-
-    store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex) // We add the store to the state tree
+  // We pick maxBranchingFactor combinaisons at random to reduce the branching factor of our state tree
+  const chosenActionsCombinaisons = sliceRandom(actionsCombinaisons, maxBranchingFactor)
   
-    const childScore = extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1, alpha, beta)
+  // console.log('chosenActionsCombinaisons', chosenActionsCombinaisons)
+  
+  // We create a store for each combinaison
+  for (let i = 0; i < chosenActionsCombinaisons.length; i++) {
+    const actionsGroups = chosenActionsCombinaisons[i]
+    const tryoutsStore = createAiStore(parentState)
+    const validActions = []
 
-    // console.log('back to depth', depth, parentState.currentFaction.id, childScore)
+    actionsGroups.forEach(actions => {
+      // We feed our actions to the store
+      try {
+        actions.forEach(tryoutsStore.dispatch)
+      }
+      // Sometimes the action is impossible (some units are on the same position, the defender is dead, ...)
+      catch (error) {
+        return
+      }
 
-    parentStore.score = parentNodeTypeFn(childScore, parentStore.score)
+      validActions.push(...actions)
+    })
 
-    if (parentNodeTypeFn === Math.max) {
-      alpha = Math.max(alpha, parentStore.score)
-    }
-    else {
-      beta = Math.min(beta, parentStore.score)
-    }
+    if (validActions.length) {
+      const store = createAiStore(parentState)
+    
+      validActions.forEach(store.dispatch)
+  
+      store.dispatch({ type: 'END_PLAYER_TURN' })
+      store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+      
+      store.actions = validActions // Our transition function, i.e. the final result
+      store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex) // We add the store to the state tree
+  
+      const childScore = extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1, alpha, beta)
 
-    if (alpha >= beta) {
-      // console.log('PRUNING!', depth)
-      break
+      // console.log('back to depth', depth, parentState.currentFaction.id, childScore)
+
+      parentStore.score = parentNodeTypeFn(childScore, parentStore.score)
+
+      if (parentNodeTypeFn === Math.max) {
+        alpha = Math.max(alpha, parentStore.score)
+      }
+      else {
+        beta = Math.min(beta, parentStore.score)
+      }
+
+      if (alpha >= beta) {
+        // console.log('PRUNING!', depth)
+        break
+      }
     }
   }
+  // console.log(possibleActions.length, actionsCombinaisons.length + chosenActionsCombinaisons.length, chosenActionsCombinaisons.length)
   
-  // console.log('stores', stores)
-
   return parentStore.score
 }
 
-function computePossibleTargets(store, unit) {
+// For a given parent world state, provide the actions per unit 
+// that will lead to another world state.
+function expandPossibleActions(store) {
+  const { units, currentFaction } = store.getState()
+
+  // The heuristic here is to determine nTargets targets per unit
+  // The target can either be a 'FIRE' or 'CAPTURE' type
+  // The target's metadata will then be a ennemy unit or building
+  const possibleUnitTargets = []
+
+  // For each unit, determine a unit or building target
+  units.forEach(unit => {
+    if (unit.factionId !== currentFaction.id) return
+
+    possibleUnitTargets.push([unit, computePossibleTarget(store, unit)])
+  })
+
+  // console.log('possibleUnitTargets', possibleUnitTargets)
+
+  // Then for each target, we compute the associated actions
+  // ie. we need to compute the shortest path to the target
+  // and advance as much as possible on this path limited by the unit's movement.
+
+  // An array of actions
+  const possibleUnitActions = []
+
+  possibleUnitTargets.forEach(([unit, targets]) => {
+    // Dedupe actions
+    const serializedActions = new Set()
+
+    targets.forEach(target => {
+      serializedActions.add(JSON.stringify(transformTargetIntoActions(store, unit, target)))
+    })
+
+    const actions = []
+
+    // dedupe actions
+    serializedActions.forEach(serializedAction => actions.push(JSON.parse(serializedAction)))
+
+    if (actions.length) possibleUnitActions.push(actions)
+  })
+
+  return possibleUnitActions
+}
+
+// Uniform cost search to look for possible targets
+// Will expand from the unit's position to every position on the map
+// until nTargets are found
+function computePossibleTarget(store, unit) {
   const { units, buildings } = store.getState()
-  const { damages, movementType } = gameConfiguration.unitsConfiguration[unit.type]
+  const unitConfiguration = gameConfiguration.unitsConfiguration[unit.type]
+  
   const getSuccessors = getSuccessorsFactory(store, unit)
 
   const targets = []
@@ -182,45 +215,44 @@ function computePossibleTargets(store, unit) {
     if (cost === Infinity) continue
 
     // If another unit is on the position, ignore the position
-    if (!units.some(u => u.id !== unit.id && samePosition(u.position, position))) {
+    if (units.some(u => u.id !== unit.id && samePosition(u.position, position))) continue
 
-      // We look for potential ennemies on range to attack
-      const rangePositions = computeRangePositions(store, unit, position)
-  
-      units.forEach(u => {
-        const potentialDamages = damages[u.type]
-  
-        if (
-          u.team !== unit.team && // If a unit from opposite team
-          rangePositions.some(position => samePosition(position, u.position)) && // is on range at position
-          potentialDamages // and can take damages
-        ) {
-          // The target's score here is the ennemy's distance divided by the potential damages
-          // We want the smalled cost possible
-          targets.push(['FIRE', u.id, position])
-        }
-      })
-  
-      const building = buildings.find(building => samePosition(position, building.position))
-  
-      // Infantery type can also capture building, we add that action to the list if a building is on the position
-      if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && building && building.team !== unit.team) {
-        targets.push(['CAPTURE', building.id, position])
-      }
-  
-      // Units can be repaired in a building
+    // We look for potential ennemies on range to attack
+    const rangePositions = computeRangePositions(store, unit, position)
+
+    units.forEach(u => {
+      const potentialDamages = unitConfiguration.damages[u.type]
+
       if (
-        building
-        && unit.life < 100 
-        && building.factionId === unit.factionId 
-        && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(movementType)
+        u.team !== unit.team && // If a unit from opposite team
+        rangePositions.some(position => samePosition(position, u.position)) && // is on range at position
+        potentialDamages // and can take damages
       ) {
-        targets.push(['REPAIR', building.id, position])
+        // The target's score here is the ennemy's distance divided by the potential damages
+        // We want the smalled cost possible
+        targets.push(['FIRE', u.id, position])
       }
+    })
 
-      // If we reach the goal number of targets we stop the computation
-      if (targets.length >= nTargets) break
+    const building = buildings.find(building => samePosition(position, building.position))
+
+    // Infantery type can also capture building, we add that action to the list if a building is on the position
+    if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && building && building.team !== unit.team) {
+      targets.push(['CAPTURE', building.id, position])
     }
+
+    // Units can be repaired in a building
+    if (
+      building
+      && unit.life < 100 
+      && building.factionId === unit.factionId 
+      && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(unitConfiguration.movementType)
+    ) {
+      targets.push(['REPAIR', building.id, position])
+    }
+
+    // If we reach the goal number of targets we stop the computation
+    if (targets.length >= nTargets) break
 
     closedSet.add(hash(position))
 
@@ -237,7 +269,8 @@ function computePossibleTargets(store, unit) {
     })
   }
 
-  return targets
+  // Return targets sorted by cost
+  return targets.sort((a, b) => a[2] < b[2] ? -1 : 1)
 }
 
 function transformTargetIntoActions(store, unit, target) {
@@ -245,11 +278,9 @@ function transformTargetIntoActions(store, unit, target) {
   const [type, targetId, position] = target
   
   const pathToTarget = aStarSearch(store, unit, unit.position, position) 
-  const movementPositions = computeMovementPositions(store, unit)
+  const possibleMovementPositions = computeMovementPositions(store, unit)
   
-  const extremePosition = pathToTarget
-    .reverse()
-    .find(position => samePosition(position, unit.position) || movementPositions.some(p => samePosition(p, position)))
+  const extremePosition = pathToTarget.reverse().find(position => position === unit.position || possibleMovementPositions.some(p => samePosition(p, position)))
 
   // console.log(target, pathToTarget, extremePosition)
 
@@ -432,8 +463,9 @@ function aStarSearch(store, unit, startPosition, goalPosition) {
     currentPositionHash = hash(parent)
   }
 
-  // path.unshift(startPosition)
+  path.unshift(startPosition)
 
   return path
 }
+
 export default computeAiActions
