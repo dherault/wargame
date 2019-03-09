@@ -18,6 +18,7 @@ class EditorPanel extends Component {
       height: worldMap.length,
       name: 'My map',
       description: '',
+      isJsonExported: false,
     }
 
     this.ref = React.createRef()
@@ -255,26 +256,32 @@ class EditorPanel extends Component {
     })
   }
 
-  handleSubmitClick = () => {
-    const { worldMap, factions, buildings, units, dispatch } = this.props
+  getMapDefinition() {
+    const { worldMap, factions, buildings, units } = this.props
     const { name, description } = this.state
+
+    return {
+      worldMap,
+      factions,
+      buildings,
+      units,
+      name,
+      description,
+    }
+  }
+
+  handleSubmitClick = () => {
+    const { dispatch } = this.props
 
     dispatch({
       type: 'ADD_USER_MAP_DEFINITION',
-      payload: {
-        worldMap,
-        factions,
-        buildings,
-        units,
-        name,
-        description,
-      },
+      payload: this.getMapDefinition(),
     })
   }
 
   render() {
     const { factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = this.props
-    const { width, height, name, description } = this.state
+    const { width, height, name, description, isJsonExported } = this.state
 
     const validations = this.validateMap()
 
@@ -439,8 +446,20 @@ class EditorPanel extends Component {
             <button type="button" disabled={!!validations.length} onClick={this.handleSubmitClick}>
               Save map
             </button>
+            <button type="button" disabled={!!validations.length} onClick={() => this.setState({ isJsonExported: !isJsonExported })}>
+              Export to JSON
+            </button>
           </div>
         </section>
+
+        {isJsonExported && (
+          <section>
+            <header>JSON export</header>
+            <pre>
+              {JSON.stringify(this.getMapDefinition(), null, 2)}
+            </pre>
+          </section>
+        )}
       </div>
     )
   }
