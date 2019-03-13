@@ -20,6 +20,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1, 
         WHEEL: 2, 
+        THREAD: 1,
         FLY: 1, 
         SAIL: Infinity,
       }, 
@@ -31,6 +32,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1, 
         WHEEL: 1, 
+        THREAD: 1,
         FLY: 1, 
         SAIL: Infinity,
       }, 
@@ -42,6 +44,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 2, 
         WHEEL: Infinity, 
+        THREAD: Infinity,
         FLY: 1, 
         SAIL: Infinity,
       }, 
@@ -53,6 +56,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 3, 
         WHEEL: Infinity,
+        THREAD: Infinity,
         FLY: 1,
         SAIL: Infinity,
       }, 
@@ -64,6 +68,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 2, 
         WHEEL: Infinity,
+        THREAD: Infinity,
         FLY: 1,
         SAIL: Infinity,
       }, 
@@ -75,8 +80,21 @@ const gameConfiguration = {
       movementCost: {
         FOOT: Infinity,
         WHEEL: Infinity,
+        THREAD: Infinity,
         FLY: 1,
         SAIL: 1,
+      },
+    },
+    REEF: {
+      name: 'Reefs',
+      color: '#15247f',
+      defense: 2,
+      movementCost: {
+        FOOT: Infinity,
+        WHEEL: Infinity,
+        THREAD: Infinity,
+        FLY: 1,
+        SAIL: 2,
       },
     },
     HEADQUARTERS: {
@@ -86,6 +104,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1,
         WHEEL: 1,
+        THREAD: 1,
         FLY: 1,
         SAIL: Infinity,
       },
@@ -97,6 +116,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1,
         WHEEL: 1,
+        THREAD: 1,
         FLY: 1,
         SAIL: Infinity,
       },
@@ -108,6 +128,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1,
         WHEEL: 1,
+        THREAD: 1,
         FLY: 1,
         SAIL: Infinity,
       },
@@ -119,6 +140,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1,
         WHEEL: 1,
+        THREAD: 1,
         FLY: 1,
         SAIL: Infinity,
       },
@@ -130,6 +152,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 1,
         WHEEL: 1,
+        THREAD: 1,
         FLY: 1,
         SAIL: 1,
       },
@@ -213,7 +236,7 @@ const gameConfiguration = {
     },
     TANK: {
       name: 'Tank',
-      movementType: 'WHEEL',
+      movementType: 'THREAD',
       movement: 6,
       range: [1, 1],
       vision: 3,
@@ -242,7 +265,7 @@ const gameConfiguration = {
     },
     HEAVY_TANK: {
       name: 'Heavy Tank',
-      movementType: 'WHEEL',
+      movementType: 'THREAD',
       movement: 5,
       range: [1, 1],
       vision: 1,
@@ -271,7 +294,7 @@ const gameConfiguration = {
     },
     NEO_TANK: {
       name: 'Neo Tank',
-      movementType: 'WHEEL',
+      movementType: 'THREAD',
       movement: 6,
       range: [1, 1],
       vision: 1,
@@ -311,7 +334,7 @@ const gameConfiguration = {
     },
     ARTILLERY: {
       name: 'Artillery',
-      movementType: 'WHEEL',
+      movementType: 'THREAD',
       movement: 5,
       range: [2, 3],
       vision: 1,
@@ -365,7 +388,7 @@ const gameConfiguration = {
     },
     ANTI_AIR_TANK: {
       name: 'Anti-air Tank',
-      movementType: 'WHEEL',
+      movementType: 'THREAD',
       movement: 6,
       range: [1, 1],
       vision: 2,

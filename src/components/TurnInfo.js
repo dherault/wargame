@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import hotkeys from 'piano-keys'
 
 import './TurnInfo.css'
 
 import gameConfiguration from '../lib/gameConfiguration'
 
 class TurnInfo extends Component {
+
+  componentDidMount() {
+    this.unregisterHotkeys = hotkeys(document.documentElement, 'space', this.handleEndTurnClick)
+  }
+
+  componentWillUnmount() {
+    this.unregisterHotkeys()
+  }
 
   handleEndTurnClick = () => {
     const { booleans, selectedPosition, selectedUnitId, dispatch } = this.props

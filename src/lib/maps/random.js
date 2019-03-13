@@ -1,4 +1,4 @@
-import { randomArray, randomPop } from '../common/utils'
+import { chance, randomArray, randomPop } from '../common/utils'
 
 const tilesTypes = [
   'PLAIN',
@@ -25,7 +25,7 @@ function generateWorldMap(width = 20, seaWidth = 3) {
     const row = []
     
     for (let i = 0; i < width; i++) {
-      const tile = i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? 'SEA' : randomArray(tilesTypes)
+      const tile = i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? (chance(0.05) ? 'REEF' : 'SEA') : randomArray(tilesTypes)
       row.push(tile)
 
       if (tile === 'PLAIN' || tile === 'ROAD') {
