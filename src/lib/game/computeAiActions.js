@@ -42,6 +42,8 @@ function computeAiActions() {
 
   const selectedChildStore = childrenStores.sort((a, b) => a.score > b.score ? -1 : 1)[0]
 
+  console.log('childrenStores.length', childrenStores.length)
+
   return selectedChildStore.actions
 }
 
