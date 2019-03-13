@@ -15,6 +15,7 @@ import worldMap from './reducers/worldMap'
 import unitsSaga from './sagas/units'
 
 const reducer = createReducer({
+  isAiStore: () => true,
   buildings, // must be before units
   factions,
   currentFaction, // must be after factions

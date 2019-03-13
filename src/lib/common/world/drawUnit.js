@@ -7,8 +7,9 @@ const unitsImageTileHeight = 64
 
 function drawUnit(_, tileSize, images, unit) {
   const { viewBox, booleans: { isDevPanelOpened } } = store.getState()
-  const x = unit.position.x - viewBox.x 
-  const y = unit.position.y - viewBox.y
+  const position = unit.currentPosition || unit.position
+  const x = position.x - viewBox.x 
+  const y = position.y - viewBox.y
   const { offsetX, offsetY } = viewBox
   const factionDy = gameConfiguration.factionsConfiguration[unit.factionId].unitsImageDy
   const { unitsImageDx: dx, unitsImageDy: dy } = gameConfiguration.unitsConfiguration[unit.type]

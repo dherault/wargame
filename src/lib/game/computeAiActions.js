@@ -7,6 +7,7 @@ import computeMovementPositions, { getSuccessorsFactory } from './computeMovemen
 import computeWorldStateScore from './computeWorldStateScore'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
+import aStarSearch from '../common/aStarSearch'
 import { samePosition, hash, unhash, createId, randomSlice } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
@@ -119,6 +120,12 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
     .sort((a, b) => {
       const aConfiguration = gameConfiguration.unitsConfiguration[a.type]
       const bConfiguration = gameConfiguration.unitsConfiguration[b.type]
+
+      if (gameConfiguration.infanteryUnitTypes.includes(a.type)) {
+        const building = parentState.buildings.find(building => samePosition(a.position, building.position))
+
+        if (building && building.factionId !== a.factionId) return -1
+      }
 
       return aConfiguration.range[1] > bConfiguration.range[1] || aConfiguration.power > bConfiguration.power ? -1 : 1
 
@@ -256,8 +263,6 @@ function transformTargetIntoActions(store, unit, target) {
   // console.log(target, pathToTarget, extremePosition)
 
   const actions = []
-  let unitIsDead = false
-  let unitIsPlayed = false
 
   if (extremePosition) {
     if (!samePosition(unit.position, extremePosition)) {
@@ -268,8 +273,6 @@ function transformTargetIntoActions(store, unit, target) {
           position: extremePosition,
         },
       })
-
-      unitIsPlayed = true
     }
 
     if (samePosition(extremePosition, position)) {
@@ -284,9 +287,6 @@ function transformTargetIntoActions(store, unit, target) {
             damages,
           },
         })
-  
-        unitIsDead = damages[1] >= unit.life
-        unitIsPlayed = true
       }
     
       if (type === 'CAPTURE') {
@@ -297,145 +297,12 @@ function transformTargetIntoActions(store, unit, target) {
             unitId: unit.id,
           },
         })
-
-        unitIsPlayed = true
       }
     }
-  }
-
-  if (unitIsPlayed && !unitIsDead) {
-    actions.push({
-      type: 'PLAY_UNIT',
-      payload: {
-        unitId: unit.id,
-      },
-    })
   }
 
   return actions
 }
 
-/*
-from http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html
 
-OPEN = priority queue containing START
-CLOSED = empty set
-while lowest rank in OPEN is not the GOAL:
-  current = remove lowest rank item from OPEN
-  add current to CLOSED
-  for neighbors of current:
-    cost = g(current) + movementcost(current, neighbor)
-    if neighbor in OPEN and cost less than g(neighbor):
-      remove neighbor from OPEN, because new path is better
-    if neighbor in CLOSED and cost less than g(neighbor):  
-      remove neighbor from CLOSED
-    if neighbor not in OPEN and neighbor not in CLOSED:
-      set g(neighbor) to cost
-      add neighbor to OPEN
-      set priority queue rank to g(neighbor) + h(neighbor)
-      set neighbor's parent to current
-
-reconstruct reverse path from goal to start
-by following parent pointers
-*/
-
-// Mahattan heuristic (h function)
-const manhattanHeuristic = (p1, p2) => Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
-
-
-function aStarSearch(store, unit, startPosition, goalPosition) {
-  const { worldMap, units } = store.getState()
-  const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
-  const startPositionHash = hash(startPosition)
-  const goalPositionHash = hash(goalPosition)
-
-  const open = new Heap()
-  const closed = new Set()
-
-  open.insert(0, startPositionHash)
-
-  const hashToCost = {}
-  const hashToParent = {}
-
-  hashToCost[startPositionHash] = 0
-
-  while (open.size) {
-    // current = remove lowest rank item from OPEN
-    
-    const currentPositionHash = open.extractMin()[1]
-    const currentPosition = unhash(currentPositionHash)
-
-    // while lowest rank in OPEN is not the GOAL
-    if (currentPositionHash === goalPositionHash) {
-      break
-    }
-
-    // add current to CLOSED
-    closed.add(currentPositionHash)
-
-    // for neighbors of current:
-    const { x, y } = currentPosition
-    const neighbors = []
-
-    if (worldMap[y] && worldMap[y][x - 1]) neighbors.push({ x: x - 1, y })
-    if (worldMap[y] && worldMap[y][x + 1]) neighbors.push({ x: x + 1, y })
-    if (worldMap[y - 1] && worldMap[y - 1][x]) neighbors.push({ x, y: y - 1 })
-    if (worldMap[y + 1] && worldMap[y + 1][x]) neighbors.push({ x, y: y + 1 })
-
-    neighbors.forEach(neighborPosition => {
-      if (units.some(u => u.team !== unit.team && samePosition(u.position, neighborPosition))) {
-        return
-      }
-
-      const neighborHash = hash(neighborPosition)
-
-      // cost = g(current) + movementcost(neighbor)
-      const cost = hashToCost[currentPositionHash] + gameConfiguration.terrainConfiguration[worldMap[neighborPosition.y][neighborPosition.x]].movementCost[movementType]
-
-      if (cost === Infinity) return
-
-      // if neighbor in OPEN and cost less than g(neighbor):
-      if (open.has(neighborHash) && cost < hashToCost[neighborHash]) {
-        // remove neighbor from OPEN, because new path is better
-        open.deleteByData(neighborHash)
-      }
-
-      // if neighbor in CLOSED and cost less than g(neighbor):
-      // This should never happen if you have an consistent admissible heuristic.
-      if (closed.has(neighborHash) && cost < hashToCost[neighborHash]) {
-        closed.delete(neighborHash)
-      }
-      // if neighbor not in OPEN and neighbor not in CLOSED:
-      if (!open.has(neighborHash) && !closed.has(neighborHash)) {
-        // set g(neighbor) to cost
-        hashToCost[neighborHash] = cost
-        // set neighbor's parent to current
-        hashToParent[neighborHash] = currentPosition
-        // set priority queue rank to g(neighbor) + h(neighbor)
-        const rank = cost + manhattanHeuristic(neighborPosition, goalPosition)
-        // add neighbor to OPEN
-        open.insert(rank, neighborHash)
-      }
-    })
-  }
-
-  // Reconstruct path from goal to start
-  const path = []
-
-  path.push(goalPosition)
-
-  let currentPositionHash = hash(goalPosition)
-
-  while (currentPositionHash !== startPositionHash) {
-    const parent = hashToParent[currentPositionHash]
-
-    path.unshift(parent)
-
-    currentPositionHash = hash(parent)
-  }
-
-  // path.unshift(startPosition)
-
-  return path
-}
 export default computeAiActions

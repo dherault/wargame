@@ -1,4 +1,4 @@
-import { takeEvery, put, delay, select } from 'redux-saga/effects'
+import { takeEvery, take, put, delay, select } from 'redux-saga/effects'
 import { findById } from '../../lib/common/utils'
 import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/common/world/boundViewBox'
 import computeAiActions from '../../lib/game/computeAiActions'
@@ -56,6 +56,10 @@ function* playAi() {
     const action = actions[i]
     const { type, payload } = action
     const unitId = payload.attackerId || payload.unitId
+
+    const gameOver = yield select(s => s.gameOver)
+
+    if (gameOver) return
     
     if (previousActionUnitId !== unitId) {
       // Next action should move the viewBox
@@ -119,7 +123,14 @@ function* playAi() {
       yield delay(100)
     }
 
+    console.log('putting action', action)
     yield put(action)
+
+    if (action.type === 'MOVE_UNIT') {
+      console.log('waiting for unit to move')
+      yield take('MOVE_UNIT_DONE')
+      console.log('unit moved')
+    }
     
     previousActionUnitId = unitId
   } 

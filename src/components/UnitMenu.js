@@ -23,7 +23,7 @@ class UnitMenu extends Component {
     window.canvas.focus()
   }
 
-  moveUnit = () => {
+  moveUnit = (onCompletion) => {
     const { dispatch, selectedUnitId, selectedPosition } = this.props
 
     dispatch({
@@ -31,6 +31,7 @@ class UnitMenu extends Component {
       payload: {
         unitId: selectedUnitId,
         position: selectedPosition,
+        onCompletion,
       },
     })
   }
@@ -49,17 +50,17 @@ class UnitMenu extends Component {
   handleFireClick = () => {
     const { dispatch } = this.props
 
-    this.moveUnit()
+    this.moveUnit(() => {
+      dispatch({
+        type: 'SET_BOOLEAN',
+        payload: {
+          isFireSelection: true,
+        },
+      })
 
-    dispatch({
-      type: 'SET_BOOLEAN',
-      payload: {
-        isFireSelection: true,
-      },
-    })
-
-    dispatch({
-      type: 'DESELECT_POSITION',
+      dispatch({
+        type: 'DESELECT_POSITION',
+      })
     })
 
     this.closeMenu()
@@ -71,25 +72,49 @@ class UnitMenu extends Component {
     const unit = findById(units, selectedUnitId)
 
     if (!samePosition(unit.position, selectedPosition)) {
-      this.moveUnit()
+      this.moveUnit(() => {
+        dispatch({
+          type: 'CAPTURE',
+          payload: {
+            buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
+            unitId: selectedUnitId,
+          },
+        })
+
+        this.playUnit()
+      })
+    }
+    else {
+      dispatch({
+        type: 'CAPTURE',
+        payload: {
+          buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
+          unitId: selectedUnitId,
+        },
+      })
+
+      this.playUnit()
     }
 
-    dispatch({
-      type: 'CAPTURE',
-      payload: {
-        buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
-        unitId: selectedUnitId,
-      },
-    })
-
-    this.playUnit()
     this.handleCancelClick()
   }
 
-  handleAwaitClick = () => {
-    this.moveUnit()
-    this.playUnit()
-    this.handleCancelClick()
+  handleMoveClick = () => {
+    const { dispatch } = this.props
+
+    this.moveUnit(() => {
+      this.playUnit()
+
+      dispatch({
+        type: 'DESELECT_UNIT_ID',
+      })
+  
+      dispatch({
+        type: 'DESELECT_POSITION',
+      })
+    })
+
+    this.closeMenu()
   }
 
   handleCancelClick = () => {
@@ -143,9 +168,11 @@ class UnitMenu extends Component {
             Capture
           </div>
         )}  
-        <div className="UnitMenu-item" onClick={this.handleAwaitClick}>
-          Await
-        </div>
+        {!samePosition(selectedPosition, selectedUnit.position) && (
+          <div className="UnitMenu-item" onClick={this.handleMoveClick}>
+            Move
+          </div>
+        )}
         <div className="UnitMenu-item" onClick={this.handleCancelClick}>
           Cancel
         </div>

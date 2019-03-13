@@ -2,6 +2,8 @@ const gameConfiguration = {
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
   moneyPerCityPerTurn: 1000,
+  unitMovementPeriod: 17,
+  unitMovementIncrement: 0.05,
   buildingTerrainTypes: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
   creationBuildingTypes: ['BASE', 'AIRPORT', 'PORT'],
   infanteryUnitTypes: ['INFANTERY', 'MECH'],

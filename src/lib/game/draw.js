@@ -94,8 +94,11 @@ function draw(_) {
     let rangePositions
 
     if (selectedUnitId && !booleans.isFireSelection) {
-      const selectedUnit = findById(units, selectedUnitId)
-      movementPositions = computeMovementPositions(store, selectedUnit)
+      const selectedUnit = findById(units, selectedUnitId) 
+
+      if (!selectedUnit.isMoving) {
+        movementPositions = computeMovementPositions(store, selectedUnit)
+      }
     }
 
     if (booleans.isFireSelection) {
@@ -140,11 +143,14 @@ function draw(_) {
       DRAW UNITS
     ----------- */
 
-    units.forEach(unit => {
-      if (!booleans.isFogOfWar || visionPositionHashes.has(hash(unit.position))) {
-        drawUnit(_, tileSize, images, unit)
-      }
-    }) 
+    units
+      .slice()
+      .sort(a => a.isMoving ? 1 : -1)
+      .forEach(unit => {
+        if (!booleans.isFogOfWar || visionPositionHashes.has(hash(unit.position))) {
+          drawUnit(_, tileSize, images, unit)
+        }
+      }) 
 
     /* ---------------------------
       DRAW TILE SELECTION SQUARE

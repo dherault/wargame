@@ -1,6 +1,7 @@
 import duel from './duel'
 import fourLeafBattle from './fourLeafBattle'
 import showOff from './showOff'
+import simpleBrawl from './simpleBrawl'
 import random from './random'
 import aiDecisionMaking1 from './aiDecisionMaking1'
 import aiDecisionMaking2 from './aiDecisionMaking2'
@@ -21,6 +22,7 @@ export default [
   duel(),
   fourLeafBattle(),
   showOff(),
+  simpleBrawl(),
   random(), 
   aiDecisionMaking1(),
   aiDecisionMaking2(),
