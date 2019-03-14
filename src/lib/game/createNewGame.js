@@ -1,7 +1,17 @@
 import store from '../../state/store'
 
-function createNewGame({ worldMap, buildings, units, factions }, isFogOfWar = false) {
+function createNewGame({ worldMap, buildings, units, factions, name, description }, isFogOfWar = false) {
   console.log('Creating new game')
+
+  store.dispatch({
+    type: 'SET_MAP_DEFINITION_NAME',
+    payload: name,
+  })
+
+  store.dispatch({
+    type: 'SET_MAP_DEFINITION_DESCRIPTION',
+    payload: description,
+  })
 
   const currentFaction = factions[0]
 

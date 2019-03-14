@@ -23,6 +23,18 @@ class UnitMenu extends Component {
     window.canvas.focus()
   }
 
+  deselect = () => {
+    const { dispatch } = this.props
+
+    dispatch({
+      type: 'DESELECT_UNIT_ID',
+    })
+
+    dispatch({
+      type: 'DESELECT_POSITION',
+    })
+  }
+
   moveUnit = (onCompletion) => {
     const { dispatch, selectedUnitId, selectedPosition } = this.props
 
@@ -38,7 +50,7 @@ class UnitMenu extends Component {
 
   playUnit = () => {
     const { selectedUnitId, dispatch } = this.props
-    
+
     dispatch({
       type: 'PLAY_UNIT',
       payload: {
@@ -71,6 +83,8 @@ class UnitMenu extends Component {
     
     const unit = findById(units, selectedUnitId)
 
+    this.closeMenu()
+
     if (!samePosition(unit.position, selectedPosition)) {
       this.moveUnit(() => {
         dispatch({
@@ -82,6 +96,7 @@ class UnitMenu extends Component {
         })
 
         this.playUnit()
+        this.deselect()
       })
     }
     else {
@@ -94,41 +109,21 @@ class UnitMenu extends Component {
       })
 
       this.playUnit()
+      this.deselect()
     }
-
-    this.handleCancelClick()
   }
 
   handleMoveClick = () => {
-    const { dispatch } = this.props
-
+    this.closeMenu()
     this.moveUnit(() => {
       this.playUnit()
-
-      dispatch({
-        type: 'DESELECT_UNIT_ID',
-      })
-  
-      dispatch({
-        type: 'DESELECT_POSITION',
-      })
+      this.deselect()
     })
-
-    this.closeMenu()
   }
 
   handleCancelClick = () => {
-    const { dispatch } = this.props
-
-    dispatch({
-      type: 'DESELECT_UNIT_ID',
-    })
-
-    dispatch({
-      type: 'DESELECT_POSITION',
-    })
-
     this.closeMenu()
+    this.deselect()
   }
 
   render() {
@@ -136,7 +131,7 @@ class UnitMenu extends Component {
     
     const { booleans, buildings, units, selectedPosition, selectedUnitId, viewBox } = this.props
 
-    if (!booleans.isUnitMenuOpened) return null
+    if (!booleans.isUnitMenuOpened || !selectedUnitId || !selectedPosition) return null
 
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)

@@ -587,23 +587,28 @@ const gameConfiguration = {
   buildingsConfiguration: {
     HEADQUARTERS: {
       name: 'HQ',
-      reparableMovementTypes: ['FOOT', 'WHEEL'],
+      reparableMovementTypes: ['FOOT', 'WHEEL', 'THREAD'],
+      creatableUnitMovementTypes: [],
     },
     CITY: {
       name: 'City',
-      reparableMovementTypes: ['FOOT', 'WHEEL'],
+      reparableMovementTypes: ['FOOT', 'WHEEL', 'THREAD'],
+      creatableUnitMovementTypes: [],
     },
     BASE: {
       name: 'Base',
-      reparableMovementTypes: ['FOOT', 'WHEEL'],
+      reparableMovementTypes: ['FOOT', 'WHEEL', 'THREAD'],
+      creatableUnitMovementTypes: ['FOOT', 'WHEEL', 'THREAD'],
     },
     PORT: {
       name: 'Port',
       reparableMovementTypes: ['SAIL'],
+      creatableUnitMovementTypes: ['SAIL'],
     },
     AIRPORT: {
       name: 'Airport',
       reparableMovementTypes: ['FLY'],
+      creatableUnitMovementTypes: ['FLY'],
     },
   },
   factionsConfiguration: {

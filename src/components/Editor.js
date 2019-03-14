@@ -12,7 +12,7 @@ class Editor extends Component {
 
   componentDidMount() {
     console.log('Mounting Editor')
-    const { isEditing } = this.props
+    const { isEditing, dispatch } = this.props
     const canvas = document.getElementById('canvas-editor')
     
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
@@ -24,6 +24,10 @@ class Editor extends Component {
     this.unregisterCanvas = registerCanvas(canvas)
 
     if (!isEditing) createNewEditor()
+    
+    dispatch({ 
+      type: 'RESET_VIEW_BOX',
+    })
   }
 
   componentWillUnmount() {

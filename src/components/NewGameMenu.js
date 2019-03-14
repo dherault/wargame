@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 
 import maps from '../lib/maps'
 import prepareMap from '../lib/game/prepareMap'
 import createNewGame from '../lib/game/createNewGame'
+import createNewEditor from '../lib/editor/createNewEditor'
 import gameConfiguration from '../lib/gameConfiguration'
 import { samePosition } from '../lib/common/utils'
 
@@ -34,6 +36,15 @@ class NewGameMenu extends Component {
     const { selectedMapDefinition, isFogOfWar } = this.state
 
     createNewGame(prepareMap(selectedMapDefinition), isFogOfWar)
+  }
+
+  handleNewGameSelectorEdit = () => {
+    const { dispatch } = this.props
+    const { selectedMapDefinition } = this.state
+
+    createNewEditor(selectedMapDefinition)
+
+    dispatch(push('/editor'))
   }
 
   handleNewGameSelectorCancel = () => {
@@ -117,6 +128,7 @@ class NewGameMenu extends Component {
             isFogOfWar={isFogOfWar}
             handleIsFogOfWarChange={isFogOfWar => this.setState({ isFogOfWar })}
             submit={this.handleNewGameSelectorSubmit}
+            edit={this.handleNewGameSelectorEdit}
             cancel={this.handleNewGameSelectorCancel}
           />
         )}

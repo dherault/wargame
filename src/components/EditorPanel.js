@@ -16,8 +16,6 @@ class EditorPanel extends Component {
     this.state = {
       width: worldMap[0].length,
       height: worldMap.length,
-      name: 'My map',
-      description: '',
       isJsonExported: false,
     }
 
@@ -257,16 +255,15 @@ class EditorPanel extends Component {
   }
 
   getMapDefinition() {
-    const { worldMap, factions, buildings, units } = this.props
-    const { name, description } = this.state
+    const { worldMap, factions, buildings, units, mapDefinitionName, mapDefinitionDescription } = this.props
 
     return {
       worldMap,
       factions,
       buildings,
       units,
-      name,
-      description,
+      name: mapDefinitionName,
+      description: mapDefinitionDescription,
     }
   }
 
@@ -280,8 +277,8 @@ class EditorPanel extends Component {
   }
 
   render() {
-    const { factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = this.props
-    const { width, height, name, description, isJsonExported } = this.state
+    const { mapDefinitionName, mapDefinitionDescription, factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, dispatch } = this.props
+    const { width, height, isJsonExported } = this.state
 
     const validations = this.validateMap()
 
@@ -423,16 +420,16 @@ class EditorPanel extends Component {
             <div>
               <input 
                 type="text" 
-                value={name} 
-                onChange={e => this.setState({ name: e.target.value })} 
+                value={mapDefinitionName} 
+                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_NAME', payload: e.target.value })} 
                 placeholder="name"
               />
             </div>
             <div>
               <textarea 
                 className="EditorPanel-save-textarea"
-                value={description} 
-                onChange={e => this.setState({ description: e.target.value })} 
+                value={mapDefinitionDescription} 
+                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_DESCRIPTION', payload: e.target.value })} 
                 placeholder="description"
               />
             </div>
@@ -469,6 +466,8 @@ const mapStateToProps = s => ({
   booleans: s.booleans,
   buildings: s.buildings,
   factions: s.factions,
+  mapDefinitionDescription: s.mapDefinitionDescription,
+  mapDefinitionName: s.mapDefinitionName,
   selectedBuildingType: s.selectedBuildingType,
   selectedFactionId: s.selectedFactionId,
   selectedTerrainType: s.selectedTerrainType,

@@ -6,12 +6,6 @@ import './BuildingMenu.css'
 import { samePosition } from '../lib/common/utils'
 import gameConfiguration from '../lib/gameConfiguration'
 
-const buildingTypeToMovementTypes = {
-  BASE: ['FOOT', 'WHEEL'],
-  PORT: ['SAIL'],
-  AIRPORT: ['FLY'],
-}
-
 class BuildingMenu extends Component {
 
   handleCreateUnitClick = type => {
@@ -47,7 +41,7 @@ class BuildingMenu extends Component {
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const building = buildings.find(building => samePosition(building.position, selectedPosition))
 
-    const movementTypes = buildingTypeToMovementTypes[building.type]
+    const movementTypes = gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes
 
     if (!movementTypes) return null
     

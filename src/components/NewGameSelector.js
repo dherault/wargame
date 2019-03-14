@@ -23,7 +23,7 @@ class NewGameSelector extends Component {
   }
 
   render() {
-    const { factions, isFogOfWar, handleIsFogOfWarChange, submit, cancel } = this.props
+    const { factions, isFogOfWar, handleIsFogOfWarChange, submit, edit, cancel } = this.props
 
     return (
       <div className="NewGameSelector x5">
@@ -50,6 +50,9 @@ class NewGameSelector extends Component {
           </div>
           <button type="button" onClick={submit}>
             Go
+          </button>
+          <button type="button" onClick={edit}>
+            Edit map
           </button>
           <button type="button" onClick={cancel}>
             Cancel

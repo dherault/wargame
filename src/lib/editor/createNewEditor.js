@@ -15,27 +15,37 @@ function createEmptyWorldMap(width = 20, height = 15) {
   return tiles
 }
 
-function createNewEditor() {
+function createNewEditor({ worldMap, buildings, units, factions, name, description } = {}) {
   console.log('Creating new editor')
 
   store.dispatch({
+    type: 'SET_MAP_DEFINITION_NAME',
+    payload: name || 'My map',
+  })
+
+  store.dispatch({
+    type: 'SET_MAP_DEFINITION_DESCRIPTION',
+    payload: description || '',
+  })
+
+  store.dispatch({
     type: 'SET_WORLD_MAP',
-    payload: createEmptyWorldMap(),
+    payload: worldMap || createEmptyWorldMap(),
   })
 
   store.dispatch({
     type: 'SET_BUILDINGS',
-    payload: [],
+    payload: buildings || [],
   })
 
   store.dispatch({
     type: 'SET_UNITS',
-    payload: [],
+    payload: units || [],
   })
 
   store.dispatch({
     type: 'SET_FACTIONS',
-    payload: [],
+    payload: factions || [],
   })
 
   store.dispatch({
@@ -74,10 +84,6 @@ function createNewEditor() {
 
   store.dispatch({
     type: 'DESELECT_UNIT_TYPE',
-  })
-
-  store.dispatch({ 
-    type: 'RESET_VIEW_BOX',
   })
 
   store.dispatch({

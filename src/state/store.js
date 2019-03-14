@@ -13,6 +13,8 @@ import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
 import gameOver from './reducers/gameOver'
+import mapDefinitionDescription from './reducers/mapDefinitionDescription'
+import mapDefinitionName from './reducers/mapDefinitionName'
 import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
 import selectedBuildingType from './reducers/selectedBuildingType'
@@ -38,6 +40,8 @@ const reducer = createReducer({
   buildings, // must be before units
   factions,
   currentFaction, // must be after factions
+  mapDefinitionDescription,
+  mapDefinitionName,
   moneyByFaction,
   mouse,
   selectedBuildingType,
