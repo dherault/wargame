@@ -35,7 +35,7 @@ function prepareMap({ worldMap, factions, buildings, units }) {
 
   return {
     worldMap,
-    factions,
+    factions: nextFactions,
     buildings: nextBuidlings,
     units: nextUnits,
   }

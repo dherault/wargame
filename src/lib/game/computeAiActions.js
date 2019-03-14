@@ -14,6 +14,20 @@ import { samePosition, hash, unhash, createId, randomSlice } from '../common/uti
 const nTargets = 2 
 const maxBranchingFactor = 111
 
+/*
+  To compute which actions  the computer takes ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...)
+  we will perform an adversarial search with alpha-beta pruning
+  The idea here is to compute a state tree, ie a tree of world states (stores)
+  Each node is either a max or min node (node type), depending on which team the player it represents is in
+  (player from same team => max node, opposite team => min node)
+  We affect a score to each leaf node of the tree
+  traverse up the tree affecting a score to the parent = min or max of scores of children depending on the node type
+  and take the root's child that has the best possible score
+  It will determine which state to play, ie. which actions to take to get to this state from our root state
+  more details:
+  Adversarial search: https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
+  Alpha-beta pruning: https://youtu.be/jvpWtwVSvjA and https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
+*/
 function computeAiActions() {
   // First we clone the game state into a lightweight store
   // It will be our root world state
@@ -51,9 +65,10 @@ function computeAiActions() {
 function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
   const parentState = parentStore.getState()
   
-  console.log('depth', depth, parentState.currentFaction.id)
+  console.log('depth', depth, parentState.currentFaction.id, parentState.turn, parentState.gameOver)
   
   if (depth > maxDepth || parentState.gameOver) {
+    console.log('max reached', parentState.gameOver)
     return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
   }
 
@@ -145,7 +160,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
     store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
 
     store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex) // We add the store to the state tree
-  
+    
     const childScore = extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1, alpha, beta)
 
     // console.log('back to depth', depth, parentState.currentFaction.id, childScore)
@@ -164,8 +179,6 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
       break
     }
   }
-  
-  // console.log('stores', stores)
 
   return parentStore.score
 }

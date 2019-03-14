@@ -1,7 +1,9 @@
 /*
   The turn number
 */
-function turn(state = 1, action, globalState) {
+const initialState = 1
+
+function turn(state = initialState, action, globalState) {
   if (action.type === 'END_PLAYER_TURN') {
     const { factions, currentFaction } = globalState
     const factionIndex = factions.findIndex(faction => faction.id === currentFaction.id) + 1
@@ -11,6 +13,10 @@ function turn(state = 1, action, globalState) {
     }
 
     return state
+  }
+
+  if (action.type === 'RESET_TURN') {
+    return initialState
   }
 
   return state

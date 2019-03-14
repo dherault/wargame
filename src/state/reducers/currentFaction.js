@@ -17,7 +17,7 @@ function currentFaction(state = null, action, globalState, ongoingState) {
 
       while (true) {
         factionIndex++
-
+        
         if (factionIndex >= factions.length) {
           factionIndex = 0
         }

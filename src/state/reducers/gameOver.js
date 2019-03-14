@@ -1,5 +1,5 @@
 function gameOver(state = false, action, globalState, ongoingState) {
-  if (['KILL_UNIT', 'CAPTURE', 'SET_UNITS', 'SET_BUILDINGS'].includes(action.type)) {
+  if (['KILL_UNIT', 'CAPTURE', 'SET_UNITS', 'SET_BUILDINGS', 'END_PLAYER_TURN'].includes(action.type)) {
     const { buildings, units, turn } = ongoingState
 
     if (turn === 1) return false

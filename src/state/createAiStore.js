@@ -10,6 +10,7 @@ import factions from './reducers/factions'
 import gameOver from './reducers/gameOver'
 import moneyByFaction from './reducers/moneyByFaction'
 import units from './reducers/units'
+import turn from './reducers/turn'
 import worldMap from './reducers/worldMap'
 
 import unitsSaga from './sagas/units'
@@ -20,8 +21,9 @@ const reducer = createReducer({
   factions,
   currentFaction, // must be after factions
   moneyByFaction,
+  turn,
   units, // must be after buildings and currentFaction
-  gameOver, // must be after buildings and units
+  gameOver, // must be after buildings and units and turn
   worldMap,
 })
 

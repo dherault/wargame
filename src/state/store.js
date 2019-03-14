@@ -52,7 +52,7 @@ const reducer = createReducer({
   selectedUnitType,
   turn,
   units, // must be after buildings and currentFaction
-  gameOver, // must be after buildings and units
+  gameOver, // must be after buildings and units and turn
   userMapDefinitions,
   viewBox,
   worldMap,

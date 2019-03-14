@@ -15,10 +15,11 @@ function factions(state = [], action, globalState) {
     // At each player's turn end,
     // Compute weither the factions are still alive or not
     case 'END_PLAYER_TURN': {
-      const { units, buildings } = globalState
+      const { units, buildings, turn } = globalState
 
-      return state.map(faction => Object.assign({}, faction, {
-        alive: units.some(unit => unit.factionId === faction.id) && buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS'),
+      return state.map(faction => ({
+        ...faction,
+        alive: turn === 1 || (units.some(unit => unit.factionId === faction.id) && buildings.some(building => building.factionId === faction.id && building.type === 'HEADQUARTERS')),
       }))
     }
 
