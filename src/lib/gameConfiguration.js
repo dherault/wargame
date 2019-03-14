@@ -44,7 +44,7 @@ const gameConfiguration = {
       movementCost: {
         FOOT: 2, 
         WHEEL: Infinity, 
-        THREAD: Infinity,
+        THREAD: 3,
         FLY: 1, 
         SAIL: Infinity,
       }, 
