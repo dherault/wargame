@@ -351,6 +351,9 @@ function addCreateUnitActions(store) {
   const ennemyHeadquarters = buildings.filter(building => building.team !== currentFaction.team && building.type === 'HEADQUARTERS')
   const ennemyUnits = units.filter(unit => unit.team !== currentFaction.team)
 
+  // 10% chance global saving
+  if (turn !== 1 && chance(0.1)) return
+
   buildings
     .filter(building => 
       building.factionId === currentFaction.id 
@@ -390,8 +393,8 @@ function addCreateUnitActions(store) {
         return
       }
 
-      // 30% chance to save money on this building
-      if (chance(0.3)) return
+      // 10% chance to save money on this building
+      if (chance(0.1)) return
 
       const availableUnitsTypes = Object.entries(gameConfiguration.unitsConfiguration)
         .filter(entry => creatableUnitMovementTypes.includes(entry[1].movementType) && entry[1].cost <= money)
