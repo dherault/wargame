@@ -117,12 +117,12 @@ export function sliceRandom(array, n) {
   return result
 }
 
-export function manhattanDistance(p1, p2) {
-  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
-}
-
 export function round(x, decimal) {
   const pow = 10 ** decimal
   
   return Math.round(x * pow) / pow
+}
+
+export function manhattanDistance(p1, p2) {
+  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
 }

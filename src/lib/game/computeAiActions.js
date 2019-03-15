@@ -8,7 +8,7 @@ import computeWorldStateScore from './computeWorldStateScore'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
 import aStarSearch from '../common/aStarSearch'
-import { samePosition, hash, unhash, createId, randomSlice } from '../common/utils'
+import { samePosition, hash, unhash, randomSlice, manhattanDistance, chance } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
 const nTargets = 2 
@@ -57,27 +57,28 @@ function computeAiActions() {
 
   const selectedChildStore = childrenStores.sort((a, b) => a.score > b.score ? -1 : 1)[0]
 
-  console.log('childrenStores.length', childrenStores.length)
+  // console.log('childrenStores.length', childrenStores.length)
 
   return selectedChildStore.actions
 }
 
+// Extends the state tree with new children
 function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
   const parentState = parentStore.getState()
   
   console.log('depth', depth, parentState.currentFaction.id, parentState.turn, parentState.gameOver)
   
   if (depth > maxDepth || parentState.gameOver) {
-    console.log('max reached', parentState.gameOver)
     return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
   }
 
+  // Is this node a MAX or MIN node ?
   const parentNodeTypeFn = consideredFaction.team === parentState.currentFaction.team ? Math.max : Math.min
 
   // Value init
   parentStore.score = parentNodeTypeFn === Math.max ? -Infinity : Infinity
 
-  let stores = [parentStore]
+  let stores = [createAiStore(parentState)]
 
   function recurseOnUnits(units) {
     if (!units.length) return
@@ -115,8 +116,6 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
         nextStore.actions = [...store.actions, ...actions]
         
-        nextStore.id = createId()
-
         actions.forEach(nextStore.dispatch)
 
         nextStores.push(nextStore)
@@ -131,7 +130,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   } 
 
   const units = parentState.units
-    .filter(u => u.factionId === parentState.currentFaction.id)
+    .filter(unit => unit.factionId === parentState.currentFaction.id)
     .sort((a, b) => {
       const aConfiguration = gameConfiguration.unitsConfiguration[a.type]
       const bConfiguration = gameConfiguration.unitsConfiguration[b.type]
@@ -149,7 +148,11 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
   recurseOnUnits(units)
 
+  // console.log('units', units)
+
   const selectedStores = randomSlice(stores, maxBranchingFactor)
+  
+  selectedStores.forEach(store => addCreateUnitActions(store))
 
   // console.log('selectedStores', selectedStores)
 
@@ -315,6 +318,84 @@ function transformTargetIntoActions(store, unit, target) {
   }
 
   return actions
+}
+
+function addCreateUnitActions(store) {
+  const { buildings, units, currentFaction, turn } = store.getState()
+
+  const ennemyHeadquarters = buildings.filter(building => building.team !== currentFaction.team && building.type === 'HEADQUARTERS')
+  const ennemyUnits = units.filter(unit => unit.team !== currentFaction.team)
+
+  const creatingBuildings = buildings
+    .filter(building => building.factionId === currentFaction.id && gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes.length)
+    .sort((a, b) => {
+      let aDistanceToEnnemyHeadquarters = 0
+      let bDistanceToEnnemyHeadquarters = 0
+
+      ennemyHeadquarters.forEach(hq => {
+        aDistanceToEnnemyHeadquarters += manhattanDistance(hq.position, a.position)
+        bDistanceToEnnemyHeadquarters += manhattanDistance(hq.position, b.position)
+      })
+
+      return aDistanceToEnnemyHeadquarters <= bDistanceToEnnemyHeadquarters ? -1 : 1
+    })
+
+  creatingBuildings.forEach(building => {
+    // console.log('considering building', building)
+    const { creatableUnitMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
+    const money = store.getState().moneyByFaction[currentFaction.id]
+
+    if (turn === 1 && money >= gameConfiguration.unitsConfiguration.INFANTERY.cost) {
+      const action = {
+        type: 'CREATE_UNIT',
+        payload: {
+          type: 'INFANTERY',
+          position: building.position,
+          factionId: currentFaction.id,
+          team: currentFaction.team,
+        },
+      }
+
+      store.dispatch(action)
+      store.actions.push(action)
+
+      return
+    }
+
+    // 25% chance to save money on this building
+    if (chance(0.25)) return
+
+    const availableUnitsTypes = Object.entries(gameConfiguration.unitsConfiguration)
+      .filter(entry => creatableUnitMovementTypes.includes(entry[1].movementType) && entry[1].cost <= money)
+      .sort((a, b) => getAveragePower(a[1].damages, ennemyUnits) > getAveragePower(b[1].damages, ennemyUnits) ? -1 : 1)
+      .map(entry => entry[0])
+
+    if (availableUnitsTypes.length) {
+      const action = {
+        type: 'CREATE_UNIT',
+        payload: {
+          type: availableUnitsTypes[0],
+          position: building.position,
+          factionId: currentFaction.id,
+          team: currentFaction.team,
+        },
+      }
+  
+      store.dispatch(action)
+      store.actions.push(action)
+    }
+  })
+
+}
+
+function getAveragePower(damages, ennemyUnits) {
+  if (!ennemyUnits.length) return 0
+
+  let power = 0
+
+  ennemyUnits.forEach(unit => power += damages[unit.type] || 0)
+
+  return power / ennemyUnits.length
 }
 
 

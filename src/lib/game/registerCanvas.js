@@ -78,6 +78,10 @@ function registerCanvas(canvas) {
           console.log('left click')
     
           const { booleans, mouse, buildings, units, selectedUnitId, selectedPosition } = store.getState()
+
+          // No left click if a unit is moving
+          if (units.some(unit => unit.isMoving)) return
+
           const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
           const clickedBuilding = buildings.find(building => samePosition(building.position, mouse))
           

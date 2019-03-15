@@ -1,6 +1,6 @@
 import gameConfiguration from '../gameConfiguration'
 import Heap from './Heap'
-import { samePosition, hash, unhash } from './utils'
+import { samePosition, hash, unhash, manhattanDistance } from './utils'
 
 /*
 from http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html
@@ -26,66 +26,64 @@ reconstruct reverse path from goal to start
 by following parent pointers
 */
 
-// Mahattan heuristic (h function)
-const manhattanHeuristic = (p1, p2) => Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
 
 function aStarSearch(store, unit, startPosition, goalPosition) {
   const { worldMap, units } = store.getState()
   const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
   const startPositionHash = hash(startPosition)
   const goalPositionHash = hash(goalPosition)
-
+  
   const open = new Heap()
   const closed = new Set()
-
+  
   open.insert(0, startPositionHash)
-
+  
   const hashToCost = {}
   const hashToParent = {}
-
+  
   hashToCost[startPositionHash] = 0
-
+  
   while (open.size) {
     // current = remove lowest rank item from OPEN
     
     const currentPositionHash = open.extractMin()[1]
     const currentPosition = unhash(currentPositionHash)
-
+    
     // while lowest rank in OPEN is not the GOAL
     if (currentPositionHash === goalPositionHash) {
       break
     }
-
+    
     // add current to CLOSED
     closed.add(currentPositionHash)
-
+    
     // for neighbors of current:
     const { x, y } = currentPosition
     const neighbors = []
-
+    
     if (worldMap[y] && worldMap[y][x - 1]) neighbors.push({ x: x - 1, y })
     if (worldMap[y] && worldMap[y][x + 1]) neighbors.push({ x: x + 1, y })
     if (worldMap[y - 1] && worldMap[y - 1][x]) neighbors.push({ x, y: y - 1 })
     if (worldMap[y + 1] && worldMap[y + 1][x]) neighbors.push({ x, y: y + 1 })
-
+    
     neighbors.forEach(neighborPosition => {
       if (units.some(u => u.team !== unit.team && samePosition(u.position, neighborPosition))) {
         return
       }
-
+      
       const neighborHash = hash(neighborPosition)
-
+      
       // cost = g(current) + movementcost(neighbor)
       const cost = hashToCost[currentPositionHash] + gameConfiguration.terrainConfiguration[worldMap[neighborPosition.y][neighborPosition.x]].movementCost[movementType]
-
+      
       if (cost === Infinity) return
-
+      
       // if neighbor in OPEN and cost less than g(neighbor):
       if (open.has(neighborHash) && cost < hashToCost[neighborHash]) {
         // remove neighbor from OPEN, because new path is better
         open.deleteByData(neighborHash)
       }
-
+      
       // if neighbor in CLOSED and cost less than g(neighbor):
       // This should never happen if you have an consistent admissible heuristic.
       if (closed.has(neighborHash) && cost < hashToCost[neighborHash]) {
@@ -98,7 +96,7 @@ function aStarSearch(store, unit, startPosition, goalPosition) {
         // set neighbor's parent to current
         hashToParent[neighborHash] = currentPosition
         // set priority queue rank to g(neighbor) + h(neighbor)
-        const rank = cost + manhattanHeuristic(neighborPosition, goalPosition)
+        const rank = cost + manhattanDistance(neighborPosition, goalPosition)
         // add neighbor to OPEN
         open.insert(rank, neighborHash)
       }

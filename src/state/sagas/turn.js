@@ -55,7 +55,7 @@ function* playAi() {
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i]
     const { type, payload } = action
-    const unitId = payload.attackerId || payload.unitId
+    const unitId = payload.attackerId || payload.unitId || null
 
     const gameOver = yield select(s => s.gameOver)
 
@@ -82,14 +82,19 @@ function* playAi() {
             position1 = findById(units, unitId).position
             position2 = findById(units, payload.defenderId).position
             break
-  
+
+          case 'CREATE_UNIT': 
+            position1 = position2 = payload.position
+            console.log('position1', position1)
+            break
+
           case 'CAPTURE':
           case 'PLAY_UNIT':
           default:
             position1 = position2 = findById(units, unitId).position
             break
         }
-  
+        
         if (position1 && position2) {
           const { viewBox } = yield select()
   
@@ -123,13 +128,13 @@ function* playAi() {
       yield delay(100)
     }
 
-    console.log('putting action', action)
+    // console.log('putting action', action)
     yield put(action)
 
     if (action.type === 'MOVE_UNIT') {
-      console.log('waiting for unit to move')
+      // console.log('waiting for unit to move')
       yield take('MOVE_UNIT_DONE')
-      console.log('unit moved')
+      // console.log('unit moved')
     }
     
     previousActionUnitId = unitId
