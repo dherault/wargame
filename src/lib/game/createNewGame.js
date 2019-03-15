@@ -53,10 +53,6 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
     payload: moneyByFaction,
   })
 
-  store.dispatch({ 
-    type: 'BEGIN_PLAYER_TURN',
-  })
-
   store.dispatch({
     type: 'DESELECT_UNIT',
   })
@@ -71,6 +67,10 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
       isFogOfWar,
       isPlaying: true,
     },
+  })
+
+  store.dispatch({ 
+    type: 'BEGIN_PLAYER_TURN',
   })
 }
 

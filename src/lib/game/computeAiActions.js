@@ -35,9 +35,16 @@ function computeAiActions() {
   const rootStore = createAiStore(rootState)
   
   const consideredFaction = rootState.currentFaction
-  const maxStateTreeDepth = rootState.factions.filter(faction => faction.alive).length - 1
-  // const maxStateTreeDepth = 0
+  const nAliveFactions = rootState.factions.filter(faction => faction.alive).length
+  const nUnits = rootState.units.length
 
+  let maxStateTreeDepth
+
+  if (nUnits < 8) maxStateTreeDepth = nAliveFactions - 1
+  else if (nUnits < 15) maxStateTreeDepth = 1
+  else maxStateTreeDepth = 0
+
+  // maxStateTreeDepth = 0
   console.log('consideredFaction', consideredFaction.id)
 
   const stateTree = new Tree()
