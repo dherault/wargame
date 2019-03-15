@@ -1,5 +1,6 @@
 .BuildingMenu {
   background-color: white;
+  white-space: nowrap;
 }
 
 .BuildingMenu-item {

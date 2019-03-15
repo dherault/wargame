@@ -8,7 +8,7 @@ import computeWorldStateScore from './computeWorldStateScore'
 import Heap from '../common/Heap'
 import Tree from '../common/Tree'
 import aStarSearch from '../common/aStarSearch'
-import { samePosition, hash, unhash, randomSlice, manhattanDistance, chance } from '../common/utils'
+import { samePosition, hash, unhash, randomSlice, manhattanDistance, chance, randomPop } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
 const nTargets = 2 
@@ -40,8 +40,8 @@ function computeAiActions() {
 
   let maxStateTreeDepth
 
-  if (nUnits < 8) maxStateTreeDepth = nAliveFactions - 1
-  else if (nUnits < 15) maxStateTreeDepth = 1
+  if (nUnits < 10) maxStateTreeDepth = nAliveFactions - 1
+  else if (nUnits < 17) maxStateTreeDepth = 1
   else maxStateTreeDepth = 0
 
   // maxStateTreeDepth = 0
@@ -286,6 +286,8 @@ function transformTargetIntoActions(store, unit, target) {
   // console.log(target, pathToTarget, extremePosition)
 
   const actions = []
+  let unitIsDead = false
+  let unitIsPlayed = false
 
   if (extremePosition) {
     if (!samePosition(unit.position, extremePosition)) {
@@ -296,6 +298,8 @@ function transformTargetIntoActions(store, unit, target) {
           position: extremePosition,
         },
       })
+
+      unitIsPlayed = true
     }
 
     if (samePosition(extremePosition, position)) {
@@ -310,6 +314,9 @@ function transformTargetIntoActions(store, unit, target) {
             damages,
           },
         })
+
+        unitIsDead = damages[1] >= unit.life
+        unitIsPlayed = true
       }
     
       if (type === 'CAPTURE') {
@@ -320,8 +327,19 @@ function transformTargetIntoActions(store, unit, target) {
             unitId: unit.id,
           },
         })
+
+        unitIsPlayed = true
       }
     }
+  }
+
+  if (unitIsPlayed && !unitIsDead) {
+    actions.push({
+      type: 'PLAY_UNIT',
+      payload: {
+        unitId: unit.id,
+      },
+    })
   }
 
   return actions
@@ -333,8 +351,12 @@ function addCreateUnitActions(store) {
   const ennemyHeadquarters = buildings.filter(building => building.team !== currentFaction.team && building.type === 'HEADQUARTERS')
   const ennemyUnits = units.filter(unit => unit.team !== currentFaction.team)
 
-  const creatingBuildings = buildings
-    .filter(building => building.factionId === currentFaction.id && gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes.length)
+  buildings
+    .filter(building => 
+      building.factionId === currentFaction.id 
+      && gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes.length
+      && !units.some(unit => samePosition(unit.position, building.position))
+    )
     .sort((a, b) => {
       let aDistanceToEnnemyHeadquarters = 0
       let bDistanceToEnnemyHeadquarters = 0
@@ -346,52 +368,55 @@ function addCreateUnitActions(store) {
 
       return aDistanceToEnnemyHeadquarters <= bDistanceToEnnemyHeadquarters ? -1 : 1
     })
+    .forEach(building => {
+      // console.log('considering building', building)
+      const { creatableUnitMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
+      const money = store.getState().moneyByFaction[currentFaction.id]
 
-  creatingBuildings.forEach(building => {
-    // console.log('considering building', building)
-    const { creatableUnitMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
-    const money = store.getState().moneyByFaction[currentFaction.id]
+      if (turn === 1 && money >= gameConfiguration.unitsConfiguration.INFANTERY.cost) {
+        const action = {
+          type: 'CREATE_UNIT',
+          payload: {
+            type: 'INFANTERY',
+            position: building.position,
+            factionId: currentFaction.id,
+            team: currentFaction.team,
+          },
+        }
 
-    if (turn === 1 && money >= gameConfiguration.unitsConfiguration.INFANTERY.cost) {
-      const action = {
-        type: 'CREATE_UNIT',
-        payload: {
-          type: 'INFANTERY',
-          position: building.position,
-          factionId: currentFaction.id,
-          team: currentFaction.team,
-        },
+        store.dispatch(action)
+        store.actions.push(action)
+
+        return
       }
 
-      store.dispatch(action)
-      store.actions.push(action)
+      // 30% chance to save money on this building
+      if (chance(0.3)) return
 
-      return
-    }
+      const availableUnitsTypes = Object.entries(gameConfiguration.unitsConfiguration)
+        .filter(entry => creatableUnitMovementTypes.includes(entry[1].movementType) && entry[1].cost <= money)
+        .sort((a, b) => getAveragePower(a[1].damages, ennemyUnits) > getAveragePower(b[1].damages, ennemyUnits) ? -1 : 1)
+        .map(entry => entry[0])
 
-    // 25% chance to save money on this building
-    if (chance(0.25)) return
+      // console.log('availableUnitsTypes', availableUnitsTypes)
+      // 25% to choose the unit type at random
+      const selectedUnitType = chance(0.25) ? randomPop(availableUnitsTypes) : availableUnitsTypes[0]
 
-    const availableUnitsTypes = Object.entries(gameConfiguration.unitsConfiguration)
-      .filter(entry => creatableUnitMovementTypes.includes(entry[1].movementType) && entry[1].cost <= money)
-      .sort((a, b) => getAveragePower(a[1].damages, ennemyUnits) > getAveragePower(b[1].damages, ennemyUnits) ? -1 : 1)
-      .map(entry => entry[0])
-
-    if (availableUnitsTypes.length) {
-      const action = {
-        type: 'CREATE_UNIT',
-        payload: {
-          type: availableUnitsTypes[0],
-          position: building.position,
-          factionId: currentFaction.id,
-          team: currentFaction.team,
-        },
+      if (availableUnitsTypes.length) {
+        const action = {
+          type: 'CREATE_UNIT',
+          payload: {
+            type: selectedUnitType,
+            position: building.position,
+            factionId: currentFaction.id,
+            team: currentFaction.team,
+          },
+        }
+    
+        store.dispatch(action)
+        store.actions.push(action)
       }
-  
-      store.dispatch(action)
-      store.actions.push(action)
-    }
-  })
+    })
 
 }
 

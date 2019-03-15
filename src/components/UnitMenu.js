@@ -10,6 +10,57 @@ import gameConfiguration from '../lib/gameConfiguration'
 
 class UnitMenu extends Component {
 
+  state = {
+    topDiff: 0,
+    leftDiff: 0,
+  }
+
+  get menuPosition() {
+    const { selectedPosition, viewBox } = this.props
+    const tileSize = window.canvas.width / viewBox.width // pixel per tile
+
+    return { 
+      left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
+      top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { selectedPosition } = this.props
+    
+    if (!selectedPosition) return
+    if (prevProps.selectedPosition && samePosition(prevProps.selectedPosition, selectedPosition)) return
+    
+    this.setDiffs()
+  }
+  
+  setDiffs = () => {
+    if (!(this.width && this.height)) return
+
+    const { viewBox } = this.props
+    const { innerWidth, innerHeight } = window
+    const position = this.menuPosition
+    const tileSize = window.canvas.width / viewBox.width // pixel per tile
+    
+    this.setState({
+      leftDiff: position.left + this.width > innerWidth ? this.width + tileSize : 0,
+      topDiff: position.top + this.height > innerHeight ? this.height - tileSize : 0,
+    })
+  }
+
+  handleRef = element => {
+    if (!element) return
+    // setTimeout so the component can adjust its size
+    setTimeout(() => {
+      const { clientWidth, clientHeight } = element
+      
+      this.width = clientWidth
+      this.height = clientHeight
+
+      this.setDiffs()
+    }, 0)
+  }
+
   closeMenu = () => {
     const { dispatch } = this.props
 
@@ -129,20 +180,23 @@ class UnitMenu extends Component {
   render() {
     if (!window.canvas) return null
     
-    const { booleans, buildings, units, selectedPosition, selectedUnitId, viewBox } = this.props
+    const { booleans, buildings, units, selectedPosition, selectedUnitId } = this.props
 
     if (!booleans.isUnitMenuOpened || !selectedUnitId || !selectedPosition) return null
 
-    const tileSize = window.canvas.width / viewBox.width // pixel per tile
     const selectedUnit = findById(units, selectedUnitId)
     const rangePositions = computeRangePositions(store, selectedUnit, selectedPosition) // range positions at selected position
     
+    const { top, left } = this.menuPosition
+    const { topDiff, leftDiff } = this.state
+
     return (
       <div 
+        ref={this.handleRef}
         className="UnitMenu absolute no-select pointer" 
-        style={{ 
-          left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
-          top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
+        style={{
+          top: top - topDiff,
+          left: left - leftDiff,
         }}
       >
         {units.some(unit => // If there is a unit

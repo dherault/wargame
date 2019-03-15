@@ -14,7 +14,7 @@ function currentFaction(state = null, action, globalState, ongoingState) {
     case 'END_PLAYER_TURN': {
       const { factions } = ongoingState
       let factionIndex = factions.findIndex(faction => faction.id === state.id)
-
+    
       while (true) {
         factionIndex++
         

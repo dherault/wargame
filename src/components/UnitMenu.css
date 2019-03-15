@@ -1,5 +1,6 @@
 .UnitMenu {
   background-color: white;
+  white-space: nowrap;
 }
 
 .UnitMenu-item {
