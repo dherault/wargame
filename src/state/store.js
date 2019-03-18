@@ -8,6 +8,7 @@ import createReducer from './createReducer'
 import { loadState, saveState } from './persist'
 import { throttle } from '../lib/common/utils'
 
+import aiActions from './reducers/aiActions'
 import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'
 import currentFaction from './reducers/currentFaction'
@@ -29,6 +30,7 @@ import userMapDefinitions from './reducers/userMapDefinitions'
 import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
 
+import aiSaga from './sagas/ai'
 import turnSaga from './sagas/turn'
 import unitsSaga from './sagas/units'
 import viewBoxSaga from './sagas/viewBox'
@@ -36,6 +38,7 @@ import viewBoxSaga from './sagas/viewBox'
 // Reducers must be placed in a certain order
 // See createReducer
 const reducer = createReducer({
+  aiActions,
   booleans, 
   buildings, // must be before units
   factions,
@@ -61,6 +64,7 @@ const reducer = createReducer({
 
 function* rootSaga() {
   yield all([
+    aiSaga(),
     turnSaga(),
     unitsSaga(),
     viewBoxSaga(),
