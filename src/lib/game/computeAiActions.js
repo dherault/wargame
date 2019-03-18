@@ -351,8 +351,8 @@ function addCreateUnitActions(store) {
   const ennemyHeadquarters = buildings.filter(building => building.team !== currentFaction.team && building.type === 'HEADQUARTERS')
   const ennemyUnits = units.filter(unit => unit.team !== currentFaction.team)
 
-  // 10% chance global saving
-  if (turn !== 1 && chance(0.1)) return
+  // 15% chance global saving
+  if (turn !== 1 && chance(0.15)) return
 
   buildings
     .filter(building => 
