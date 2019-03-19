@@ -4,7 +4,7 @@ import hotkeys from 'piano-keys'
 
 import './TurnInfo.css'
 
-import gameConfiguration from '../lib/gameConfiguration'
+import gameConfiguration from '../../lib/gameConfiguration'
 
 class TurnInfo extends Component {
 

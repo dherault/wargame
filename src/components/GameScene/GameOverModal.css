@@ -1,4 +1,4 @@
-.GameOverMenu {
+.GameOverModal {
   left: 20%;
   right: 20%;
   top: 40%;
@@ -7,6 +7,6 @@
   padding: 16px;
 }
 
-.GameOverMenu > h1 {
+.GameOverModal > h1 {
   text-align: center;
 }

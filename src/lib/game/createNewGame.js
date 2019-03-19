@@ -69,7 +69,6 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
     type: 'RESET_BOOLEANS',
     payload: {
       isFogOfWar,
-      isPlaying: true,
     },
   })
 

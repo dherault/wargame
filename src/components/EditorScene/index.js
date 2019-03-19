@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import createNewEditor from '../lib/editor/createNewEditor'
-import registerCanvas from '../lib/editor/registerCanvas'
+import createNewEditor from '../../lib/editor/createNewEditor'
+import registerCanvas from '../../lib/editor/registerCanvas'
 
-import './Editor.css'
+import './index.css'
 
 import EditorPanel from './EditorPanel'
-import TileInfo from './TileInfo'
+import TileInfo from '../shared/TileInfo'
 
-class Editor extends Component {
+class EditorScene extends Component {
 
   componentDidMount() {
-    console.log('Mounting Editor')
+    console.log('Mounting EditorScene')
     const { isEditing, dispatch } = this.props
     const canvas = document.getElementById('canvas-editor')
     
@@ -44,10 +44,10 @@ class Editor extends Component {
     const { isEditing } = this.props
 
     return (
-      <div className="Editor">
+      <div className="EditorScene">
         <canvas
           id="canvas-editor"
-          className="Editor-canvas no-select"
+          className="EditorScene-canvas no-select"
           tabIndex={0}
         />
         {isEditing && <EditorPanel />}
@@ -61,4 +61,4 @@ const mapStateToProps = s => ({
   isEditing: s.booleans.isEditing,
 })
 
-export default connect(mapStateToProps)(Editor)
+export default connect(mapStateToProps)(EditorScene)

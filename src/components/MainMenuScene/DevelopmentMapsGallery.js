@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import maps from '../lib/maps'
-import prepareMap from '../lib/game/prepareMap'
-import createNewGame from '../lib/game/createNewGame'
-import createNewEditor from '../lib/editor/createNewEditor'
-import gameConfiguration from '../lib/gameConfiguration'
-import { samePosition } from '../lib/common/utils'
+import maps from '../../lib/maps/development'
+import prepareMap from '../../lib/game/prepareMap'
+import createNewGame from '../../lib/game/createNewGame'
+import createNewEditor from '../../lib/editor/createNewEditor'
+import gameConfiguration from '../../lib/gameConfiguration'
+import { samePosition } from '../../lib/common/utils'
 
-import './NewGameMenu.css'
+import './DevelopmentMapsGallery.css'
 
 import NewGameSelector from './NewGameSelector'
 
-class NewGameMenu extends Component {
+class DevelopmentMapsGallery extends Component {
 
   state = {
     selectedMapDefinition: null,
@@ -59,7 +59,7 @@ class NewGameMenu extends Component {
       <div 
         key={key} 
         onClick={() => this.setState({ selectedMapDefinition: mapDefinition })}
-        className="NewGameMenu-item y8"
+        className="DevelopmentMapsGallery-item y8"
       >
         <div>{mapDefinition.name}</div>
         <div>{this.renderWorldMapMiniature(mapDefinition)}</div>
@@ -87,7 +87,7 @@ class NewGameMenu extends Component {
               return (
                 <div 
                   key={i}
-                  className="NewGameMenu-tile"
+                  className="DevelopmentMapsGallery-tile"
                   style={{ backgroundColor: color }}
                 />
               )
@@ -103,8 +103,8 @@ class NewGameMenu extends Component {
     const { selectedMapDefinition, isFogOfWar } = this.state
 
     return (
-      <div className="NewGameMenu x5 relative">
-        <div className="NewGameMenu-inner">
+      <div className="DevelopmentMapsGallery x5 relative">
+        <div className="DevelopmentMapsGallery-inner">
           <h1>New Game</h1>
           {!!userMapDefinitions.length && (
             <div>
@@ -141,4 +141,4 @@ const mapStateToProps = s => ({
   userMapDefinitions: s.userMapDefinitions,
 })
 
-export default connect(mapStateToProps)(NewGameMenu)
+export default connect(mapStateToProps)(DevelopmentMapsGallery)

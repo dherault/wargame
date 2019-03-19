@@ -1,10 +1,10 @@
-.NewGameMenu {
+.DevelopmentMapsGallery {
   width: 100vw;
   height: 100vh;
   background-color: black;
 }
 
-.NewGameMenu-inner {
+.DevelopmentMapsGallery-inner {
   width: 80%;
   height: 80%;
   background-color: white;
@@ -13,23 +13,23 @@
   overflow-x: hidden;
 }
 
-.NewGameMenu-item {
+.DevelopmentMapsGallery-item {
   border: 1px solid #333333;
   padding: 8px;
   margin-right: 8px;
   margin-bottom: 8px;
 }
 
-.NewGameMenu-item > div:first-child {
+.DevelopmentMapsGallery-item > div:first-child {
   font-weight: bold;
   margin-bottom: 8px;
 }
 
-.NewGameMenu-item > div:last-child {
+.DevelopmentMapsGallery-item > div:last-child {
   margin-top: 8px;
 }
 
-.NewGameMenu-tile {
+.DevelopmentMapsGallery-tile {
   width: 10px;
   height: 10px;
 }

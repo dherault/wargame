@@ -1,0 +1,12 @@
+.MainMenuScene {
+  padding: 20%;
+}
+
+.MainMenuScene-item {
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.MainMenuScene-item:hover {
+  font-weight: bold;
+}

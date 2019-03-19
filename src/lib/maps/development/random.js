@@ -1,4 +1,4 @@
-import { chance, randomArray, randomPop } from '../common/utils'
+import { chance, randomArray, randomPop } from '../../common/utils'
 
 const tilesTypes = [
   'PLAIN',

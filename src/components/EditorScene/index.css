@@ -1,0 +1,9 @@
+.EditorScene {
+  overflow: hidden;
+}
+
+.EditorScene-canvas {
+  display: block;
+  width: calc(100vw - 250px);
+  height: 100vh;
+}

@@ -3,9 +3,6 @@
 */
 
 const initialState = {
-  isPlaying: false,
-  isEditing: false,
-  isAiComputing: false,
   isLeftButtonDown: false,
   isRightButtonDown: false,
   isUnitMenuOpened: false,

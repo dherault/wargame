@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import hotkeys from 'piano-keys'
-import registerCanvas from '../lib/game/registerCanvas'
+import registerCanvas from '../../lib/game/registerCanvas'
 
 import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
 import FireInfo from './FireInfo'
-import GameOverMenu from './GameOverMenu'
-import TileInfo from './TileInfo'
+import GameOverModal from './GameOverModal'
+import TileInfo from '../shared/TileInfo'
 import TurnInfo from './TurnInfo'
 import UnitMenu from './UnitMenu'
 
-import './GameWorld.css'
+import './index.css'
 
-class GameWorld extends Component {
+class GameScene extends Component {
 
   componentDidMount() {
-    console.log('Mounting GameWorld', window.innerWidth, window.innerHeight)
+    console.log('Mounting GameScene', window.innerWidth, window.innerHeight)
     const { dispatch } = this.props
     const canvas = document.getElementById('canvas-game')
 
@@ -60,10 +60,10 @@ class GameWorld extends Component {
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
     return (
-      <div className="GameWorld relative">
+      <div className="GameScene relative">
         <canvas
           id="canvas-game"
-          className="GameWorld-canvas no-select"
+          className="GameScene-canvas no-select"
           tabIndex={0}
         />
         <BuildingMenu />
@@ -72,7 +72,7 @@ class GameWorld extends Component {
         <TurnInfo />
         <UnitMenu />
         {isDevPanelOpened && <DevPanel />}
-        {gameOver && <GameOverMenu />}
+        {gameOver && <GameOverModal />}
       </div>
     )
   }
@@ -83,4 +83,4 @@ const mapStateToProps = s => ({
   isDevPanelOpened: s.booleans.isDevPanelOpened,
 })
 
-export default connect(mapStateToProps)(GameWorld)
+export default connect(mapStateToProps)(GameScene)

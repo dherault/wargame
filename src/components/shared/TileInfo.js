@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 import './TileInfo.css'
 
-import gameConfiguration from '../lib/gameConfiguration'
-import { samePosition } from '../lib/common/utils'
+import gameConfiguration from '../../lib/gameConfiguration'
+import { samePosition } from '../../lib/common/utils'
 
 class TileInfo extends Component {
 

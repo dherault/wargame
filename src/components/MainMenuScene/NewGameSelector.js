@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 
 import './NewGameSelector.css'
 
-import { cloneArrayOfObjects } from '../lib/common/utils'
-import gameConfiguration from '../lib/gameConfiguration'
+import { cloneArrayOfObjects } from '../../lib/common/utils'
+import gameConfiguration from '../../lib/gameConfiguration'
 
 class NewGameSelector extends Component {
 

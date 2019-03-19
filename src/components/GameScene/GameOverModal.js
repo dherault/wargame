@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import './GameOverMenu.css'
+import './GameOverModal.css'
 
-class GameOverMenu extends Component {
+class GameOverModal extends Component {
 
   handleGoToMenuClick = () => {
     const { dispatch } = this.props
@@ -18,7 +18,7 @@ class GameOverMenu extends Component {
 
   render() {
     return (
-      <div className="GameOverMenu absolute">
+      <div className="GameOverModal absolute">
         <h1>Game over!</h1>
         <button type="button" onClick={this.handleGoToMenuClick}>Main menu</button>
       </div>
@@ -26,4 +26,4 @@ class GameOverMenu extends Component {
   }
 }
 
-export default connect()(GameOverMenu)
+export default connect()(GameOverModal)
