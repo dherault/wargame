@@ -13,10 +13,6 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
     payload: description,
   })
 
-  store.dispatch({
-    type: 'RESET_TURN',
-  })
-
   const currentFaction = factions[0]
 
   const moneyByFaction = {}
@@ -51,6 +47,14 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
   store.dispatch({
     type: 'SET_MONEY_BY_FACTION',
     payload: moneyByFaction,
+  })
+
+  store.dispatch({
+    type: 'RESET_TURN',
+  })
+
+  store.dispatch({
+    type: 'RESET_AI_ACTIONS',
   })
 
   store.dispatch({

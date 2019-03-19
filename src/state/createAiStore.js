@@ -13,10 +13,9 @@ import units from './reducers/units'
 import turn from './reducers/turn'
 import worldMap from './reducers/worldMap'
 
-import unitsSaga from './sagas/units'
+import killUnitSaga from './sagas/killUnit'
 
 const reducer = createReducer({
-  isAiStore: () => true,
   buildings, // must be before units
   factions,
   currentFaction, // must be after factions
@@ -29,20 +28,20 @@ const reducer = createReducer({
 
 function* rootSaga() {
   yield all([
-    unitsSaga(),
+    killUnitSaga(),
   ])
 }
 
-// function loggerMiddleware() {
-//   return next => action => {
-//     console.log('Action', action.type, action.payload)
+// // function loggerMiddleware() {
+// //   return next => action => {
+// //     console.log('Action', action.type, action.payload)
 
-//     return next(action)
-//   }
-// }
+// //     return next(action)
+// //   }
+// // }
 
 // A lightweight store of AI computations
-const createAiStore = initialState => {
+function createAiStore(initialState) {
   const sagaMiddleware = createSagaMiddleware()
 
   const enhancer = compose(applyMiddleware(sagaMiddleware))

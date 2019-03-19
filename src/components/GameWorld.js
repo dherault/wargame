@@ -28,9 +28,8 @@ class GameWorld extends Component {
     
     this.unregisterCanvas = registerCanvas(canvas)
 
-    dispatch({ 
-      type: 'RESET_VIEW_BOX',
-    })
+    dispatch({ type: 'RESET_VIEW_BOX' })
+    dispatch({ type: 'GAME_RESUMPTION' })
 
     hotkeys(document.documentElement, 'ctrl+q', e => {
       const { isDevPanelOpened } = this.props

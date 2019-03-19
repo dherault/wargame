@@ -1,5 +1,4 @@
 import gameConfiguration from '../gameConfiguration'
-import globalStore from '../../state/store'
 import createAiStore from '../../state/createAiStore'
 import computeFireDamage from './computeFireDamage'
 import computeRangePositions from './computeRangePositions'
@@ -11,7 +10,6 @@ import aStarSearch from '../common/aStarSearch'
 import { samePosition, hash, unhash, randomSlice, manhattanDistance, chance, randomPop } from '../common/utils'
 
 // Branching factor = min(maxBranchingFactor, nUnits ^ nTargets)
-const nTargets = 2 
 const maxBranchingFactor = 111
 
 /*
@@ -28,24 +26,29 @@ const maxBranchingFactor = 111
   Adversarial search: https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
   Alpha-beta pruning: https://youtu.be/jvpWtwVSvjA and https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
 */
-function computeAiActions() {
+function computeAiActions(rootState) {
   // First we clone the game state into a lightweight store
   // It will be our root world state
-  const rootState = globalStore.getState()
   const rootStore = createAiStore(rootState)
-  
-  const consideredFaction = rootState.currentFaction
-  const nAliveFactions = rootState.factions.filter(faction => faction.alive).length
-  const nUnits = rootState.units.length
+
+  // The AI considers the next player's moves, hence the new turn
+  rootStore.dispatch({ type: 'END_PLAYER_TURN' })
+  rootStore.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+
+  const state = rootStore.getState()
+  const consideredFaction = state.currentFaction
+  const nAliveFactions = state.factions.filter(faction => faction.alive).length
+  const nUnits = state.units.length
 
   let maxStateTreeDepth
 
-  if (nUnits < 10) maxStateTreeDepth = nAliveFactions - 1
-  else if (nUnits < 17) maxStateTreeDepth = 1
+  if (nUnits <= 5) maxStateTreeDepth = nAliveFactions + 1
+  else if (nUnits <= 10) maxStateTreeDepth = nAliveFactions
+  else if (nUnits <= 15) maxStateTreeDepth = nAliveFactions - 1
+  else if (nUnits <= 25) maxStateTreeDepth = 1
   else maxStateTreeDepth = 0
 
-  // maxStateTreeDepth = 0
-  console.log('consideredFaction', consideredFaction.id)
+  console.log('AI: consideredFaction', consideredFaction.id, 'maxStateTreeDepth', maxStateTreeDepth)
 
   const stateTree = new Tree()
 
@@ -72,70 +75,69 @@ function computeAiActions() {
 // Extends the state tree with new children
 function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
   const parentState = parentStore.getState()
-  
-  console.log('depth', depth, parentState.currentFaction.id, parentState.turn, parentState.gameOver)
+  // console.log('depth', depth, parentState.currentFaction.id, parentState.turn, parentState.gameOver)
   
   if (depth > maxDepth || parentState.gameOver) {
     return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
   }
-
+  
   // Is this node a MAX or MIN node ?
   const parentNodeTypeFn = consideredFaction.team === parentState.currentFaction.team ? Math.max : Math.min
-
+  
   // Value init
   parentStore.score = parentNodeTypeFn === Math.max ? -Infinity : Infinity
-
+  
   let stores = [createAiStore(parentState)]
-
-  function recurseOnUnits(units) {
+  
+  function recurseOnUnits(units, nTargets) {
     if (!units.length) return
 
     const selectedUnit = units[0]
     const nextStores = []
-
+    
     stores.forEach(store => {
-      const targets = randomSlice(computePossibleTargets(store, selectedUnit), nTargets)
-
+      const targets = randomSlice(computePossibleTargets(store, selectedUnit, nTargets), nTargets)
+      
       if (!targets.length) return
-
+      
       // console.log('possible targets', selectedUnit.id, targets)
-
+      
       // Dedupe actions
       const serializedActionsGroups = new Set()
-
+      
       targets.forEach(target => {
         serializedActionsGroups.add(JSON.stringify(transformTargetIntoActions(store, selectedUnit, target)))
       })
-
+      
       const actionsGroups = []
-
+      
       // dedupe actionsGroups
       serializedActionsGroups.forEach(serializedAction => actionsGroups.push(JSON.parse(serializedAction)))
-
+      
       // console.log('actionsGroups', actionsGroups)
-
+      
       if (!actionsGroups.length) return
-
+      
       actionsGroups.forEach(actions => {
         if (!actions.length) return
-
+        
         const nextStore = createAiStore(store.getState())
-
+        
         nextStore.actions = [...store.actions, ...actions]
         
         actions.forEach(nextStore.dispatch)
-
+        
         nextStores.push(nextStore)
       })
     })
-
+    
     if (nextStores.length) {
       stores = nextStores
     }
-
-    recurseOnUnits(units.slice(1))
+    
+    recurseOnUnits(units.slice(1), nTargets)
   } 
-
+  
   const units = parentState.units
     .filter(unit => unit.factionId === parentState.currentFaction.id)
     .sort((a, b) => {
@@ -152,8 +154,14 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
       // TODO: if unit is blocked, return +1 or more
     })
+  
+  let nTargets
 
-  recurseOnUnits(units)
+  if (units.length > 12) nTargets = 1
+  else if (units.length > 6) nTargets = 2
+  else nTargets = 3
+
+  recurseOnUnits(units, nTargets)
 
   // console.log('units', units)
 
@@ -193,7 +201,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   return parentStore.score
 }
 
-function computePossibleTargets(store, unit) {
+function computePossibleTargets(store, unit, nTargets) {
   const { units, buildings } = store.getState()
   const { damages, movementType } = gameConfiguration.unitsConfiguration[unit.type]
   const getSuccessors = getSuccessorsFactory(store, unit)

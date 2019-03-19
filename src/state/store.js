@@ -31,8 +31,9 @@ import viewBox from './reducers/viewBox'
 import worldMap from './reducers/worldMap'
 
 import aiSaga from './sagas/ai'
-import turnSaga from './sagas/turn'
-import unitsSaga from './sagas/units'
+import focusCanvasSaga from './sagas/focusCanvas'
+import killUnitSaga from './sagas/killUnit'
+import moveUnitSaga from './sagas/moveUnit'
 import viewBoxSaga from './sagas/viewBox'
 
 // Reducers must be placed in a certain order
@@ -65,8 +66,9 @@ const reducer = createReducer({
 function* rootSaga() {
   yield all([
     aiSaga(),
-    turnSaga(),
-    unitsSaga(),
+    focusCanvasSaga(),
+    killUnitSaga(),
+    moveUnitSaga(),
     viewBoxSaga(),
   ])
 }
