@@ -9,15 +9,24 @@ import createNewEditor from '../../lib/editor/createNewEditor'
 import gameConfiguration from '../../lib/gameConfiguration'
 import { samePosition } from '../../lib/common/utils'
 
-import './DevelopmentMapsGallery.css'
+import './QuickPlayMenu.css'
 
 import NewGameSelector from './NewGameSelector'
 
-class DevelopmentMapsGallery extends Component {
+class QuickPlayMenu extends Component {
 
   state = {
     selectedMapDefinition: null,
     isFogOfWar: false,
+  }
+
+  handleReturnClick = () => {
+    const { dispatch } = this.props
+
+    dispatch({
+      type: 'SELECT_MENU',
+      payload: null,
+    })
   }
 
   updateSelectedMapDefinitionFactions = factions => {
@@ -33,9 +42,12 @@ class DevelopmentMapsGallery extends Component {
   }
 
   handleNewGameSelectorSubmit = () => {
+    const { dispatch } = this.props
     const { selectedMapDefinition, isFogOfWar } = this.state
 
     createNewGame(prepareMap(selectedMapDefinition), isFogOfWar)
+
+    dispatch(push('/game'))
   }
 
   handleNewGameSelectorEdit = () => {
@@ -59,11 +71,13 @@ class DevelopmentMapsGallery extends Component {
       <div 
         key={key} 
         onClick={() => this.setState({ selectedMapDefinition: mapDefinition })}
-        className="DevelopmentMapsGallery-item y8"
+        className="QuickPlayMenu-item x5b"
       >
-        <div>{mapDefinition.name}</div>
+        <div>
+          <strong>{mapDefinition.name}</strong>
+          <div>{mapDefinition.description}</div>
+        </div>
         <div>{this.renderWorldMapMiniature(mapDefinition)}</div>
-        <div>{mapDefinition.description}</div>
       </div>
     )
   }
@@ -87,7 +101,7 @@ class DevelopmentMapsGallery extends Component {
               return (
                 <div 
                   key={i}
-                  className="DevelopmentMapsGallery-tile"
+                  className="QuickPlayMenu-tile"
                   style={{ backgroundColor: color }}
                 />
               )
@@ -103,26 +117,28 @@ class DevelopmentMapsGallery extends Component {
     const { selectedMapDefinition, isFogOfWar } = this.state
 
     return (
-      <div className="DevelopmentMapsGallery x5 relative">
-        <div className="DevelopmentMapsGallery-inner">
-          <h1>New Game</h1>
-          {!!userMapDefinitions.length && (
-            <div>
-              <h2>User created maps</h2>
-              <div className="x77">
-                {userMapDefinitions.map((mapDefinition, i) => this.renderMap(mapDefinition, i))}
-              </div>
-            </div>
-          )}
+      <div className="QuickPlayMenu relative">
+        <div className="QuickPlayMenu-return" onClick={this.handleReturnClick}>
+          Return
+        </div>
+        <h1>Quick Play</h1>
+        {!!userMapDefinitions.length && (
           <div>
-            <h2>Development Maps</h2>
-            <div className="x77">
-              {maps.map((mapDefinition, i) => this.renderMap(mapDefinition, i))}
+            <h2>User created maps</h2>
+            <div>
+              {userMapDefinitions.map((mapDefinition, i) => this.renderMap(mapDefinition, i))}
             </div>
+          </div>
+        )}
+        <div>
+          <h2>Development Maps</h2>
+          <div>
+            {maps.map((mapDefinition, i) => this.renderMap(mapDefinition, i))}
           </div>
         </div>
         {selectedMapDefinition && (
           <NewGameSelector 
+            name={selectedMapDefinition.name}
             factions={selectedMapDefinition.factions} 
             updateFactions={this.updateSelectedMapDefinitionFactions}
             isFogOfWar={isFogOfWar}
@@ -141,4 +157,4 @@ const mapStateToProps = s => ({
   userMapDefinitions: s.userMapDefinitions,
 })
 
-export default connect(mapStateToProps)(DevelopmentMapsGallery)
+export default connect(mapStateToProps)(QuickPlayMenu)

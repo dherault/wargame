@@ -15,19 +15,15 @@ import store from './state/store'
 import MainMenuScene from './components/MainMenuScene'
 import GameScene from './components/GameScene'
 import EditorScene from './components/EditorScene'
-import AppMenu from './components/shared/AppMenu'
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <>
-        <Switch>
-          <Route exact path="/" component={MainMenuScene} />
-          <Route exact path="/game" component={GameScene} />
-          <Route exact path="/editor" component={EditorScene} />
-        </Switch>
-        <AppMenu />
-      </>
+      <Switch>
+        <Route exact path="/" component={MainMenuScene} />
+        <Route exact path="/game" component={GameScene} />
+        <Route exact path="/editor" component={EditorScene} />
+      </Switch>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

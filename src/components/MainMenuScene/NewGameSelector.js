@@ -23,11 +23,12 @@ class NewGameSelector extends Component {
   }
 
   render() {
-    const { factions, isFogOfWar, handleIsFogOfWarChange, submit, edit, cancel } = this.props
+    const { name, factions, isFogOfWar, handleIsFogOfWarChange, submit, edit, cancel } = this.props
 
     return (
       <div className="NewGameSelector x5">
         <div className="NewGameSelector-inner">
+          <h2>{name}</h2>
           <ul>
             {factions.map(faction => (
               <li key={faction.id}>

@@ -4,13 +4,9 @@ import { push } from 'connected-react-router'
 
 import './index.css'
 
-import DevelopmentMapsGallery from './DevelopmentMapsGallery'
+import QuickPlayMenu from './QuickPlayMenu'
 
 class MainMenuScene extends Component {
-
-  handleMenuClick(menu) {
-
-  }
 
   render() {
     const { selectedMenu, dispatch } = this.props
@@ -18,11 +14,14 @@ class MainMenuScene extends Component {
       <>
         {selectedMenu === null && (
           <div className="MainMenuScene">
+            <h1>
+              Basic Wars
+            </h1>
             <div className="MainMenuScene-item" onClick={() => dispatch({ type: 'SELECT_MENU', payload: 'CAMPAIGN' })}>
               Campaign
             </div>
-            <div className="MainMenuScene-item" onClick={() => dispatch({ type: 'SELECT_MENU', payload: 'DEVELOPMENT' })}>
-              Development maps
+            <div className="MainMenuScene-item" onClick={() => dispatch({ type: 'SELECT_MENU', payload: 'QUICK_PLAY' })}>
+              Quick play
             </div>
             <div className="MainMenuScene-item" onClick={() => dispatch(push('/editor'))}>
               Editor
@@ -31,7 +30,7 @@ class MainMenuScene extends Component {
               GitHub
             </div>
             <div className="MainMenuScene-item" onClick={window.reset}>
-              Reset
+              Clear data storage
             </div>
           </div>
         )}
@@ -40,8 +39,8 @@ class MainMenuScene extends Component {
             Campaign
           </div>
         )}
-        {selectedMenu === 'DEVELOPMENT' && (
-          <DevelopmentMapsGallery />
+        {selectedMenu === 'QUICK_PLAY' && (
+          <QuickPlayMenu />
         )}
       </>
     )

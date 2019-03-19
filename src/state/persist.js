@@ -24,4 +24,6 @@ export function saveState(state) {
 window.reset = () => {
   localStorage.removeItem('state-wargame')
   window.location = '/'
+
+  return 'Roll \'em dices baby!'
 }

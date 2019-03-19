@@ -7,6 +7,7 @@ import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
 import FireInfo from './FireInfo'
 import GameOverModal from './GameOverModal'
+import InGameMenuModal from './InGameMenuModal'
 import TileInfo from '../shared/TileInfo'
 import TurnInfo from './TurnInfo'
 import UnitMenu from './UnitMenu'
@@ -15,10 +16,16 @@ import './index.css'
 
 class GameScene extends Component {
 
+  state = {
+    menuOpened: false,
+  }
+
   componentDidMount() {
     console.log('Mounting GameScene', window.innerWidth, window.innerHeight)
     const { dispatch } = this.props
     const canvas = document.getElementById('canvas-game')
+
+    /* Resize canvas */
 
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
 
@@ -26,15 +33,21 @@ class GameScene extends Component {
 
     this.resizeCanvas(canvas)
     
-    this.unregisterCanvas = registerCanvas(canvas)
+    /* Register canvas and draw */
+
+    const unregisterCanvas = registerCanvas(canvas)
+    
+    /* Reset view box and resume game */
 
     dispatch({ type: 'RESET_VIEW_BOX' })
     dispatch({ type: 'GAME_RESUMPTION' })
 
-    hotkeys(document.documentElement, 'ctrl+q', e => {
-      const { isDevPanelOpened } = this.props
+    /* Register shortcuts */
 
+    const unregisterCtrlQ = hotkeys(document.documentElement, 'ctrl+q', e => {
       e.preventDefault()
+      
+      const { isDevPanelOpened, dispatch } = this.props
       
       dispatch({
         type: 'SET_BOOLEAN',
@@ -43,11 +56,23 @@ class GameScene extends Component {
         },
       })
     })
+
+    const unregisterEscape = hotkeys(document.documentElement, 'escape', () => {
+      this.setState(state => ({ menuOpened: !state.menuOpened }))
+    })
+
+    /* create unregister functions */
+
+    this.removeListenersFunctions = [
+      () => window.removeEventListener('resize', this.resizeCanvasListener),
+      unregisterCanvas,
+      unregisterCtrlQ,
+      unregisterEscape,
+    ]
   }
 
   componentWillUnmount() {
-    this.unregisterCanvas()
-    window.removeEventListener('resize', this.resizeCanvasListener)
+    this.removeListenersFunctions.forEach(fn => fn())
   }
 
   resizeCanvas(canvas) {
@@ -57,6 +82,7 @@ class GameScene extends Component {
 
   render() {
     const { gameOver, isDevPanelOpened } = this.props
+    const { menuOpened } = this.state
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
     return (
@@ -66,6 +92,13 @@ class GameScene extends Component {
           className="GameScene-canvas no-select"
           tabIndex={0}
         />
+        <button 
+          type="button" 
+          className="GameScene-menu-button"
+          onClick={() => this.setState(state => ({ menuOpened: !state.menuOpened }))}
+        > 
+          Menu
+        </button>
         <BuildingMenu />
         <FireInfo />
         <TileInfo />
@@ -73,6 +106,7 @@ class GameScene extends Component {
         <UnitMenu />
         {isDevPanelOpened && <DevPanel />}
         {gameOver && <GameOverModal />}
+        {menuOpened && <InGameMenuModal resume={() => this.setState({ menuOpened: false })} />}
       </div>
     )
   }
