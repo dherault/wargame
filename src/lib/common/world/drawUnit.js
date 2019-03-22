@@ -18,7 +18,7 @@ function drawUnit(_, tileSize, images, unit) {
   _.strokeStyle = '#333333'
   _.lineWidth = 2
 
-  const flipped = true // TODO flip
+  const flipped = !unit.flipped
 
   _.save()
 

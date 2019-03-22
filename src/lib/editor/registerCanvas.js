@@ -155,6 +155,19 @@ function registerCanvas(canvas) {
               })
             }
           }
+
+          if (booleans.isFlippingUnits) {
+            const unit = units.find(unit => samePosition(unit.position, mouse))
+
+            if (unit) {
+              store.dispatch({
+                type: 'FLIP_UNIT',
+                payload: {
+                  unitId: unit.id,
+                },
+              })
+            }
+          }
         }
         else if (e.button === 2) {
           console.log('right click')

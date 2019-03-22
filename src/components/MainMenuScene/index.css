@@ -10,3 +10,8 @@
 .MainMenuScene-item:hover {
   font-weight: bold;
 }
+
+/* Used to preload the campaign's background */
+.MainMenuScene-campaign-background {
+  display: none;
+}

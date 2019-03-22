@@ -15,6 +15,9 @@ import store from './state/store'
 import MainMenuScene from './components/MainMenuScene'
 import GameScene from './components/GameScene'
 import EditorScene from './components/EditorScene'
+import CampaignMenuScene from './components/CampaignMenuScene'
+import QuickPlayMenuScene from './components/QuickPlayMenuScene'
+import NotFoundScene from './components/NotFoundScene'
 
 ReactDOM.render(
   <Provider store={store}>
@@ -23,6 +26,9 @@ ReactDOM.render(
         <Route exact path="/" component={MainMenuScene} />
         <Route exact path="/game" component={GameScene} />
         <Route exact path="/editor" component={EditorScene} />
+        <Route exact path="/campaign" component={CampaignMenuScene} />
+        <Route exact path="/quick_play" component={QuickPlayMenuScene} />
+        <Route component={NotFoundScene} />
       </Switch>
     </ConnectedRouter>
   </Provider>,

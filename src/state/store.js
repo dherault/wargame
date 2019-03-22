@@ -20,7 +20,6 @@ import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
 import selectedBuildingType from './reducers/selectedBuildingType'
 import selectedFactionId from './reducers/selectedFactionId'
-import selectedMenu from './reducers/selectedMenu'
 import selectedPosition from './reducers/selectedPosition'
 import selectedTerrainType from './reducers/selectedTerrainType'
 import selectedUnitId from './reducers/selectedUnitId'
@@ -51,7 +50,6 @@ const reducer = createReducer({
   mouse,
   selectedBuildingType,
   selectedFactionId,
-  selectedMenu,
   selectedPosition,
   selectedTerrainType,
   selectedUnitId,

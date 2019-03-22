@@ -80,7 +80,7 @@ function draw(_) {
       _.strokeStyle = color
   
       _.beginPath()
-      _.rect((mouse.x - (viewBox.x % 1)) * tileSize + offsetX, (mouse.y - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
+      _.rect((mouse.x - viewBox.x) * tileSize + offsetX, (mouse.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
       _.closePath()
       _.fill()
       _.stroke()
@@ -126,6 +126,20 @@ function draw(_) {
         _.lineTo(x + tileSize, y + tileSize)
         _.moveTo(x + tileSize, y)
         _.lineTo(x, y + tileSize)
+        _.closePath()
+        _.stroke()
+      }
+
+      if (booleans.isFlippingUnits) {
+        _.beginPath()
+        _.moveTo(x + 0.3 * tileSize, y + 0.4 * tileSize)
+        _.lineTo(x + 0.2 * tileSize, y + 0.5 * tileSize)
+        _.lineTo(x + 0.3 * tileSize, y + 0.6 * tileSize)
+        _.moveTo(x + 0.2 * tileSize, y + 0.5 * tileSize)
+        _.lineTo(x + 0.8 * tileSize, y + 0.5 * tileSize)
+        _.lineTo(x + 0.7 * tileSize, y + 0.4 * tileSize)
+        _.moveTo(x + 0.8 * tileSize, y + 0.5 * tileSize)
+        _.lineTo(x + 0.7 * tileSize, y + 0.6 * tileSize)
         _.closePath()
         _.stroke()
       }

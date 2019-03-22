@@ -1,0 +1,25 @@
+.QuickPlayMenuScene {
+  padding: 16px;
+  overflow: hidden;
+}
+
+.QuickPlayMenuScene-return {
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.QuickPlayMenuScene-return:hover {
+  font-weight: bold;
+}
+
+.QuickPlayMenuScene-item {
+  border: 1px solid #333333;
+  padding: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.QuickPlayMenuScene-tile {
+  width: 10px;
+  height: 10px;
+}

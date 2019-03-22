@@ -10,6 +10,7 @@ const initialState = {
   isDevPanelOpened: false,
   isFireSelection: false,
   isDeletingUnits: false,
+  isFlippingUnits: false,
   isFogOfWar: false,
   preventAutoZoom: false,
   delayComputerActions: true,

@@ -128,6 +128,16 @@ function units(state = [], action, globalState, ongoingState) {
       return units
     }
 
+    case 'FLIP_UNIT': {
+      const { unitId } = action.payload
+      const units = state.slice()
+      const unitIndex = units.findIndex(u => u.id === unitId)
+
+      units[unitIndex].flipped = !units[unitIndex].flipped
+
+      return units
+    }
+
     case 'CAPTURE': {
       const { buildings } = ongoingState
       

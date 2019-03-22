@@ -26,6 +26,7 @@ function prepareMap({ worldMap, factions, buildings, units }) {
     if (typeof unit.life !== 'number') unit.life = 100
     if (typeof unit.played !== 'boolean') unit.played = false
     if (typeof unit.isMoving !== 'boolean') unit.isMoving = false
+    if (typeof unit.flipped !== 'boolean') unit.flipped = false
     if (typeof unit.team !== 'number') {
       const faction = factions.find(faction => faction.id === unit.factionId)
 

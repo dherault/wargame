@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
+import copy from 'clipboard-copy'
+
 import gameConfiguration from '../../lib/gameConfiguration'
 
 import './EditorPanel.css'
 
 const selectionColor = '#d4d4d4'
+const exportToJsonLabel = 'Export to JSON'
 
 class EditorPanel extends Component {
 
@@ -16,7 +20,7 @@ class EditorPanel extends Component {
     this.state = {
       width: worldMap[0].length,
       height: worldMap.length,
-      isJsonExported: false,
+      exportButtonLabel: exportToJsonLabel,
     }
 
     this.ref = React.createRef()
@@ -124,6 +128,8 @@ class EditorPanel extends Component {
     dispatch({
       type: 'RESET_VIEW_BOX',
     })
+
+    window.canvas.focus()
   }
 
   deselectTerrainType() {
@@ -187,6 +193,8 @@ class EditorPanel extends Component {
         payload: terrainType,
       })
     }
+
+    window.canvas.focus()
   }
 
   handleBuildingSelection = (factionId, buildingType) => {
@@ -212,6 +220,8 @@ class EditorPanel extends Component {
         payload: buildingType,
       })
     }
+
+    window.canvas.focus()
   }
 
   handleUnitSelection = (factionId, unitType) => {
@@ -237,6 +247,8 @@ class EditorPanel extends Component {
         payload: unitType,
       })
     }
+
+    window.canvas.focus()
   }
 
   handleDeleteUnitClick = () => {
@@ -252,6 +264,25 @@ class EditorPanel extends Component {
         isDeletingUnits: !booleans.isDeletingUnits,
       },
     })
+
+    window.canvas.focus()
+  }
+
+  handleFlipUnitClick = () => {
+    const { booleans, dispatch } = this.props
+
+    this.deselectTerrainType()
+    this.deselectBuildingType()
+    this.deselectUnitType()
+
+    dispatch({
+      type: 'SET_BOOLEAN',
+      payload: {
+        isFlippingUnits: !booleans.isFlippingUnits,
+      },
+    })
+
+    window.canvas.focus()
   }
 
   getMapDefinition() {
@@ -276,9 +307,25 @@ class EditorPanel extends Component {
     })
   }
 
+  handleExportClick = () => {
+    const mapDefinition = this.getMapDefinition()
+
+    copy(JSON.stringify(mapDefinition, null, 2))
+
+    this.setState({ exportButtonLabel: 'copied!' })
+
+    setTimeout(() => this.setState({ exportButtonLabel: exportToJsonLabel }), 1000)
+  }
+
+  handleQuitClick = () => {
+    const { dispatch } = this.props
+
+    dispatch(push('/'))
+  }
+
   render() {
     const { mapDefinitionName, mapDefinitionDescription, factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, dispatch } = this.props
-    const { width, height, isJsonExported } = this.state
+    const { width, height, exportButtonLabel } = this.state
 
     const validations = this.validateMap()
 
@@ -396,6 +443,7 @@ class EditorPanel extends Component {
           </div>
           <div>
             <button type="button" onClick={this.handleDeleteUnitClick}>Delete units</button>
+            <button type="button" onClick={this.handleFlipUnitClick}>Flip units</button>
           </div>
         </section>
 
@@ -440,23 +488,22 @@ class EditorPanel extends Component {
                 </div>
               ))}
             </div>
-            <button type="button" disabled={!!validations.length} onClick={this.handleSubmitClick}>
-              Save map
-            </button>
-            <button type="button" disabled={!!validations.length} onClick={() => this.setState({ isJsonExported: !isJsonExported })}>
-              Export to JSON
-            </button>
+            <div>
+              <button type="button" disabled={!!validations.length} onClick={this.handleSubmitClick}>
+                Save map
+              </button>
+              <button type="button" disabled={!!validations.length} onClick={this.handleExportClick}>
+                {exportButtonLabel}
+              </button>
+            </div>
+            <div>
+              <button type="button" onClick={this.handleQuitClick}>
+                Go to main menu
+              </button>
+            </div>
           </div>
         </section>
 
-        {isJsonExported && (
-          <section>
-            <header>JSON export</header>
-            <pre>
-              {JSON.stringify(this.getMapDefinition(), null, 2)}
-            </pre>
-          </section>
-        )}
       </div>
     )
   }
