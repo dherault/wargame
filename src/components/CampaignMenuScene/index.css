@@ -1,32 +1,9 @@
 .CampaignMenuScene {
   overflow: hidden;
-  widows: 100vw;
+}
+
+.CampaignMenuScene-canvas {
+  display: block;
+  width: 100vw;
   height: 100vh;
-  background-color: #b8c6c6;
-}
-
-.CampaignMenuScene-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.CampaignMenuScene-container-background {
-  max-width: 100%;
-  margin: auto;
-}
-
-.CampaignMenyScene-return {
-  color: white;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-}
-
-.CampaignMenyScene-return:hover {
-  font-weight: bold;
 }

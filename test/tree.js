@@ -97,4 +97,35 @@ describe('Tree', () => {
     assert.deepEqual(tree.getChildrenData(treeIndex), [])
   })
 
+  it('should hold multiple roots', () => {
+
+    const tree = new Tree()
+    const rootIndex1 = tree.addNode(1)
+    const rootIndex2 = tree.addNode(2)
+
+    assert.deepEqual(tree.rootIndexes, [rootIndex1, rootIndex2])
+  })
+
+  it.only('should traverseDown correclty', () => {
+
+    const tree = new Tree()
+    const rootIndex1 = tree.addNode(1)
+    const rootIndex2 = tree.addNode(2)
+    const childIndex1 = tree.addNode(3, rootIndex1)
+    const childIndex2 = tree.addNode(4, rootIndex1)
+    const childIndex3 = tree.addNode(5, childIndex1)
+    const childIndex4 = tree.addNode(6, rootIndex2)
+
+    const resultIndexes = []
+    const resultParentIndexes = []
+
+    tree.traverseDown((index, parentIndex) => {
+      resultIndexes.push(index)
+      resultParentIndexes.push(parentIndex)
+    })
+
+    assert.deepEqual(resultIndexes, [rootIndex1, childIndex1, childIndex2, childIndex3, rootIndex2, childIndex4])
+    assert.deepEqual(resultParentIndexes, [null, rootIndex1, rootIndex1, childIndex1, null, rootIndex2])
+  })
+
 })

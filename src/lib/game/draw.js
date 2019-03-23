@@ -12,8 +12,8 @@ let gradientAnimationStep = 0
 let gradientAnimationDirection = true
 
 const imagesSources = [
-  gameConfiguration.unitsImageSource,
-  gameConfiguration.playedUnitsImageSource,
+  gameConfiguration.imageSources.units,
+  gameConfiguration.imageSources.playedUnits,
 ]
 
 // The main draw function for the game

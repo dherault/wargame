@@ -175,12 +175,26 @@ class EditorPanel extends Component {
     }
   }
 
+  stopFlippingUnits() {
+    const { booleans: { isFlippingUnits }, dispatch } = this.props
+
+    if (isFlippingUnits) {
+      dispatch({
+        type: 'SET_BOOLEAN',
+        payload: {
+          isFlippingUnits: false,
+        },
+      })
+    }
+  }
+
   handleTerrainTypeSelection = terrainType => {
     const { selectedTerrainType, dispatch } = this.props
 
     this.deselectBuildingType()
     this.deselectUnitType()
     this.stopDeletingUnits()
+    this.stopFlippingUnits()
 
     if (selectedTerrainType === terrainType) {
       dispatch({
@@ -203,6 +217,7 @@ class EditorPanel extends Component {
     this.deselectTerrainType()
     this.deselectUnitType()
     this.stopDeletingUnits()
+    this.stopFlippingUnits()
 
     dispatch({
       type: 'SELECT_FACTION_ID',
@@ -230,6 +245,7 @@ class EditorPanel extends Component {
     this.deselectTerrainType()
     this.deselectBuildingType()
     this.stopDeletingUnits()
+    this.stopFlippingUnits()
 
     dispatch({
       type: 'SELECT_FACTION_ID',
@@ -257,6 +273,7 @@ class EditorPanel extends Component {
     this.deselectTerrainType()
     this.deselectBuildingType()
     this.deselectUnitType()
+    this.stopFlippingUnits()
 
     dispatch({
       type: 'SET_BOOLEAN',
@@ -274,6 +291,7 @@ class EditorPanel extends Component {
     this.deselectTerrainType()
     this.deselectBuildingType()
     this.deselectUnitType()
+    this.stopDeletingUnits()
 
     dispatch({
       type: 'SET_BOOLEAN',

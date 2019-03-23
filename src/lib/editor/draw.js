@@ -6,7 +6,7 @@ import drawUnit from '../common/world/drawUnit'
 import loadImages from '../common/loadImages'
 
 const imagesSources = [
-  gameConfiguration.unitsImageSource,
+  gameConfiguration.imageSources.units,
 ]
 
 // The main draw function for the editor

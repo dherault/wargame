@@ -1,7 +1,6 @@
 import store from '../../../state/store'
 import gameConfiguration from '../../gameConfiguration'
 
-const unitsImageMargin = 0
 const unitsImageTileWidth = 64
 const unitsImageTileHeight = 64
 
@@ -27,9 +26,9 @@ function drawUnit(_, tileSize, images, unit) {
   }
 
   _.drawImage(
-    unit.played ? images[gameConfiguration.playedUnitsImageSource] : images[gameConfiguration.unitsImageSource], 
-    dx + unitsImageMargin, 
-    dy + factionDy + unitsImageMargin, 
+    unit.played ? images[gameConfiguration.imageSources.playedUnits] : images[gameConfiguration.imageSources.units], 
+    dx, 
+    dy + factionDy, 
     unitsImageTileWidth, 
     unitsImageTileHeight, 
     flipped ? -((x + 1) * tileSize + offsetX) : x * tileSize + offsetX, 

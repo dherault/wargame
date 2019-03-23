@@ -9,9 +9,12 @@ const gameConfiguration = {
   infanteryUnitTypes: ['INFANTERY', 'MECH'],
   hideoutTerrainTypes: ['FOREST', 'REEF'],
   infanteryVisionBonusOnMountains: 3,
-  unitsImageSource: '/images/units.png',
-  playedUnitsImageSource: '/images/units_played.png',
-  unitsImageWidth: 871,
+  imageSources: {
+    units: '/images/units.png',
+    playedUnits: '/images/units_played.png',
+    campaignMenuBackground: '/images/map_remastered.png',
+    campaignMenuSwords: '/images/swords_64x64.png',
+  },
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',

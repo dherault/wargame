@@ -1,27 +1,44 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { push } from 'connected-react-router'
-
-// import campaignTree from '../../lib/game/campaignTree'
+import registerCanvas from '../../lib/campaignMenu/registerCanvas'
 
 import './index.css'
 
 class CampaignMenuScene extends Component {
 
-  render() {
-    const { dispatch } = this.props
+  componentDidMount() {
+    console.log('Mounting CampaignMenuScene')
+    const canvas = document.getElementById('canvas-campaignMenu')
+    
+    this.resizeCanvasListener = () => this.resizeCanvas(canvas)
+    
+    window.addEventListener('resize', this.resizeCanvasListener)
+    
+    this.resizeCanvas(canvas)
+    
+    this.unregisterCanvas = registerCanvas(canvas)
+  }
 
+  componentWillUnmount() {
+    this.unregisterCanvas()
+    window.removeEventListener('resize', this.resizeCanvasListener)
+  }
+
+  resizeCanvas(canvas) {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+  }
+
+  render() {
     return (
-      <div className="CampaignMenuScene relative">
-        <div className="CampaignMenuScene-container x5">
-          <img src="/images/map-full-remastered.png" className="CampaignMenuScene-container-background" />
-        </div>
-        <div className="CampaignMenyScene-return" onClick={() => dispatch(push('/'))}>
-          Return
-        </div>
+      <div className="CampaignMenuScene">
+        <canvas
+          id="canvas-campaignMenu"
+          className="CampaignMenuScene-canvas no-select"
+          tabIndex={0}
+        />
       </div>
     )
   }
 }
 
-export default connect()(CampaignMenuScene)
+export default CampaignMenuScene
