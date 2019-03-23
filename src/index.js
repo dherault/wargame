@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Switch, Route } from 'react-router-dom'
@@ -10,6 +10,7 @@ import './index.css'
 
 import history from './history'
 import store from './state/store'
+import gameConfiguration from './lib/gameConfiguration'
 // import { register as registerServiceWorker } from './serviceWorker'
 
 import MainMenuScene from './components/MainMenuScene'
@@ -19,19 +20,38 @@ import CampaignMenuScene from './components/CampaignMenuScene'
 import QuickPlayMenuScene from './components/QuickPlayMenuScene'
 import NotFoundScene from './components/NotFoundScene'
 
+class App extends PureComponent {
+
+  componentDidMount() {
+    // Pre-load images
+    const urls = Object.values(gameConfiguration.imageSources).reduce((a, b) => `${a} url(${b})`, '')
+
+    document.styleSheets[0].addRule('body:after', `
+      content: ${urls};
+      display: none;
+    `)
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route exact path="/" component={MainMenuScene} />
+            <Route exact path="/game" component={GameScene} />
+            <Route exact path="/editor" component={EditorScene} />
+            <Route exact path="/campaign" component={CampaignMenuScene} />
+            <Route exact path="/quick_play" component={QuickPlayMenuScene} />
+            <Route component={NotFoundScene} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    )
+  }
+}
+
 ReactDOM.render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Switch>
-        <Route exact path="/" component={MainMenuScene} />
-        <Route exact path="/game" component={GameScene} />
-        <Route exact path="/editor" component={EditorScene} />
-        <Route exact path="/campaign" component={CampaignMenuScene} />
-        <Route exact path="/quick_play" component={QuickPlayMenuScene} />
-        <Route component={NotFoundScene} />
-      </Switch>
-    </ConnectedRouter>
-  </Provider>,
+  <App />,
   document.getElementById('root')
 )
   

@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'connected-react-router'
 
-import gameConfiguration from '../../lib/gameConfiguration'
-
 import './index.css'
 
 class MainMenuScene extends Component {
@@ -31,7 +29,6 @@ class MainMenuScene extends Component {
         <div className="MainMenuScene-item" onClick={window.reset}>
           Clear data storage
         </div>
-        <img src={gameConfiguration.imageSources.campaignMenuBackground} className="MainMenuScene-campaign-background" />
       </div>
     )
   }
