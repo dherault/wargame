@@ -19,6 +19,7 @@
     "implicit-arrow-linebreak": "off",
     "indent": ["error", 2, { "MemberExpression": "off", "SwitchCase": 1, "ignoreComments": true }],
     "max-len": "off",
+    "no-alert": "off",
     "no-confusing-arrow": "off",
     "no-console": "off",
     "no-constant-condition": "off",

@@ -1,44 +1,43 @@
 import React, { Component } from 'react'
-import registerCanvas from '../../lib/campaignMenu/registerCanvas'
+import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
+
+import gameConfiguration from '../../lib/gameConfiguration'
+import campaignTree from '../../lib/campaignMenu/campaignTree'
 
 import './index.css'
 
+import Mission from './Mission'
+
 class CampaignMenuScene extends Component {
 
-  componentDidMount() {
-    console.log('Mounting CampaignMenuScene')
-    const canvas = document.getElementById('canvas-campaignMenu')
-    
-    this.resizeCanvasListener = () => this.resizeCanvas(canvas)
-    
-    window.addEventListener('resize', this.resizeCanvasListener)
-    
-    this.resizeCanvas(canvas)
-    
-    this.unregisterCanvas = registerCanvas(canvas)
-  }
-
-  componentWillUnmount() {
-    this.unregisterCanvas()
-    window.removeEventListener('resize', this.resizeCanvasListener)
-  }
-
-  resizeCanvas(canvas) {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
-
   render() {
+    const { dispatch } = this.props
+    
+    const missions = []
+
+    campaignTree.traverseDown((index, parentIndex) => {
+      const mission = campaignTree.getData(index)
+
+      missions.push(
+        <Mission key={mission.id} mission={mission} />
+      )
+    })
+
     return (
       <div className="CampaignMenuScene">
-        <canvas
-          id="canvas-campaignMenu"
-          className="CampaignMenuScene-canvas no-select"
-          tabIndex={0}
-        />
+        <div className="CampaignMenuScene-container x5">
+          <div className="relative">
+            <img src={gameConfiguration.imageSources.campaignMenuBackground} className="CampaignMenuScene-container-background" />
+            {missions} 
+          </div>
+        </div>
+        <div className="CampaignMenyScene-return" onClick={() => dispatch(push('/'))}>
+          Return
+        </div>
       </div>
     )
   }
 }
 
-export default CampaignMenuScene
+export default connect()(CampaignMenuScene)

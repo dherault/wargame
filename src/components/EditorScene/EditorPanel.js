@@ -4,6 +4,7 @@ import { push } from 'connected-react-router'
 import copy from 'clipboard-copy'
 
 import gameConfiguration from '../../lib/gameConfiguration'
+import createNewEditor from '../../lib/editor/createNewEditor'
 
 import './EditorPanel.css'
 
@@ -335,6 +336,26 @@ class EditorPanel extends Component {
     setTimeout(() => this.setState({ exportButtonLabel: exportToJsonLabel }), 1000)
   }
 
+  handleResetClick = () => {
+    const confirmation = window.confirm('Are you sure you want to reset your work?')
+
+    if (confirmation) {
+      const { dispatch } = this.props
+      
+      createNewEditor()
+      dispatch({ type: 'RESET_VIEW_BOX' })
+
+      setTimeout(() => {
+        const { worldMap } = this.props
+
+        this.setState({
+          width: worldMap[0].length,
+          height: worldMap.length,
+        })
+      }, 0)
+    }
+  }
+
   handleQuitClick = () => {
     const { dispatch } = this.props
 
@@ -510,8 +531,15 @@ class EditorPanel extends Component {
               <button type="button" disabled={!!validations.length} onClick={this.handleSubmitClick}>
                 Save map
               </button>
+            </div>
+            <div>
               <button type="button" disabled={!!validations.length} onClick={this.handleExportClick}>
                 {exportButtonLabel}
+              </button>
+            </div>
+            <div>
+              <button type="button" onClick={this.handleResetClick}>
+               Reset all
               </button>
             </div>
             <div>
