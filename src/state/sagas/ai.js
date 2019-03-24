@@ -155,7 +155,7 @@ function* flushAiActions() {
   }
 }
 
-const actionTypes = ['PLAY_UNIT', 'CREATE_UNIT', 'GAME_RESUMPTION', 'BEGIN_PLAYER_TURN']
+const actionTypes = ['PLAY_UNIT', 'CREATE_UNIT', 'RESUME_GAME', 'BEGIN_PLAYER_TURN']
 const selector = action => actionTypes.includes(action.type)
 
 function* aiSaga() {

@@ -40,7 +40,7 @@ class GameScene extends Component {
     /* Reset view box and resume game */
 
     dispatch({ type: 'RESET_VIEW_BOX' })
-    dispatch({ type: 'GAME_RESUMPTION' })
+    dispatch({ type: 'RESUME_GAME' })
 
     /* Register shortcuts */
 
