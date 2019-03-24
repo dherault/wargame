@@ -13,6 +13,7 @@ import { samePosition, hash, unhash, randomSlice, manhattanDistance, chance, ran
 const maxBranchingFactor = 111
 
 /*
+
   To compute which actions  the computer takes ('MOVE_UNIT', 'FIRE', 'CAPTURE', ...)
   we will perform an adversarial search with alpha-beta pruning
   The idea here is to compute a state tree, ie a tree of world states (stores)
@@ -42,10 +43,8 @@ function computeAiActions(rootState) {
 
   let maxStateTreeDepth
 
-  if (nUnits <= 5) maxStateTreeDepth = nAliveFactions + 1
-  else if (nUnits <= 10) maxStateTreeDepth = nAliveFactions
-  else if (nUnits <= 15) maxStateTreeDepth = nAliveFactions - 1
-  else if (nUnits <= 25) maxStateTreeDepth = 1
+  if (nUnits <= 10) maxStateTreeDepth = nAliveFactions - 1
+  else if (nUnits <= 15) maxStateTreeDepth = 1
   else maxStateTreeDepth = 0
 
   console.log('AI: consideredFaction', consideredFaction.id, 'maxStateTreeDepth', maxStateTreeDepth)

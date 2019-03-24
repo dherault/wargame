@@ -9,7 +9,7 @@
         "exports": "always-multiline",
         "functions": "ignore"
     }],
-    "arrow-parens": "off",
+    "arrow-parens": ["error", "as-needed"],
     "brace-style": ["error", "stroustrup"],
     "class-methods-use-this": "off",
     "consistent-return": "off",
@@ -43,6 +43,7 @@
     "import/no-cycle": "off",
     "jsx-a11y/alt-text": "off",
     "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-one-expression-per-line": "off",

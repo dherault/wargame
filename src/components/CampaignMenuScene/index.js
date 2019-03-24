@@ -11,16 +11,28 @@ import Mission from './Mission'
 
 class CampaignMenuScene extends Component {
 
+  state = {
+    selectedMissionId: null,
+  }
+
   render() {
-    const { dispatch } = this.props
+    const { campaignProgression, dispatch } = this.props
+    const { selectedMissionId } = this.state
     
     const missions = []
 
     campaignTree.traverseDown((index, parentIndex) => {
       const mission = campaignTree.getData(index)
+      const progression = campaignProgression[mission.id] || {}
 
       missions.push(
-        <Mission key={mission.id} mission={mission} />
+        <Mission 
+          key={mission.id} 
+          mission={mission} 
+          active={!progression.done}
+          selected={selectedMissionId === mission.id}
+          onClick={() => this.setState({ selectedMissionId: selectedMissionId === mission.id ? null : mission.id })}
+        />
       )
     })
 
@@ -40,4 +52,8 @@ class CampaignMenuScene extends Component {
   }
 }
 
-export default connect()(CampaignMenuScene)
+const mapStateToProps = s => ({
+  campaignProgression: s.campaignProgression,
+})
+
+export default connect(mapStateToProps)(CampaignMenuScene)

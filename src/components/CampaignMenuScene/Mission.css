@@ -4,9 +4,25 @@
 
 .Mission-swords {
   width: 32px;
+  cursor: pointer;
+}
+
+.Mission-swords_active {
   animation: pulsate 1.5s ease-out;
   animation-iteration-count: infinite;
-  cursor: pointer;
+}
+
+.Mission-box {
+  position: absolute;
+  background-color: white;
+  left: 100%;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+.Mission-box-title {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 @keyframes pulsate {

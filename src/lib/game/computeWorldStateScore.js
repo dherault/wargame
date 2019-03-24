@@ -20,7 +20,10 @@ function computeWorldStateScore(store) {
     }
     else if (building.capture < 100) {
       const capturingUnit = units.find(u => samePosition(u.position, building.position))
-      scoreByFaction[capturingUnit.factionId] += (100 - building.capture) * 10
+
+      if (capturingUnit) {
+        scoreByFaction[capturingUnit.factionId] += (100 - building.capture) * 10
+      }
     }
   })
 
