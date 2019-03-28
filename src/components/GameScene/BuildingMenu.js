@@ -79,6 +79,10 @@ class BuildingMenu extends Component {
       },
     })
 
+    dispatch({
+      type: 'DESELECT_POSITION',
+    })
+
     window.canvas.focus()
   }
 
