@@ -1,87 +1,87 @@
 function aiDecisionMaking2() {
-  return JSON.parse(`{
-    "worldMap": [
+  return {
+    worldMap: [
       [
-        "HEADQUARTERS",
-        "PLAIN",
-        "PLAIN"
+        'HEADQUARTERS',
+        'PLAIN',
+        'PLAIN',
       ],
       [
-        "PLAIN",
-        "PLAIN",
-        "PLAIN"
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
       ],
       [
-        "PLAIN",
-        "PLAIN",
-        "HEADQUARTERS"
-      ]
+        'PLAIN',
+        'PLAIN',
+        'HEADQUARTERS',
+      ],
     ],
-    "factions": [
+    factions: [
       {
-        "id": "RED",
-        "type": "HUMAN",
-        "team": 1
+        id: 'RED',
+        type: 'HUMAN',
+        team: 1,
       },
       {
-        "id": "BLUE",
-        "type": "COMPUTER",
-        "team": 2
-      }
-    ],
-    "buildings": [
-      {
-        "type": "HEADQUARTERS",
-        "factionId": "RED",
-        "position": {
-          "x": 0,
-          "y": 0
-        }
+        id: 'BLUE',
+        type: 'COMPUTER',
+        team: 2,
       },
-      {
-        "type": "HEADQUARTERS",
-        "factionId": "BLUE",
-        "position": {
-          "x": 2,
-          "y": 2
-        }
-      }
     ],
-    "units": [
+    buildings: [
       {
-        "id": "9363960430879139",
-        "type": "BATTLE_HELICOPTER",
-        "factionId": "RED",
-        "position": {
-          "x": 1,
-          "y": 1
+        type: 'HEADQUARTERS',
+        factionId: 'RED',
+        position: {
+          x: 0,
+          y: 0,
         },
-        "life": 100
       },
       {
-        "id": "3873666886677163",
-        "type": "FIGHTER",
-        "factionId": "BLUE",
-        "position": {
-          "x": 2,
-          "y": 1
+        type: 'HEADQUARTERS',
+        factionId: 'BLUE',
+        position: {
+          x: 2,
+          y: 2,
         },
-        "life": 100
       },
-      {
-        "id": "7762500392960088",
-        "type": "FIGHTER",
-        "factionId": "BLUE",
-        "position": {
-          "x": 1,
-          "y": 0
-        },
-        "life": 100
-      }
     ],
-    "name": "AI decision making 2",
-    "description": "What will AI do ?"
-  }`)
+    units: [
+      {
+        id: '9363960430879139',
+        type: 'BATTLE_HELICOPTER',
+        factionId: 'RED',
+        position: {
+          x: 1,
+          y: 1,
+        },
+        life: 100,
+      },
+      {
+        id: '3873666886677163',
+        type: 'FIGHTER',
+        factionId: 'BLUE',
+        position: {
+          x: 2,
+          y: 1,
+        },
+        life: 100,
+      },
+      {
+        id: '7762500392960088',
+        type: 'FIGHTER',
+        factionId: 'BLUE',
+        position: {
+          x: 1,
+          y: 0,
+        },
+        life: 100,
+      },
+    ],
+    name: 'AI decision making 2',
+    description: 'What will AI do ?',
+  }
 }
 
 export default aiDecisionMaking2

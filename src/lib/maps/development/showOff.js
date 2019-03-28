@@ -1,1124 +1,1124 @@
 function showOff() {
-  return JSON.parse(`{  
-    "worldMap":[  
-       [  
-          "SEA",
-          "SEA",
-          "SEA",
-          "PORT",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PORT",
-          "SEA",
-          "SEA",
-          "SEA"
-       ],
-       [  
-          "SEA",
-          "HEADQUARTERS",
-          "PLAIN",
-          "AIRPORT",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "AIRPORT",
-          "PLAIN",
-          "HEADQUARTERS",
-          "SEA"
-       ],
-       [  
-          "SEA",
-          "PLAIN",
-          "CITY",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "CITY",
-          "PLAIN",
-          "SEA"
-       ],
-       [  
-          "PLAIN",
-          "BASE",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "BASE",
-          "PLAIN"
-       ],
-       [  
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN"
-       ],
-       [  
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN"
-       ],
-       [  
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN"
-       ],
-       [  
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN"
-       ],
-       [  
-          "PLAIN",
-          "BASE",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "BASE",
-          "PLAIN"
-       ],
-       [  
-          "SEA",
-          "PLAIN",
-          "CITY",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "CITY",
-          "PLAIN",
-          "SEA"
-       ],
-       [  
-          "SEA",
-          "HEADQUARTERS",
-          "PLAIN",
-          "AIRPORT",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "AIRPORT",
-          "PLAIN",
-          "HEADQUARTERS",
-          "SEA"
-       ],
-       [  
-          "SEA",
-          "SEA",
-          "SEA",
-          "PORT",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PLAIN",
-          "PORT",
-          "SEA",
-          "SEA",
-          "SEA"
-       ]
+  return {  
+    worldMap: [  
+      [  
+        'SEA',
+        'SEA',
+        'SEA',
+        'PORT',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PORT',
+        'SEA',
+        'SEA',
+        'SEA',
+      ],
+      [  
+        'SEA',
+        'HEADQUARTERS',
+        'PLAIN',
+        'AIRPORT',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'AIRPORT',
+        'PLAIN',
+        'HEADQUARTERS',
+        'SEA',
+      ],
+      [  
+        'SEA',
+        'PLAIN',
+        'CITY',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'CITY',
+        'PLAIN',
+        'SEA',
+      ],
+      [  
+        'PLAIN',
+        'BASE',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'BASE',
+        'PLAIN',
+      ],
+      [  
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+      ],
+      [  
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+      ],
+      [  
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+      ],
+      [  
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+      ],
+      [  
+        'PLAIN',
+        'BASE',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'BASE',
+        'PLAIN',
+      ],
+      [  
+        'SEA',
+        'PLAIN',
+        'CITY',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'CITY',
+        'PLAIN',
+        'SEA',
+      ],
+      [  
+        'SEA',
+        'HEADQUARTERS',
+        'PLAIN',
+        'AIRPORT',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'AIRPORT',
+        'PLAIN',
+        'HEADQUARTERS',
+        'SEA',
+      ],
+      [  
+        'SEA',
+        'SEA',
+        'SEA',
+        'PORT',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PLAIN',
+        'PORT',
+        'SEA',
+        'SEA',
+        'SEA',
+      ],
     ],
-    "factions":[  
-       {  
-          "id":"BLUE",
-          "type": "HUMAN",
-          "team": 1
-       },
-       {  
-          "id":"RED",
-          "type": "HUMAN",
-          "team": 2
-       },
-       {  
-          "id":"YELLOW",
-          "type": "HUMAN",
-          "team": 3
-       },
-       {  
-          "id":"GREEN",
-          "type": "HUMAN",
-          "team": 4
-       }
+    factions: [  
+      {  
+        id: 'BLUE',
+        type: 'HUMAN',
+        team: 1,
+      },
+      {  
+        id: 'RED',
+        type: 'HUMAN',
+        team: 2,
+      },
+      {  
+        id: 'YELLOW',
+        type: 'HUMAN',
+        team: 3,
+      },
+      {  
+        id: 'GREEN',
+        type: 'HUMAN',
+        team: 4,
+      },
     ],
-    "buildings":[  
-       {  
-          "type":"HEADQUARTERS",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":1
-          }
-       },
-       {  
-          "type":"PORT",
-          "factionId":"BLUE",
-          "position":{  
-             "x":3,
-             "y":0
-          }
-       },
-       {  
-          "type":"CITY",
-          "factionId":"BLUE",
-          "position":{  
-             "x":2,
-             "y":2
-          }
-       },
-       {  
-          "type":"BASE",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":3
-          }
-       },
-       {  
-          "type":"AIRPORT",
-          "factionId":"BLUE",
-          "position":{  
-             "x":3,
-             "y":1
-          }
-       },
-       {  
-          "type":"HEADQUARTERS",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":1
-          }
-       },
-       {  
-          "type":"CITY",
-          "factionId":"RED",
-          "position":{  
-             "x":9,
-             "y":2
-          }
-       },
-       {  
-          "type":"BASE",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":3
-          }
-       },
-       {  
-          "type":"PORT",
-          "factionId":"RED",
-          "position":{  
-             "x":8,
-             "y":0
-          }
-       },
-       {  
-          "type":"AIRPORT",
-          "factionId":"RED",
-          "position":{  
-             "x":8,
-             "y":1
-          }
-       },
-       {  
-          "type":"HEADQUARTERS",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":10
-          }
-       },
-       {  
-          "type":"CITY",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":9,
-             "y":9
-          }
-       },
-       {  
-          "type":"BASE",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":8
-          }
-       },
-       {  
-          "type":"PORT",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":8,
-             "y":11
-          }
-       },
-       {  
-          "type":"AIRPORT",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":8,
-             "y":10
-          }
-       },
-       {  
-          "type":"HEADQUARTERS",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":10
-          }
-       },
-       {  
-          "type":"CITY",
-          "factionId":"GREEN",
-          "position":{  
-             "x":2,
-             "y":9
-          }
-       },
-       {  
-          "type":"BASE",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":8
-          }
-       },
-       {  
-          "type":"PORT",
-          "factionId":"GREEN",
-          "position":{  
-             "x":3,
-             "y":11
-          }
-       },
-       {  
-          "type":"AIRPORT",
-          "factionId":"GREEN",
-          "position":{  
-             "x":3,
-             "y":10
-          }
-       }
+    buildings: [  
+      {  
+        type: 'HEADQUARTERS',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 1,
+        },
+      },
+      {  
+        type: 'PORT',
+        factionId: 'BLUE',
+        position: {  
+          x: 3,
+          y: 0,
+        },
+      },
+      {  
+        type: 'CITY',
+        factionId: 'BLUE',
+        position: {  
+          x: 2,
+          y: 2,
+        },
+      },
+      {  
+        type: 'BASE',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 3,
+        },
+      },
+      {  
+        type: 'AIRPORT',
+        factionId: 'BLUE',
+        position: {  
+          x: 3,
+          y: 1,
+        },
+      },
+      {  
+        type: 'HEADQUARTERS',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 1,
+        },
+      },
+      {  
+        type: 'CITY',
+        factionId: 'RED',
+        position: {  
+          x: 9,
+          y: 2,
+        },
+      },
+      {  
+        type: 'BASE',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 3,
+        },
+      },
+      {  
+        type: 'PORT',
+        factionId: 'RED',
+        position: {  
+          x: 8,
+          y: 0,
+        },
+      },
+      {  
+        type: 'AIRPORT',
+        factionId: 'RED',
+        position: {  
+          x: 8,
+          y: 1,
+        },
+      },
+      {  
+        type: 'HEADQUARTERS',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 10,
+        },
+      },
+      {  
+        type: 'CITY',
+        factionId: 'YELLOW',
+        position: {  
+          x: 9,
+          y: 9,
+        },
+      },
+      {  
+        type: 'BASE',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 8,
+        },
+      },
+      {  
+        type: 'PORT',
+        factionId: 'YELLOW',
+        position: {  
+          x: 8,
+          y: 11,
+        },
+      },
+      {  
+        type: 'AIRPORT',
+        factionId: 'YELLOW',
+        position: {  
+          x: 8,
+          y: 10,
+        },
+      },
+      {  
+        type: 'HEADQUARTERS',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 10,
+        },
+      },
+      {  
+        type: 'CITY',
+        factionId: 'GREEN',
+        position: {  
+          x: 2,
+          y: 9,
+        },
+      },
+      {  
+        type: 'BASE',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 8,
+        },
+      },
+      {  
+        type: 'PORT',
+        factionId: 'GREEN',
+        position: {  
+          x: 3,
+          y: 11,
+        },
+      },
+      {  
+        type: 'AIRPORT',
+        factionId: 'GREEN',
+        position: {  
+          x: 3,
+          y: 10,
+        },
+      },
     ],
-    "units":[  
-       {  
-          "id":"7817155960141107",
-          "type":"INFANTERY",
-          "factionId":"BLUE",
-          "position":{  
-             "x":2,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"01443970687031415",
-          "type":"MECH",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"5809627809916933",
-          "type":"RECON",
-          "factionId":"BLUE",
-          "position":{  
-             "x":3,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"35480544617056053",
-          "type":"TANK",
-          "factionId":"BLUE",
-          "position":{  
-             "x":2,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"17052065105627445",
-          "type":"HEAVY_TANK",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"07751266781335264",
-          "type":"NEO_TANK",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"643412782240006",
-          "type":"ARMORED_PERSONNEL_CARRIER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"05809268063989537",
-          "type":"ARTILLERY",
-          "factionId":"BLUE",
-          "position":{  
-             "x":2,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"7245849459862466",
-          "type":"ROCKET_LAUNCHER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":3,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"8362429596983276",
-          "type":"ANTI_AIR_TANK",
-          "factionId":"BLUE",
-          "position":{  
-             "x":4,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"7080110135327744",
-          "type":"ANTI_AIR_MISSILE_LAUNCHER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":4,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"06783741062425053",
-          "type":"FIGHTER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":4,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"6135125425981098",
-          "type":"BOMBER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":5
-          },
-          "life":100
-       },
-       {  
-          "id":"8664422415268704",
-          "type":"BATTLE_HELICOPTER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":5
-          },
-          "life":100
-       },
-       {  
-          "id":"8105762671944887",
-          "type":"TRANSPORT_HELICOPTER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":5,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"7981559003362342",
-          "type":"BATTLESHIP",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"7815737591683525",
-          "type":"CRUISER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"06974406382643816",
-          "type":"LANDER",
-          "factionId":"BLUE",
-          "position":{  
-             "x":0,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"8050696288069512",
-          "type":"SUBMARINE",
-          "factionId":"BLUE",
-          "position":{  
-             "x":1,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"7767120628441517",
-          "type":"INFANTERY",
-          "factionId":"RED",
-          "position":{  
-             "x":9,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"5587584315642455",
-          "type":"MECH",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"014841994137710257",
-          "type":"RECON",
-          "factionId":"RED",
-          "position":{  
-             "x":8,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"8659285891010962",
-          "type":"TANK",
-          "factionId":"RED",
-          "position":{  
-             "x":9,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"35129112357306",
-          "type":"HEAVY_TANK",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"07748968507319565",
-          "type":"NEO_TANK",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"7354901984533257",
-          "type":"ARMORED_PERSONNEL_CARRIER",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"08903845834020041",
-          "type":"ARTILLERY",
-          "factionId":"RED",
-          "position":{  
-             "x":9,
-             "y":4
-          },
-          "life":100
-       },
-       {  
-          "id":"7917111367859",
-          "type":"ROCKET_LAUNCHER",
-          "factionId":"RED",
-          "position":{  
-             "x":8,
-             "y":3
-          },
-          "life":100
-       },
-       {  
-          "id":"5465635468960179",
-          "type":"ANTI_AIR_TANK",
-          "factionId":"RED",
-          "position":{  
-             "x":7,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"5405704728999685",
-          "type":"ANTI_AIR_MISSILE_LAUNCHER",
-          "factionId":"RED",
-          "position":{  
-             "x":7,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"03166652171428397",
-          "type":"FIGHTER",
-          "factionId":"RED",
-          "position":{  
-             "x":7,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"2043972863662007",
-          "type":"BOMBER",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":5
-          },
-          "life":100
-       },
-       {  
-          "id":"26560574756615307",
-          "type":"BATTLE_HELICOPTER",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":5
-          },
-          "life":100
-       },
-       {  
-          "id":"04391223032179892",
-          "type":"TRANSPORT_HELICOPTER",
-          "factionId":"RED",
-          "position":{  
-             "x":6,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"07724110550292673",
-          "type":"BATTLESHIP",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":1
-          },
-          "life":100
-       },
-       {  
-          "id":"8156991937037477",
-          "type":"CRUISER",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":2
-          },
-          "life":100
-       },
-       {  
-          "id":"6117051092722798",
-          "type":"LANDER",
-          "factionId":"RED",
-          "position":{  
-             "x":11,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"8107554334065992",
-          "type":"SUBMARINE",
-          "factionId":"RED",
-          "position":{  
-             "x":10,
-             "y":0
-          },
-          "life":100
-       },
-       {  
-          "id":"05393526922176872",
-          "type":"RECON",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":8,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"08817399793506997",
-          "type":"TANK",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":9,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"07107484779744855",
-          "type":"HEAVY_TANK",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"8086368793769187",
-          "type":"NEO_TANK",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"4231751791203229",
-          "type":"ARMORED_PERSONNEL_CARRIER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"1699377935560471",
-          "type":"ARTILLERY",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":9,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"25790560516548733",
-          "type":"ROCKET_LAUNCHER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":8,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"908469141035843",
-          "type":"ANTI_AIR_TANK",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":7,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"7841014127152357",
-          "type":"ANTI_AIR_MISSILE_LAUNCHER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":7,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"2115434510853318",
-          "type":"FIGHTER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":7,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"5985433345908104",
-          "type":"BOMBER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":6
-          },
-          "life":100
-       },
-       {  
-          "id":"054564909504194015",
-          "type":"BATTLE_HELICOPTER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":6
-          },
-          "life":100
-       },
-       {  
-          "id":"27765820354582815",
-          "type":"TRANSPORT_HELICOPTER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":6,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"321056973573858",
-          "type":"BATTLESHIP",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"8337326945254131",
-          "type":"CRUISER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"4005267479658692",
-          "type":"LANDER",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":11,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"2778090187226656",
-          "type":"SUBMARINE",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"40960271518999236",
-          "type":"INFANTERY",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":9,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"20846496539160597",
-          "type":"MECH",
-          "factionId":"YELLOW",
-          "position":{  
-             "x":10,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"14773064495203947",
-          "type":"INFANTERY",
-          "factionId":"GREEN",
-          "position":{  
-             "x":2,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"4122092095401195",
-          "type":"MECH",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"20779472281907907",
-          "type":"RECON",
-          "factionId":"GREEN",
-          "position":{  
-             "x":3,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"6512935133933384",
-          "type":"TANK",
-          "factionId":"GREEN",
-          "position":{  
-             "x":2,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"5697971593314215",
-          "type":"HEAVY_TANK",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"789810417838521",
-          "type":"NEO_TANK",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"6254522781577505",
-          "type":"ARMORED_PERSONNEL_CARRIER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"5186207214879268",
-          "type":"ARTILLERY",
-          "factionId":"GREEN",
-          "position":{  
-             "x":2,
-             "y":7
-          },
-          "life":100
-       },
-       {  
-          "id":"27142720001144927",
-          "type":"ROCKET_LAUNCHER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":3,
-             "y":8
-          },
-          "life":100
-       },
-       {  
-          "id":"4951731858233803",
-          "type":"ANTI_AIR_TANK",
-          "factionId":"GREEN",
-          "position":{  
-             "x":4,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"03352584837341577",
-          "type":"ANTI_AIR_MISSILE_LAUNCHER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":4,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"4062703989181957",
-          "type":"FIGHTER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":4,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"4171729482905695",
-          "type":"BOMBER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":6
-          },
-          "life":100
-       },
-       {  
-          "id":"5108543327397099",
-          "type":"BATTLE_HELICOPTER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":6
-          },
-          "life":100
-       },
-       {  
-          "id":"9841983411326525",
-          "type":"TRANSPORT_HELICOPTER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":5,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"869512874479232",
-          "type":"BATTLESHIP",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":10
-          },
-          "life":100
-       },
-       {  
-          "id":"09073021371662215",
-          "type":"CRUISER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":9
-          },
-          "life":100
-       },
-       {  
-          "id":"7824522265815685",
-          "type":"LANDER",
-          "factionId":"GREEN",
-          "position":{  
-             "x":0,
-             "y":11
-          },
-          "life":100
-       },
-       {  
-          "id":"34145063539826714",
-          "type":"SUBMARINE",
-          "factionId":"GREEN",
-          "position":{  
-             "x":1,
-             "y":11
-          },
-          "life":100
-       }
+    units: [  
+      {  
+        id: '7817155960141107',
+        type: 'INFANTERY',
+        factionId: 'BLUE',
+        position: {  
+          x: 2,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '01443970687031415',
+        type: 'MECH',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '5809627809916933',
+        type: 'RECON',
+        factionId: 'BLUE',
+        position: {  
+          x: 3,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '35480544617056053',
+        type: 'TANK',
+        factionId: 'BLUE',
+        position: {  
+          x: 2,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '17052065105627445',
+        type: 'HEAVY_TANK',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '07751266781335264',
+        type: 'NEO_TANK',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '643412782240006',
+        type: 'ARMORED_PERSONNEL_CARRIER',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '05809268063989537',
+        type: 'ARTILLERY',
+        factionId: 'BLUE',
+        position: {  
+          x: 2,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '7245849459862466',
+        type: 'ROCKET_LAUNCHER',
+        factionId: 'BLUE',
+        position: {  
+          x: 3,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '8362429596983276',
+        type: 'ANTI_AIR_TANK',
+        factionId: 'BLUE',
+        position: {  
+          x: 4,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '7080110135327744',
+        type: 'ANTI_AIR_MISSILE_LAUNCHER',
+        factionId: 'BLUE',
+        position: {  
+          x: 4,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '06783741062425053',
+        type: 'FIGHTER',
+        factionId: 'BLUE',
+        position: {  
+          x: 4,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '6135125425981098',
+        type: 'BOMBER',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 5,
+        },
+        life: 100,
+      },
+      {  
+        id: '8664422415268704',
+        type: 'BATTLE_HELICOPTER',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 5,
+        },
+        life: 100,
+      },
+      {  
+        id: '8105762671944887',
+        type: 'TRANSPORT_HELICOPTER',
+        factionId: 'BLUE',
+        position: {  
+          x: 5,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '7981559003362342',
+        type: 'BATTLESHIP',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '7815737591683525',
+        type: 'CRUISER',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '06974406382643816',
+        type: 'LANDER',
+        factionId: 'BLUE',
+        position: {  
+          x: 0,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '8050696288069512',
+        type: 'SUBMARINE',
+        factionId: 'BLUE',
+        position: {  
+          x: 1,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '7767120628441517',
+        type: 'INFANTERY',
+        factionId: 'RED',
+        position: {  
+          x: 9,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '5587584315642455',
+        type: 'MECH',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '014841994137710257',
+        type: 'RECON',
+        factionId: 'RED',
+        position: {  
+          x: 8,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '8659285891010962',
+        type: 'TANK',
+        factionId: 'RED',
+        position: {  
+          x: 9,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '35129112357306',
+        type: 'HEAVY_TANK',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '07748968507319565',
+        type: 'NEO_TANK',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '7354901984533257',
+        type: 'ARMORED_PERSONNEL_CARRIER',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '08903845834020041',
+        type: 'ARTILLERY',
+        factionId: 'RED',
+        position: {  
+          x: 9,
+          y: 4,
+        },
+        life: 100,
+      },
+      {  
+        id: '7917111367859',
+        type: 'ROCKET_LAUNCHER',
+        factionId: 'RED',
+        position: {  
+          x: 8,
+          y: 3,
+        },
+        life: 100,
+      },
+      {  
+        id: '5465635468960179',
+        type: 'ANTI_AIR_TANK',
+        factionId: 'RED',
+        position: {  
+          x: 7,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '5405704728999685',
+        type: 'ANTI_AIR_MISSILE_LAUNCHER',
+        factionId: 'RED',
+        position: {  
+          x: 7,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '03166652171428397',
+        type: 'FIGHTER',
+        factionId: 'RED',
+        position: {  
+          x: 7,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '2043972863662007',
+        type: 'BOMBER',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 5,
+        },
+        life: 100,
+      },
+      {  
+        id: '26560574756615307',
+        type: 'BATTLE_HELICOPTER',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 5,
+        },
+        life: 100,
+      },
+      {  
+        id: '04391223032179892',
+        type: 'TRANSPORT_HELICOPTER',
+        factionId: 'RED',
+        position: {  
+          x: 6,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '07724110550292673',
+        type: 'BATTLESHIP',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 1,
+        },
+        life: 100,
+      },
+      {  
+        id: '8156991937037477',
+        type: 'CRUISER',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 2,
+        },
+        life: 100,
+      },
+      {  
+        id: '6117051092722798',
+        type: 'LANDER',
+        factionId: 'RED',
+        position: {  
+          x: 11,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '8107554334065992',
+        type: 'SUBMARINE',
+        factionId: 'RED',
+        position: {  
+          x: 10,
+          y: 0,
+        },
+        life: 100,
+      },
+      {  
+        id: '05393526922176872',
+        type: 'RECON',
+        factionId: 'YELLOW',
+        position: {  
+          x: 8,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '08817399793506997',
+        type: 'TANK',
+        factionId: 'YELLOW',
+        position: {  
+          x: 9,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '07107484779744855',
+        type: 'HEAVY_TANK',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '8086368793769187',
+        type: 'NEO_TANK',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '4231751791203229',
+        type: 'ARMORED_PERSONNEL_CARRIER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '1699377935560471',
+        type: 'ARTILLERY',
+        factionId: 'YELLOW',
+        position: {  
+          x: 9,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '25790560516548733',
+        type: 'ROCKET_LAUNCHER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 8,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '908469141035843',
+        type: 'ANTI_AIR_TANK',
+        factionId: 'YELLOW',
+        position: {  
+          x: 7,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '7841014127152357',
+        type: 'ANTI_AIR_MISSILE_LAUNCHER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 7,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '2115434510853318',
+        type: 'FIGHTER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 7,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '5985433345908104',
+        type: 'BOMBER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 6,
+        },
+        life: 100,
+      },
+      {  
+        id: '054564909504194015',
+        type: 'BATTLE_HELICOPTER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 6,
+        },
+        life: 100,
+      },
+      {  
+        id: '27765820354582815',
+        type: 'TRANSPORT_HELICOPTER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 6,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '321056973573858',
+        type: 'BATTLESHIP',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '8337326945254131',
+        type: 'CRUISER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '4005267479658692',
+        type: 'LANDER',
+        factionId: 'YELLOW',
+        position: {  
+          x: 11,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '2778090187226656',
+        type: 'SUBMARINE',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '40960271518999236',
+        type: 'INFANTERY',
+        factionId: 'YELLOW',
+        position: {  
+          x: 9,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '20846496539160597',
+        type: 'MECH',
+        factionId: 'YELLOW',
+        position: {  
+          x: 10,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '14773064495203947',
+        type: 'INFANTERY',
+        factionId: 'GREEN',
+        position: {  
+          x: 2,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '4122092095401195',
+        type: 'MECH',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '20779472281907907',
+        type: 'RECON',
+        factionId: 'GREEN',
+        position: {  
+          x: 3,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '6512935133933384',
+        type: 'TANK',
+        factionId: 'GREEN',
+        position: {  
+          x: 2,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '5697971593314215',
+        type: 'HEAVY_TANK',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '789810417838521',
+        type: 'NEO_TANK',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '6254522781577505',
+        type: 'ARMORED_PERSONNEL_CARRIER',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '5186207214879268',
+        type: 'ARTILLERY',
+        factionId: 'GREEN',
+        position: {  
+          x: 2,
+          y: 7,
+        },
+        life: 100,
+      },
+      {  
+        id: '27142720001144927',
+        type: 'ROCKET_LAUNCHER',
+        factionId: 'GREEN',
+        position: {  
+          x: 3,
+          y: 8,
+        },
+        life: 100,
+      },
+      {  
+        id: '4951731858233803',
+        type: 'ANTI_AIR_TANK',
+        factionId: 'GREEN',
+        position: {  
+          x: 4,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '03352584837341577',
+        type: 'ANTI_AIR_MISSILE_LAUNCHER',
+        factionId: 'GREEN',
+        position: {  
+          x: 4,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '4062703989181957',
+        type: 'FIGHTER',
+        factionId: 'GREEN',
+        position: {  
+          x: 4,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '4171729482905695',
+        type: 'BOMBER',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 6,
+        },
+        life: 100,
+      },
+      {  
+        id: '5108543327397099',
+        type: 'BATTLE_HELICOPTER',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 6,
+        },
+        life: 100,
+      },
+      {  
+        id: '9841983411326525',
+        type: 'TRANSPORT_HELICOPTER',
+        factionId: 'GREEN',
+        position: {  
+          x: 5,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '869512874479232',
+        type: 'BATTLESHIP',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 10,
+        },
+        life: 100,
+      },
+      {  
+        id: '09073021371662215',
+        type: 'CRUISER',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 9,
+        },
+        life: 100,
+      },
+      {  
+        id: '7824522265815685',
+        type: 'LANDER',
+        factionId: 'GREEN',
+        position: {  
+          x: 0,
+          y: 11,
+        },
+        life: 100,
+      },
+      {  
+        id: '34145063539826714',
+        type: 'SUBMARINE',
+        factionId: 'GREEN',
+        position: {  
+          x: 1,
+          y: 11,
+        },
+        life: 100,
+      },
     ],
-    "name":"Show off",
-    "description":"Every unit is out"
- }`)
+    name: 'Show off',
+    description: 'Every unit is out',
+  }
 }
 
 export default showOff
