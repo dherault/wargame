@@ -1,4 +1,4 @@
-import { take, takeLatest, takeEvery, select, put, delay } from 'redux-saga/effects'
+import { take, takeLatest, select, put, delay } from 'redux-saga/effects'
 import store from '../store'
 import AiWebWorker from '../../lib/game/ai.worker'
 import { findById } from '../../lib/common/utils'
@@ -6,9 +6,30 @@ import { boundViewBoxX, boundViewBoxY, boundViewBoxWidth } from '../../lib/commo
 
 let worker
 
-function* spanAiWebWorker() {
+function* spanAiWebWorker(isNextTurn) {
   const state = yield select()
-  const { currentFaction, factions } = state
+
+  // Cancel previous computations
+  if (worker) {
+    worker.terminate()
+  }
+
+  yield put({ type: 'RESET_AI_ACTIONS' })
+
+  worker = new AiWebWorker()
+
+  worker.postMessage({ state, isNextTurn })
+
+  worker.onmessage = e => {
+    store.dispatch({
+      type: 'SET_AI_ACTIONS',
+      payload: e.data,
+    })
+  }
+}
+
+function* prepareNextTurnAiActions() {
+  const { currentFaction, factions } = yield select()
 
   let factionIndex = factions.findIndex(faction => faction.id === currentFaction.id)
     
@@ -24,24 +45,16 @@ function* spanAiWebWorker() {
 
   const nextFaction = factions[factionIndex]
 
-  if (nextFaction.type !== 'COMPUTER') return
-
-  // Cancel previous computations
-  if (worker) {
-    worker.terminate()
+  if (nextFaction.type === 'COMPUTER') {
+    yield spanAiWebWorker(true)
   }
+}
 
-  yield put({ type: 'RESET_AI_ACTIONS' })
-
-  worker = new AiWebWorker()
-
-  worker.postMessage(state)
-
-  worker.onmessage = e => {
-    store.dispatch({
-      type: 'SET_AI_ACTIONS',
-      payload: e.data,
-    })
+function* prepareFirstTurnAiActions() {
+  const { currentFaction, aiActions } = yield select()
+  
+  if (currentFaction.type === 'COMPUTER' && aiActions.length === 0) {
+    yield spanAiWebWorker(false)
   }
 }
 
@@ -155,12 +168,10 @@ function* flushAiActions() {
   }
 }
 
-const actionTypes = ['PLAY_UNIT', 'CREATE_UNIT', 'RESUME_GAME', 'BEGIN_PLAYER_TURN']
-const selector = action => actionTypes.includes(action.type)
-
 function* aiSaga() {
-  yield takeLatest(selector, spanAiWebWorker)
-  yield takeEvery('BEGIN_PLAYER_TURN', flushAiActions)
+  yield takeLatest('RESUME_GAME', prepareFirstTurnAiActions)
+  yield takeLatest(['PLAY_UNIT', 'CREATE_UNIT', 'BEGIN_PLAYER_TURN'], prepareNextTurnAiActions)
+  yield takeLatest(['BEGIN_PLAYER_TURN', 'RESUME_GAME'], flushAiActions)
 }
 
 export default aiSaga

@@ -27,14 +27,16 @@ const maxBranchingFactor = 111
   Adversarial search: https://youtu.be/cwbjLIahbv8 and http://ai.berkeley.edu/lecture_slides.html lecture 6
   Alpha-beta pruning: https://youtu.be/jvpWtwVSvjA and https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning#Pseudocode
 */
-function computeAiActions(rootState) {
+function computeAiActions(rootState, isNextTurn) {
   // First we clone the game state into a lightweight store
   // It will be our root world state
   const rootStore = createAiStore(rootState)
 
-  // The AI considers the next player's moves, hence the new turn
-  rootStore.dispatch({ type: 'END_PLAYER_TURN' })
-  rootStore.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+  if (isNextTurn) {
+    // The AI considers the next player's moves, hence the new turn
+    rootStore.dispatch({ type: 'END_PLAYER_TURN' })
+    rootStore.dispatch({ type: 'BEGIN_PLAYER_TURN' })
+  }
 
   const state = rootStore.getState()
   const consideredFaction = state.currentFaction
