@@ -17,6 +17,7 @@ import viewBoxOffset1 from './viewBoxOffset1'
 import viewBoxOffset2 from './viewBoxOffset2'
 import suicideBug from './suicideBug'
 import captureBug from './captureBug'
+import aliveBug from './aliveBug'
 
 export default [
   duel(),
@@ -38,4 +39,5 @@ export default [
   viewBoxOffset2(),
   suicideBug(),
   captureBug(),
+  aliveBug(),
 ]

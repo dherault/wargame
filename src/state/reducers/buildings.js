@@ -73,16 +73,15 @@ function buildings(state = [], action, globalState) {
     case 'KILL_UNIT': {
       const { unitId } = action.payload
       const unit = findById(globalState.units, unitId)
-
       const buildingIndex = state.findIndex(building => samePosition(building.position, unit.position))
-
+      
       if (
         gameConfiguration.infanteryUnitTypes.includes(unit.type) // If the unit that died could capture
         && buildingIndex !== -1 // And was on a building
         && state[buildingIndex].capture < 100 // That was under capture
       ) {
         const nextState = state.slice()
-
+          
         nextState[buildingIndex] = {
           ...nextState[buildingIndex],
           capture: 100,
