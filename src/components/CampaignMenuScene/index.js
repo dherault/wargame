@@ -8,6 +8,7 @@ import campaignTree from '../../lib/campaignMenu/campaignTree'
 import './index.css'
 
 import Mission from './Mission'
+import MissionEdge from './MissionEdge'
 
 class CampaignMenuScene extends Component {
 
@@ -15,37 +16,61 @@ class CampaignMenuScene extends Component {
     selectedMissionId: null,
   }
 
+  handleContainerClick(e) {
+    console.log(e.target)
+  }
+
   render() {
-    const { campaignProgression, dispatch } = this.props
+    const { completedCampaignMissionIds, dispatch } = this.props
     const { selectedMissionId } = this.state
     
     const missions = []
+    const missionEdges = []
 
     campaignTree.traverseDown((index, parentIndex) => {
       const mission = campaignTree.getData(index)
-      const progression = campaignProgression[mission.id] || {}
+      const parentMission = campaignTree.getData(parentIndex)
+      
+      if (!parentMission || completedCampaignMissionIds.includes(parentMission.id)) {
+        missions.push(
+          <Mission 
+            key={mission.id} 
+            mission={mission} 
+            active={!completedCampaignMissionIds.includes(mission.id)}
+            selected={selectedMissionId === mission.id}
+            onClick={() => this.setState({ selectedMissionId: selectedMissionId === mission.id ? null : mission.id })}
+          />
+        )
 
-      missions.push(
-        <Mission 
-          key={mission.id} 
-          mission={mission} 
-          active={!progression.done}
-          selected={selectedMissionId === mission.id}
-          onClick={() => this.setState({ selectedMissionId: selectedMissionId === mission.id ? null : mission.id })}
-        />
-      )
+        if (parentMission) {
+          missionEdges.push(
+            <MissionEdge
+              key={mission.id}
+              positions={[mission.position, parentMission.position]}
+            />
+          )
+        }
+      }
     })
 
     return (
-      <div className="CampaignMenuScene">
+      <div className="CampaignMenuScene" onClick={this.handleContainerClick}>
         <div className="CampaignMenuScene-container x5">
           <div className="relative">
-            <img src={gameConfiguration.imageSources.campaignMenuBackground} className="CampaignMenuScene-container-background" />
+            <img 
+              src={gameConfiguration.imageSources.campaignMenuBackground} 
+              className="CampaignMenuScene-container-background"
+              alt="" 
+            />
+            {missionEdges}
             {missions} 
           </div>
         </div>
         <div className="CampaignMenyScene-return" onClick={() => dispatch(push('/'))}>
           Return
+        </div>
+        <div className="CampaignMenyScene-reset" onClick={window.reset}>
+          Reset
         </div>
       </div>
     )
@@ -53,7 +78,7 @@ class CampaignMenuScene extends Component {
 }
 
 const mapStateToProps = s => ({
-  campaignProgression: s.campaignProgression,
+  completedCampaignMissionIds: s.completedCampaignMissionIds,
 })
 
 export default connect(mapStateToProps)(CampaignMenuScene)

@@ -11,7 +11,7 @@ import { throttle } from '../lib/common/utils'
 import aiActions from './reducers/aiActions'
 import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'
-import campaignProgression from './reducers/campaignProgression'
+import completedCampaignMissionIds from './reducers/completedCampaignMissionIds'
 import currentFaction from './reducers/currentFaction'
 import factions from './reducers/factions'
 import gameOver from './reducers/gameOver'
@@ -44,7 +44,7 @@ const reducer = createReducer({
   booleans, 
   buildings, // must be before units
   factions,
-  campaignProgression,
+  completedCampaignMissionIds,
   currentFaction, // must be after factions
   mapDefinitionDescription,
   mapDefinitionName,

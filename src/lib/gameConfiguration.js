@@ -15,6 +15,12 @@ const gameConfiguration = {
     campaignMenuBackground: '/images/map_remastered.png',
     campaignMenuSwords: '/images/swords_64x64.png',
   },
+  imageDimensions: {
+    campaignMenuBackground: {
+      width: 4096,
+      height: 2048,
+    },
+  },
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',

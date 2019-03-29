@@ -126,3 +126,7 @@ export function round(x, decimal) {
 export function manhattanDistance(p1, p2) {
   return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
 }
+
+export function euclidianDistance(p1, p2) {
+  return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y))
+}

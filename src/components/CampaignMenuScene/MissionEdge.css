@@ -1,0 +1,10 @@
+.MissionEdge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.MissionEdge-dashes {
+  min-width: 10px;
+  border-top: 6px dashed black;
+}

@@ -23,7 +23,7 @@ export function saveState(state) {
 // A utility to call from the browser's console when everything seems to fall apart
 window.reset = () => {
   localStorage.removeItem('state-wargame')
-  window.location = '/'
+  window.location.reload()
 
   return 'Roll \'em dices baby!'
 }

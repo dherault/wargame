@@ -13,11 +13,22 @@ const missionSize = 32 * 1.5
 class Mission extends Component {
 
   handlePlayClick(mapDefinition) {
-    const { mission, dispatch } = this.props
+    const { dispatch } = this.props
 
     createNewGame(prepareMap(mapDefinition))
     
     dispatch(push('/game'))
+  }
+
+  handleSkipClick = () => {
+    const { mission, onClick, dispatch } = this.props
+
+    dispatch({
+      type: 'COMPLETE_CAMPAIGN_MISSION',
+      payload: mission.id,
+    })
+
+    onClick()
   }
 
   renderMissionBox() {
@@ -31,6 +42,9 @@ class Mission extends Component {
         <div>
           <button type="button" onClick={() => this.handlePlayClick(mapDefinition)}>
             Play
+          </button>
+          <button type="button" onClick={this.handleSkipClick}>
+            Skip
           </button>
         </div>
       </div>
@@ -54,6 +68,7 @@ class Mission extends Component {
           src={gameConfiguration.imageSources.campaignMenuSwords} 
           className={`Mission-swords ${active ? 'Mission-swords_active' : ''}`}
           onClick={onClick}
+          alt=""
         />
         {selected && this.renderMissionBox()}
       </div>
