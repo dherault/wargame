@@ -86,7 +86,7 @@ class UnitMenu extends Component {
     })
   }
 
-  moveUnit = (onCompletion) => {
+  moveUnit = onCompletion => {
     const { dispatch, selectedUnitId, selectedPosition } = this.props
 
     dispatch({

@@ -52,14 +52,14 @@ function drawUnit(_, tileSize, images, unit) {
   }
 
   if (isDevPanelOpened) {
-    _.font = `bold ${tileSize / 3}px lato`
+    _.font = `bold ${tileSize / 4}px lato`
     _.textAlign = 'center'
     _.textBaseline = 'middle'
     _.fillStyle = 'white'
     _.strokeStyle = 'black'
     _.lineWidth = 4
-    _.strokeText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
-    _.fillText(unit.id.slice(0, 3), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+    _.strokeText(unit.id.toString().slice(0, 5), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
+    _.fillText(unit.id.toString().slice(0, 5), (x + 0.5) * tileSize + offsetX, (y + 0.5) * tileSize + offsetY)
   }
 }
 

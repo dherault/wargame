@@ -1,9 +1,11 @@
+import uuid from 'uuid'
+
 export function chance(probability) {
   return Math.random() > 1 - probability
 }
 
 export function randomRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
+  return Math.floor(Math.random() * (max - min)) + min
 }
 
 export function randomArray(array) {
@@ -27,7 +29,7 @@ export function findById(array, id) {
 }
 
 export function createId() {
-  return Math.random().toString().slice(2)
+  return uuid.v4()
 }
 
 export function hash(position) {
