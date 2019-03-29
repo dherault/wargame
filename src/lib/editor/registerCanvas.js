@@ -2,7 +2,7 @@ import store from '../../state/store'
 import draw from './draw'
 import gameConfiguration from '../gameConfiguration'
 import canvasRegistrar from '../common/canvasRegistrar'
-import { samePosition } from '../common/utils'
+import { samePosition, createId } from '../common/utils'
 import registerWorldHotKeys from '../common/world/registerWorldHotKeys'
 import eventHandlers from '../common/world/eventHandlers'
 
@@ -127,7 +127,7 @@ function registerCanvas(canvas) {
               const nextUnits = units.slice()
 
               nextUnits[existingUnitIndex] = {
-                id: Math.random().toString().slice(2), // TODO: remove id
+                id: createId(),
                 type: selectedUnitType,
                 factionId: selectedFactionId,
                 position: mouse,

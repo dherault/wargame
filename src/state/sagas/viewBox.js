@@ -17,7 +17,7 @@ function resizeViewBox() {
     // The width is the viewBox's width, ie the number of tiles across the screen, ie the zoom
     const widthIncrement = diffGoalWidth / viewBoxIncrements
     let nextWidth = goalWidth - width ? width + widthIncrement : width
-    const widthReached = Math.abs(goalWidth - nextWidth) < 0.01 // TODO: refactor
+    const widthReached = Math.abs(goalWidth - nextWidth) < 0.01
 
     if (widthReached) {
       nextWidth = goalWidth
@@ -47,7 +47,7 @@ function resizeViewBox() {
     store.dispatch({
       type: 'UPDATE_VIEW_BOX',
       payload: {
-        width: boundViewBoxWidth(nextWidth), // TODO remove bounding if bug still happens
+        width: boundViewBoxWidth(nextWidth),
         x: boundViewBoxX(nextX, nextWidth),
         y: boundViewBoxY(nextY, nextWidth),
       },
