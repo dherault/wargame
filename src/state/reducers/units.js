@@ -17,14 +17,14 @@ function units(state = [], action, globalState, ongoingState) {
       if (state.some(u => samePosition(u.position, position))) throw new DataError('Unit - CREATE_UNIT - a unit is already on the position', { position })
       // We do not check if the unit is on a forbidden position since it can only be created in a building
 
-      const unit = { 
+      const unit = {
         id: createId(),
-        type, 
-        position, 
-        factionId, 
-        team, 
-        life: 100, 
-        played: true, 
+        type,
+        position,
+        factionId,
+        team,
+        life: 100,
+        played: true,
       }
 
       return [...state, unit]
@@ -37,7 +37,7 @@ function units(state = [], action, globalState, ongoingState) {
 
       if (unitIndex === -1) throw new DataError('Units - PLAY_UNIT - unit not found', { unitId })
 
-      units[unitIndex] = { 
+      units[unitIndex] = {
         ...units[unitIndex],
         played: true,
       }
@@ -53,7 +53,7 @@ function units(state = [], action, globalState, ongoingState) {
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT - unit not found', { unitId, position })
       if (units.some(u => u.id !== unitId && samePosition(u.position, position))) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
 
-      units[unitIndex] = { 
+      units[unitIndex] = {
         ...units[unitIndex],
         position,
         isMoving: true,
@@ -71,9 +71,9 @@ function units(state = [], action, globalState, ongoingState) {
 
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT_POSITION - unit not found', { unitId, position })
 
-      units[unitIndex] = { 
+      units[unitIndex] = {
         ...units[unitIndex],
-        currentPosition: position, 
+        currentPosition: position,
       }
 
       return units
@@ -86,7 +86,7 @@ function units(state = [], action, globalState, ongoingState) {
 
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT_DONE - unit not found', { unitId })
 
-      units[unitIndex] = { 
+      units[unitIndex] = {
         ...units[unitIndex],
         isMoving: false,
         currentPosition: null,
@@ -104,11 +104,11 @@ function units(state = [], action, globalState, ongoingState) {
       if (attackerUnitIndex === -1) throw new DataError('Units - FIRE - Attacker not found', { attackerId })
       if (defenderUnitIndex === -1) throw new DataError('Units - FIRE - Defender not found', { defenderId })
 
-      units[attackerUnitIndex] = { 
+      units[attackerUnitIndex] = {
         ...units[attackerUnitIndex],
         life: units[attackerUnitIndex].life - defenderDamage,
       }
-      units[defenderUnitIndex] = { 
+      units[defenderUnitIndex] = {
         ...units[defenderUnitIndex],
         life: units[defenderUnitIndex].life - attackerDamage,
       }
@@ -140,7 +140,7 @@ function units(state = [], action, globalState, ongoingState) {
 
     case 'CAPTURE': {
       const { buildings } = ongoingState
-      
+
       const remainingFactionIds = buildings
         .filter(building => building.type === 'HEADQUARTERS')
         .map(building => building.factionId)
@@ -151,18 +151,18 @@ function units(state = [], action, globalState, ongoingState) {
     // On every turn beginning we repair the units on cities
     case 'BEGIN_PLAYER_TURN': {
       const { currentFaction, buildings } = ongoingState
-      
+
       return state.map(unit => {
 
         const building = buildings.find(building => building.factionId === currentFaction.id && samePosition(building.position, unit.position))
-        
+
         // A building can only repair certain movement types
         if (building && building.factionId === unit.factionId) {
           const { reparableMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
           const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
 
           if (reparableMovementTypes.includes(movementType)) {
-            return { 
+            return {
               ...unit,
               life: Math.min(100, unit.life + 20),
             }
@@ -173,7 +173,7 @@ function units(state = [], action, globalState, ongoingState) {
       })
     }
 
-    case 'END_PLAYER_TURN':   
+    case 'END_PLAYER_TURN':
       return state.map(unit => Object.assign({}, unit, { played: false }))
 
     default:

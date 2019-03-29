@@ -77,68 +77,68 @@ function computeAiActions(rootState, isNextTurn) {
 function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, depth = 0, alpha = -Infinity, beta = Infinity) {
   const parentState = parentStore.getState()
   // console.log('depth', depth, parentState.currentFaction.id, parentState.turn, parentState.gameOver)
-  
+
   if (depth > maxDepth || parentState.gameOver) {
     return parentStore.score = computeWorldStateScore(parentStore)[consideredFaction.id]
   }
-  
+
   // Is this node a MAX or MIN node ?
   const parentNodeTypeFn = consideredFaction.team === parentState.currentFaction.team ? Math.max : Math.min
-  
+
   // Value init
   parentStore.score = parentNodeTypeFn === Math.max ? -Infinity : Infinity
-  
+
   let stores = [createAiStore(parentState)]
-  
+
   function recurseOnUnits(units, nTargets) {
     if (!units.length) return
 
     const selectedUnit = units[0]
     const nextStores = []
-    
+
     stores.forEach(store => {
       const targets = randomSlice(computePossibleTargets(store, selectedUnit, nTargets), nTargets)
-      
+
       if (!targets.length) return
-      
+
       // console.log('possible targets', selectedUnit.id, targets)
-      
+
       // Dedupe actions
       const serializedActionsGroups = new Set()
-      
+
       targets.forEach(target => {
         serializedActionsGroups.add(JSON.stringify(transformTargetIntoActions(store, selectedUnit, target)))
       })
-      
+
       const actionsGroups = []
-      
+
       // dedupe actionsGroups
       serializedActionsGroups.forEach(serializedAction => actionsGroups.push(JSON.parse(serializedAction)))
-      
+
       // console.log('actionsGroups', actionsGroups)
-      
+
       if (!actionsGroups.length) return
-      
+
       actionsGroups.forEach(actions => {
         if (!actions.length) return
-        
+
         const nextStore = createAiStore(store.getState())
-        
+
         nextStore.actions = [...store.actions, ...actions]
-        
+
         actions.forEach(nextStore.dispatch)
-        
+
         nextStores.push(nextStore)
       })
     })
-    
+
     if (nextStores.length) {
       stores = nextStores
     }
-    
+
     recurseOnUnits(units.slice(1), nTargets)
-  } 
-  
+  }
+
   const units = parentState.units
     .filter(unit => unit.factionId === parentState.currentFaction.id)
     .sort((a, b) => {
@@ -155,7 +155,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
       // TODO: if unit is blocked, return +1 or more
     })
-  
+
   let nTargets
 
   if (units.length > 12) nTargets = 1
@@ -167,7 +167,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
   // console.log('units', units)
 
   const selectedStores = randomSlice(stores, maxBranchingFactor)
-  
+
   selectedStores.forEach(store => addCreateUnitActions(store))
 
   // console.log('selectedStores', selectedStores)
@@ -179,7 +179,7 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
     store.dispatch({ type: 'BEGIN_PLAYER_TURN' })
 
     store.stateTreeIndex = stateTree.addNode(store, parentStore.stateTreeIndex) // We add the store to the state tree
-    
+
     const childScore = extendStateTree(stateTree, store, consideredFaction, maxDepth, depth + 1, alpha, beta)
 
     // console.log('back to depth', depth, parentState.currentFaction.id, childScore)
@@ -227,10 +227,10 @@ function computePossibleTargets(store, unit, nTargets) {
 
       // We look for potential ennemies on range to attack
       const rangePositions = computeRangePositions(store, unit, position)
-  
+
       units.forEach(u => {
         const potentialDamages = damages[u.type]
-  
+
         if (
           u.team !== unit.team && // If a unit from opposite team
           rangePositions.some(position => samePosition(position, u.position)) && // is on range at position
@@ -241,19 +241,19 @@ function computePossibleTargets(store, unit, nTargets) {
           targets.push(['FIRE', u.id, position])
         }
       })
-  
+
       const building = buildings.find(building => samePosition(position, building.position))
-  
+
       // Infantery type can also capture building, we add that action to the list if a building is on the position
       if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && building && building.team !== unit.team) {
         targets.push(['CAPTURE', building.id, position])
       }
-  
+
       // Units can be repaired in a building
       if (
         building
-        && unit.life < 100 
-        && building.factionId === unit.factionId 
+        && unit.life < 100
+        && building.factionId === unit.factionId
         && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(movementType)
       ) {
         targets.push(['REPAIR', building.id, position])
@@ -284,10 +284,10 @@ function computePossibleTargets(store, unit, nTargets) {
 function transformTargetIntoActions(store, unit, target) {
   const { buildings } = store.getState()
   const [type, targetId, position] = target
-  
-  const pathToTarget = aStarSearch(store, unit, unit.position, position) 
+
+  const pathToTarget = aStarSearch(store, unit, unit.position, position)
   const movementPositions = computeMovementPositions(store, unit)
-  
+
   const extremePosition = pathToTarget
     .reverse()
     .find(position => samePosition(position, unit.position) || movementPositions.some(p => samePosition(p, position)))
@@ -314,7 +314,7 @@ function transformTargetIntoActions(store, unit, target) {
     if (samePosition(extremePosition, position)) {
       if (type === 'FIRE') {
         const damages = computeFireDamage(store, unit.id, targetId, position)
-  
+
         actions.push({
           type,
           payload: {
@@ -327,7 +327,7 @@ function transformTargetIntoActions(store, unit, target) {
         unitIsDead = damages[1] >= unit.life
         unitIsPlayed = true
       }
-    
+
       if (type === 'CAPTURE') {
         actions.push({
           type,
@@ -364,8 +364,8 @@ function addCreateUnitActions(store) {
   if (turn !== 1 && chance(0.15)) return
 
   buildings
-    .filter(building => 
-      building.factionId === currentFaction.id 
+    .filter(building =>
+      building.factionId === currentFaction.id
       && gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes.length
       && !units.some(unit => samePosition(unit.position, building.position))
     )
@@ -424,7 +424,7 @@ function addCreateUnitActions(store) {
             team: currentFaction.team,
           },
         }
-    
+
         store.dispatch(action)
         store.actions.push(action)
       }

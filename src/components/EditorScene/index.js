@@ -14,18 +14,18 @@ class EditorScene extends Component {
     console.log('Mounting EditorScene')
     const { isEditing, dispatch } = this.props
     const canvas = document.getElementById('canvas-editor')
-    
+
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
-    
+
     window.addEventListener('resize', this.resizeCanvasListener)
-    
+
     this.resizeCanvas(canvas)
-    
+
     this.unregisterCanvas = registerCanvas(canvas)
 
     if (!isEditing) createNewEditor()
-    
-    dispatch({ 
+
+    dispatch({
       type: 'RESET_VIEW_BOX',
     })
   }

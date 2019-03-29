@@ -23,7 +23,7 @@ function generateWorldMap(width = 20, seaWidth = 3) {
 
   for (let j = 0; j < height; j++) {
     const row = []
-    
+
     for (let i = 0; i < width; i++) {
       const tile = i < seaWidth || i >= width - seaWidth || j < seaWidth || j >= height - seaWidth ? (chance(0.05) ? 'REEF' : 'SEA') : randomArray(tilesTypes)
       row.push(tile)
@@ -35,7 +35,7 @@ function generateWorldMap(width = 20, seaWidth = 3) {
         seaTiles.push({ x: i, y: j })
       }
     }
-    
+
     worldMap.push(row)
   }
 
@@ -74,16 +74,16 @@ function generateWorldMap(width = 20, seaWidth = 3) {
   ]
 
   const factions = [
-    { id: 'BLUE', team: 1, type: 'HUMAN' }, 
+    { id: 'BLUE', team: 1, type: 'HUMAN' },
     { id: 'RED', team: 2, type: 'COMPUTER' },
     { id: 'YELLOW', team: 3, type: 'COMPUTER' },
   ]
 
-  return { 
-    worldMap, 
-    buildings, 
-    units, 
-    factions, 
+  return {
+    worldMap,
+    buildings,
+    units,
+    factions,
     name: `Random ${width}x${width}`,
     description: 'A random challenge',
   }

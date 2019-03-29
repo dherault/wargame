@@ -7,7 +7,7 @@ const unitsImageTileHeight = 64
 function drawUnit(_, tileSize, images, unit) {
   const { viewBox, booleans: { isDevPanelOpened } } = store.getState()
   const position = unit.currentPosition || unit.position
-  const x = position.x - viewBox.x 
+  const x = position.x - viewBox.x
   const y = position.y - viewBox.y
   const { offsetX, offsetY } = viewBox
   const factionDy = gameConfiguration.factionsConfiguration[unit.factionId].unitsImageDy
@@ -26,14 +26,14 @@ function drawUnit(_, tileSize, images, unit) {
   }
 
   _.drawImage(
-    unit.played ? images[gameConfiguration.imageSources.playedUnits] : images[gameConfiguration.imageSources.units], 
-    dx, 
-    dy + factionDy, 
-    unitsImageTileWidth, 
-    unitsImageTileHeight, 
-    flipped ? -((x + 1) * tileSize + offsetX) : x * tileSize + offsetX, 
-    y * tileSize + offsetY, 
-    tileSize, 
+    unit.played ? images[gameConfiguration.imageSources.playedUnits] : images[gameConfiguration.imageSources.units],
+    dx,
+    dy + factionDy,
+    unitsImageTileWidth,
+    unitsImageTileHeight,
+    flipped ? -((x + 1) * tileSize + offsetX) : x * tileSize + offsetX,
+    y * tileSize + offsetY,
+    tileSize,
     tileSize
   )
 

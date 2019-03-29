@@ -19,21 +19,21 @@ class UnitMenu extends Component {
     const { selectedPosition, viewBox } = this.props
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
 
-    return { 
+    return {
       left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
-      top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
+      top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY,
     }
   }
 
   componentDidUpdate(prevProps) {
     const { selectedPosition } = this.props
-    
+
     if (!selectedPosition) return
     if (prevProps.selectedPosition && samePosition(prevProps.selectedPosition, selectedPosition)) return
-    
+
     this.setDiffs()
   }
-  
+
   setDiffs = () => {
     if (!(this.width && this.height)) return
 
@@ -41,7 +41,7 @@ class UnitMenu extends Component {
     const { innerWidth, innerHeight } = window
     const position = this.menuPosition
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
-    
+
     this.setState({
       leftDiff: position.left + this.width > innerWidth ? this.width + tileSize : 0,
       topDiff: position.top + this.height > innerHeight ? this.height - tileSize : 0,
@@ -53,7 +53,7 @@ class UnitMenu extends Component {
     // setTimeout so the component can adjust its size
     setTimeout(() => {
       const { clientWidth, clientHeight } = element
-      
+
       this.width = clientWidth
       this.height = clientHeight
 
@@ -131,7 +131,7 @@ class UnitMenu extends Component {
 
   handleCaptureClick = () => {
     const { buildings, units, selectedPosition, selectedUnitId, dispatch } = this.props
-    
+
     const unit = findById(units, selectedUnitId)
 
     this.closeMenu()
@@ -179,21 +179,21 @@ class UnitMenu extends Component {
 
   render() {
     if (!window.canvas) return null
-    
+
     const { booleans, buildings, units, selectedPosition, selectedUnitId } = this.props
 
     if (!booleans.isUnitMenuOpened || !selectedUnitId || !selectedPosition) return null
 
     const selectedUnit = findById(units, selectedUnitId)
     const rangePositions = computeRangePositions(store, selectedUnit, selectedPosition) // range positions at selected position
-    
+
     const { top, left } = this.menuPosition
     const { topDiff, leftDiff } = this.state
 
     return (
-      <div 
+      <div
         ref={this.handleRef}
-        className="UnitMenu absolute no-select pointer" 
+        className="UnitMenu absolute no-select pointer"
         style={{
           top: top - topDiff,
           left: left - leftDiff,
@@ -216,7 +216,7 @@ class UnitMenu extends Component {
           <div className="UnitMenu-item" onClick={this.handleCaptureClick}>
             Capture
           </div>
-        )}  
+        )}
         {!samePosition(selectedPosition, selectedUnit.position) && (
           <div className="UnitMenu-item" onClick={this.handleMoveClick}>
             Move

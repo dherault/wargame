@@ -15,7 +15,7 @@ function computeVisionPositionsHashes(store) {
 
   units.forEach(unit => {
     // We compute the vision only for the current team
-    if (unit.team !== team) return 
+    if (unit.team !== team) return
 
     let { vision } = gameConfiguration.unitsConfiguration[unit.type]
 

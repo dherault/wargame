@@ -10,7 +10,7 @@ class TileInfo extends Component {
 
   render() {
     const { mouse, worldMap, units, buildings } = this.props
-    
+
     if (!worldMap) return null
 
     const tile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
@@ -21,10 +21,10 @@ class TileInfo extends Component {
     const unit = units.find(unit => samePosition(unit.position, mouse))
     const building = buildings.find(building => samePosition(building.position, mouse))
 
-    return ( 
+    return (
       <div className="TileInfo absolute x4">
-        {tileConfiguration.name} (defense {tileConfiguration.defense}) 
-        {building && ` - capture ${building.capture}`} 
+        {tileConfiguration.name} (defense {tileConfiguration.defense})
+        {building && ` - capture ${building.capture}`}
         {unit && ` - ${gameConfiguration.unitsConfiguration[unit.type].name}`}
       </div>
     )

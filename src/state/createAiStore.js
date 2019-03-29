@@ -46,7 +46,7 @@ function createAiStore(initialState) {
 
   const enhancer = compose(applyMiddleware(sagaMiddleware))
   // const enhancer = compose(applyMiddleware(sagaMiddleware, loggerMiddleware))
-  
+
   const store = createStore(reducer, initialState, enhancer)
 
   // To store the AI actions

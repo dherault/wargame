@@ -72,7 +72,7 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
     },
   })
 
-  store.dispatch({ 
+  store.dispatch({
     type: 'BEGIN_PLAYER_TURN',
   })
 }

@@ -17,21 +17,21 @@ class BuildingMenu extends Component {
     const { selectedPosition, viewBox } = this.props
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
 
-    return { 
+    return {
       left: (selectedPosition.x - viewBox.x + 1) * tileSize + viewBox.offsetX,
-      top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY, 
+      top: (selectedPosition.y - viewBox.y) * tileSize + viewBox.offsetY,
     }
   }
 
   componentDidUpdate(prevProps) {
     const { selectedPosition } = this.props
-    
+
     if (!selectedPosition) return
     if (prevProps.selectedPosition && samePosition(prevProps.selectedPosition, selectedPosition)) return
-    
+
     this.setDiffs()
   }
-  
+
   setDiffs = () => {
     if (!(this.width && this.height)) return
 
@@ -39,7 +39,7 @@ class BuildingMenu extends Component {
     const { innerWidth, innerHeight } = window
     const position = this.menuPosition
     const tileSize = window.canvas.width / viewBox.width // pixel per tile
-    
+
     this.setState({
       leftDiff: position.left + this.width > innerWidth ? this.width + tileSize : 0,
       topDiff: position.top + this.height > innerHeight ? this.height - tileSize : 0,
@@ -51,7 +51,7 @@ class BuildingMenu extends Component {
     // setTimeout so the component can adjust its size
     setTimeout(() => {
       const { clientWidth, clientHeight } = element
-      
+
       this.width = clientWidth
       this.height = clientHeight
 
@@ -88,7 +88,7 @@ class BuildingMenu extends Component {
 
   render() {
     if (!window.canvas) return null
-    
+
     const { buildings, selectedPosition, booleans } = this.props
 
     if (!booleans.isBuildingMenuOpened || !selectedPosition) return null
@@ -98,7 +98,7 @@ class BuildingMenu extends Component {
     const movementTypes = gameConfiguration.buildingsConfiguration[building.type].creatableUnitMovementTypes
 
     if (!movementTypes) return null
-    
+
     const availableUnits = Object.entries(gameConfiguration.unitsConfiguration)
       .filter(entry => movementTypes.includes(entry[1].movementType))
       .map(([type, unitConfiguration]) => ({
@@ -106,23 +106,23 @@ class BuildingMenu extends Component {
         cost: unitConfiguration.cost,
         name: unitConfiguration.name,
       }))
-      
+
     const { top, left } = this.menuPosition
     const { topDiff, leftDiff } = this.state
 
     return (
-      <table 
+      <table
         ref={this.handleRef}
         style={{
           top: top - topDiff,
           left: left - leftDiff,
         }}
-        className="BuildingMenu absolute no-select pointer" 
+        className="BuildingMenu absolute no-select pointer"
       >
         <tbody>
           {availableUnits.map(data => (
-            <tr 
-              key={data.type} 
+            <tr
+              key={data.type}
               className="BuildingMenu-item"
               onClick={() => this.handleCreateUnitClick(data.type)}
             >

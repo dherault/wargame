@@ -54,7 +54,7 @@ function viewBox(state = {}, action, globalState) {
         offsetY: viewBoxHeight > worldMap.length ? (window.canvas.height - worldMap.length * tileSize) / 2 : 0,
       }
     }
-    
+
     default:
       return state
   }

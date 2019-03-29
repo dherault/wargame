@@ -60,7 +60,7 @@ class TurnInfo extends Component {
 
   render() {
     const { turn, currentFaction, moneyByFaction } = this.props
-    
+
     return (
       <div className="TurnInfo absolute x4">
         <div style={{ marginRight: 10 }}>

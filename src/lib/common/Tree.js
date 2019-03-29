@@ -45,10 +45,10 @@ class Tree {
       const queue = [[rootIndex, null]]
 
       while (queue.length) {
-        const [index, parentIndex] = queue.shift() 
+        const [index, parentIndex] = queue.shift()
 
         queue.push(...this.getChildren(index).map(childIndex => [childIndex, index]))
-        
+
         fn(index, parentIndex)
       }
     })

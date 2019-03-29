@@ -17,10 +17,10 @@ function draw(_) {
 
   _.fillStyle = 'black'
   _.fillRect(0, 0, width, height)
-  
+
   // No data displays only a black screen
   if (!worldMap) return
-  
+
   const tileSize = width / viewBox.width // pixel per tile
   const viewBoxHeight = Math.ceil(height / tileSize) // tiles
   const mouseTile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
@@ -32,21 +32,21 @@ function draw(_) {
     /* ----------------
       DRAW BACKGROUND
     ---------------- */
-  
+
     for (let j = 0; j < viewBoxHeight + 1; j++) { // + 1 for move draw
       const y = Math.floor(j + viewBox.y)
-  
+
       for (let i = 0; i < viewBox.width + 1; i++) {
         const x = Math.floor(i + viewBox.x)
         const tile = worldMap[y] && worldMap[y][x]
-  
-        if (!tile) continue 
-  
+
+        if (!tile) continue
+
         const { color } = gameConfiguration.terrainConfiguration[tile]
-  
+
         _.fillStyle = color
         _.strokeStyle = color
-  
+
         _.beginPath()
         _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
         _.closePath()
@@ -54,17 +54,17 @@ function draw(_) {
         _.stroke()
       }
     }
-  
+
     /* ---------------
       DRAW BUILDINGS
     --------------- */
-  
+
     buildings.forEach(building => drawBuilding(_, tileSize, building))
-  
+
     /* ---------------
       DRAW SELECTION
     --------------- */
-  
+
     if (selectedBuildingType && mouseTile) {
       drawBuilding(_, tileSize, {
         type: selectedBuildingType,
@@ -72,26 +72,26 @@ function draw(_) {
         position: mouse,
       })
     }
-  
+
     if (selectedTerrainType && mouseTile) {
       const { color } = gameConfiguration.terrainConfiguration[selectedTerrainType]
-  
+
       _.fillStyle = color
       _.strokeStyle = color
-  
+
       _.beginPath()
       _.rect((mouse.x - viewBox.x) * tileSize + offsetX, (mouse.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
       _.closePath()
       _.fill()
       _.stroke()
     }
-  
+
     /* -----------
       DRAW UNITS
     ----------- */
-  
-    units.forEach(unit => drawUnit(_, tileSize, images, unit)) 
-  
+
+    units.forEach(unit => drawUnit(_, tileSize, images, unit))
+
     if (selectedUnitType && mouseTile) {
       drawUnit(_, tileSize, images, {
         type: selectedUnitType,
@@ -101,13 +101,13 @@ function draw(_) {
         id: '0',
       })
     }
-  
+
     /* ---------------------------
       DRAW TILE SELECTION SQUARE
     --------------------------- */
-    
+
     const position = selectedPosition || mouse
-    
+
     if (worldMap[position.y] && worldMap[position.y][position.x]) {
       const x = (position.x - viewBox.x) * tileSize + offsetX
       const y = (position.y - viewBox.y) * tileSize + offsetY

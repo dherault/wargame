@@ -24,7 +24,7 @@ export default [
   fourLeafBattle(),
   showOff(),
   simpleBrawl(),
-  random(), 
+  random(),
   aiDecisionMaking1(),
   aiDecisionMaking2(),
   simpleAiAttack(),

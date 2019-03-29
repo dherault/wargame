@@ -3,7 +3,7 @@ function gameOver(state = false, action, globalState, ongoingState) {
     const { buildings, units, turn } = ongoingState
 
     if (turn === 1) return false
-    
+
     const remainingHqTeams = new Set()
 
     buildings.forEach(building => {

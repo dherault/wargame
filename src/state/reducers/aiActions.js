@@ -5,7 +5,7 @@ function aiActions(state = [], action) {
   if (action.type === 'SET_AI_ACTIONS') {
     return action.payload
   }
-  
+
   if (action.type === 'RESET_AI_ACTIONS') {
     return []
   }

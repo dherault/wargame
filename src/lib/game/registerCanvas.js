@@ -72,11 +72,11 @@ function registerCanvas(canvas) {
         const { currentFaction } = store.getState()
         // No click events on computer's turn
         if (currentFaction.type === 'COMPUTER') return
-    
+
         // If left click
         if (e.button === 0) {
           console.log('left click')
-    
+
           const { booleans, mouse, buildings, units, selectedUnitId, selectedPosition } = store.getState()
 
           // No left click if a unit is moving
@@ -84,33 +84,33 @@ function registerCanvas(canvas) {
 
           const clickedUnit = units.find(unit => samePosition(unit.position, mouse))
           const clickedBuilding = buildings.find(building => samePosition(building.position, mouse))
-          
+
           if (selectedUnitId) {
-            
+
             const selectedUnit = findById(units, selectedUnitId)
-    
+
             // If we are waiting for fire selection
             if (booleans.isFireSelection) {
-              
+
               const rangePosition = computeRangePositions(store, selectedUnit)
-    
+
               // If we clicked an ennemy unit in range
               if (clickedUnit && clickedUnit.team !== selectedUnit.team && rangePosition.some(position => samePosition(position, clickedUnit.position))) {
-                
+
                 store.dispatch({
                   type: 'SET_BOOLEAN',
                   payload: {
                     isFireSelection: false,
                   },
                 })
-      
+
                 // Must be after isFireSelection: false
                 store.dispatch({
                   type: 'DESELECT_UNIT_ID',
                 })
 
                 const damages = computeFireDamage(store, selectedUnitId, clickedUnit.id)
-    
+
                 store.dispatch({
                   type: 'FIRE',
                   payload: {
@@ -119,7 +119,7 @@ function registerCanvas(canvas) {
                     damages,
                   },
                 })
-                
+
                 if (selectedUnit.life > damages[1]) {
                   store.dispatch({
                     type: 'PLAY_UNIT',
@@ -128,28 +128,28 @@ function registerCanvas(canvas) {
                     },
                   })
                 }
-      
+
                 return
               }
-      
+
               // If we did not click an ennemy in range
               cancelFireSelection()
-    
+
               return
             }
-    
+
             // If we re-click on the unit we selected
             if (clickedUnit && clickedUnit.id === selectedUnitId) {
               return openUnitMenu()
             }
-    
+
             const possibleMovementPositions = computeMovementPositions(store, selectedUnit)
-            
+
             // If we click on a possible movement position
             if (possibleMovementPositions.some(position => samePosition(position, mouse))) {
               return openUnitMenu()
             }
-    
+
             if (booleans.isUnitMenuOpened) {
               store.dispatch({
                 type: 'SET_BOOLEAN',
@@ -158,7 +158,7 @@ function registerCanvas(canvas) {
                 },
               })
             }
-    
+
             if (booleans.isBuildingMenuOpened) {
               store.dispatch({
                 type: 'SET_BOOLEAN',
@@ -167,11 +167,11 @@ function registerCanvas(canvas) {
                 },
               })
             }
-          
+
             if (selectedPosition) {
               store.dispatch({ type: 'DESELECT_POSITION' })
             }
-    
+
             if (booleans.isFireSelection) {
               store.dispatch({
                 type: 'SET_BOOLEAN',
@@ -180,21 +180,21 @@ function registerCanvas(canvas) {
                 },
               })
             }
-            
+
             // Must be after CANCEL_FIRE_SELECTION
             store.dispatch({ type: 'DESELECT_UNIT_ID' })
-    
+
             return
           }
-    
+
           // If no unit is selected and we click a playable unit
           if (clickedUnit && clickedUnit.factionId === currentFaction.id && !clickedUnit.played) {
-            
+
             store.dispatch({
               type: 'SELECT_UNIT_ID',
               payload: clickedUnit.id,
             })
-    
+
             if (booleans.isBuildingMenuOpened) {
               store.dispatch({
                 type: 'SET_BOOLEAN',
@@ -203,35 +203,35 @@ function registerCanvas(canvas) {
                 },
               })
             }
-    
+
             if (selectedPosition) {
               store.dispatch({
                 type: 'DESELECT_POSITION',
               })
             }
-            
+
             return
           }
-    
+
           // If we click on a creator building without a unit on it
           if (
             !clickedUnit
-            && clickedBuilding 
-            && clickedBuilding.factionId === currentFaction.id 
+            && clickedBuilding
+            && clickedBuilding.factionId === currentFaction.id
             && gameConfiguration.creationBuildingTypes.includes(clickedBuilding.type)
           ) {
             selectMousePosition()
-    
+
             store.dispatch({
               type: 'SET_BOOLEAN',
               payload: {
                 isBuildingMenuOpened: true,
               },
             })
-    
+
             return
           }
-    
+
           if (booleans.isBuildingMenuOpened) {
             store.dispatch({
               type: 'SET_BOOLEAN',
@@ -240,19 +240,19 @@ function registerCanvas(canvas) {
               },
             })
           }
-    
+
           if (selectedPosition) {
-            store.dispatch({ 
+            store.dispatch({
               type: 'DESELECT_POSITION',
             })
           }
         }
-    
+
         // If right click
         else if (e.button === 2) {
           console.log('right click')
           const { booleans, selectedUnitId } = store.getState()
-    
+
           store.dispatch({
             type: 'SET_BOOLEAN',
             payload: {
@@ -290,7 +290,7 @@ function registerCanvas(canvas) {
       ------------- */
 
       ['contextmenu', eventHandlers.contextmenu(canvas)],
-    ], 
+    ],
     registerWorldHotKeys
   )
 }

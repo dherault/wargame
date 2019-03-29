@@ -17,7 +17,7 @@ import './index.css'
 class GameScene extends Component {
 
   state = {
-    menuOpened: false,
+    inGameMenuOpened: false,
   }
 
   componentDidMount() {
@@ -32,11 +32,11 @@ class GameScene extends Component {
     window.addEventListener('resize', this.resizeCanvasListener)
 
     this.resizeCanvas(canvas)
-    
+
     /* Register canvas and draw */
 
     const unregisterCanvas = registerCanvas(canvas)
-    
+
     /* Reset view box and resume game */
 
     dispatch({ type: 'RESET_VIEW_BOX' })
@@ -46,9 +46,9 @@ class GameScene extends Component {
 
     const unregisterCtrlQ = hotkeys(document.documentElement, 'ctrl+q', e => {
       e.preventDefault()
-      
+
       const { isDevPanelOpened, dispatch } = this.props
-      
+
       dispatch({
         type: 'SET_BOOLEAN',
         payload: {
@@ -58,7 +58,7 @@ class GameScene extends Component {
     })
 
     const unregisterEscape = hotkeys(document.documentElement, 'escape', () => {
-      this.setState(state => ({ menuOpened: !state.menuOpened }))
+      this.setState(state => ({ inGameMenuOpened: !state.inGameMenuOpened }))
     })
 
     /* create unregister functions */
@@ -80,9 +80,15 @@ class GameScene extends Component {
     canvas.height = window.innerHeight
   }
 
+  handleCloseInGameMenu = () => {
+    this.setState({ inGameMenuOpened: false })
+
+    window.canvas.focus()
+  }
+
   render() {
     const { gameOver, isDevPanelOpened } = this.props
-    const { menuOpened } = this.state
+    const { inGameMenuOpened } = this.state
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
     return (
@@ -92,11 +98,11 @@ class GameScene extends Component {
           className="GameScene-canvas no-select"
           tabIndex={0}
         />
-        <button 
-          type="button" 
+        <button
+          type="button"
           className="GameScene-menu-button"
-          onClick={() => this.setState(state => ({ menuOpened: !state.menuOpened }))}
-        > 
+          onClick={() => this.setState(state => ({ inGameMenuOpened: !state.inGameMenuOpened }))}
+        >
           Menu
         </button>
         <BuildingMenu />
@@ -106,7 +112,7 @@ class GameScene extends Component {
         <UnitMenu />
         {isDevPanelOpened && <DevPanel />}
         {gameOver && <GameOverModal />}
-        {menuOpened && <InGameMenuModal resume={() => this.setState({ menuOpened: false })} />}
+        {inGameMenuOpened && <InGameMenuModal resume={this.handleCloseInGameMenu} />}
       </div>
     )
   }

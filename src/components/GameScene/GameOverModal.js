@@ -8,7 +8,7 @@ class GameOverModal extends Component {
 
   render() {
     const { dispatch } = this.props
-    
+
     return (
       <div className="GameOverModal absolute">
         <h1>Game over!</h1>

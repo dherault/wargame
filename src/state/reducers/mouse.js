@@ -1,5 +1,5 @@
 /*
-  The mouse's position 
+  The mouse's position
   {
     x
     y

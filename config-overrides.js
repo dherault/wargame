@@ -9,7 +9,7 @@ module.exports = function override(config, env) {
     use: [
       {
         loader: require.resolve('worker-loader'),
-        options: { 
+        options: {
           inline: true,
         },
       },

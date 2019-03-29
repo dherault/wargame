@@ -1,5 +1,5 @@
 function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () => null) {
-  
+
   // A function called once for registering the canvas event listeners
   console.log('registering canvas')
 
@@ -23,7 +23,7 @@ function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () =
   }
 
   console.log('drawing canvas')
-  
+
   requestId = requestAnimationFrame(drawStep)
 
   canvas.focus()

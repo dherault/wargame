@@ -8,7 +8,7 @@ import gameConfiguration from '../../lib/gameConfiguration'
 function moneyByFaction(state = {}, action, globalState) {
   switch (action.type) {
 
-    case 'SET_MONEY_BY_FACTION': 
+    case 'SET_MONEY_BY_FACTION':
       return action.payload
 
     case 'CREATE_UNIT': {

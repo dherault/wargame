@@ -10,7 +10,7 @@ const { viewBoxIntervalPeriod, viewBoxIncrements } = gameConfiguration
 // By firing actions that moves it a bit
 function resizeViewBox() {
   clearInterval(interval)
-  
+
   interval = setInterval(() => {
     const { width, goalWidth, diffGoalWidth, x, goalX, diffGoalX, y, goalY, diffGoalY } = store.getState().viewBox
 
@@ -38,7 +38,7 @@ function resizeViewBox() {
     if (yReached) {
       nextY = goalY
     }
-    
+
     if (widthReached && xReached && yReached) {
       clearInterval(interval)
     }

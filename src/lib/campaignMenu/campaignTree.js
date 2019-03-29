@@ -8,7 +8,7 @@ const mission1 = {
   id: '1',
   getMapDefinition: getMission1MapDefinition,
   position: {
-    x: 0.29, 
+    x: 0.29,
     y: 0.74,
   },
 }

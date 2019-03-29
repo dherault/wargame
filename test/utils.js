@@ -3,7 +3,7 @@ import { assert } from 'chai'
 import { combineArrayItems } from '../src/lib/common/utils'
 
 describe('Utils', () => {
-  
+
   describe('combineArrayItems', () => {
 
     it('should combine no items', () => {

@@ -39,7 +39,7 @@ function computeAttackDamage(store, attacker, defender, defenderPosition) {
   const initialDamage = gameConfiguration.unitsConfiguration[attacker.type].damages[defender.type] || 0
   const lifeModifier = attacker.life / 100
   const terrainModifier = defenderMovementType === 'FLY' ? 1 : 1 - gameConfiguration.terrainConfiguration[defenderTile].defense / 10
-  
+
   return Math.round(initialDamage * lifeModifier * terrainModifier)
 }
 

@@ -14,7 +14,7 @@ function buildings(state = [], action, globalState) {
       const { buildingId, unitId } = action.payload
       const buildingIndex = buildings.findIndex(building => building.id === buildingId)
       const unit = findById(globalState.units, unitId)
-      
+
       const building = buildings[buildingIndex] = Object.assign({}, buildings[buildingIndex])
 
       // We start capturing the building
@@ -23,12 +23,12 @@ function buildings(state = [], action, globalState) {
       // If the building is captured
       if (building.capture <= 0) {
         const previousFactionId = building.factionId
-        
+
         building.capture = 100 // Reset its capture level
         building.team = unit.team // Switch sides
         building.factionId = unit.factionId
 
-        // If the building captured was an HQ, 
+        // If the building captured was an HQ,
         // reset all other buildings from the capured faction
         if (building.type === 'HEADQUARTERS') {
           building.type = 'CITY' // Once an HQ, now a simple city
@@ -58,7 +58,7 @@ function buildings(state = [], action, globalState) {
         && gameConfiguration.infanteryUnitTypes.includes(unit.type) // And can capture
       ) {
         const nextState = state.slice()
-        
+
         nextState[buildingIndex] = {
           ...nextState[buildingIndex],
           capture: 100,
@@ -74,14 +74,14 @@ function buildings(state = [], action, globalState) {
       const { unitId } = action.payload
       const unit = findById(globalState.units, unitId)
       const buildingIndex = state.findIndex(building => samePosition(building.position, unit.position))
-      
+
       if (
         gameConfiguration.infanteryUnitTypes.includes(unit.type) // If the unit that died could capture
         && buildingIndex !== -1 // And was on a building
         && state[buildingIndex].capture < 100 // That was under capture
       ) {
         const nextState = state.slice()
-          
+
         nextState[buildingIndex] = {
           ...nextState[buildingIndex],
           capture: 100,

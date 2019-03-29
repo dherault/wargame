@@ -65,8 +65,8 @@ class QuickPlayMenuScene extends Component {
 
   renderMap(mapDefinition, key) {
     return (
-      <div 
-        key={key} 
+      <div
+        key={key}
         onClick={() => this.setState({ selectedMapDefinition: mapDefinition })}
         className="QuickPlayMenuScene-item x5b"
       >
@@ -96,7 +96,7 @@ class QuickPlayMenuScene extends Component {
               }
 
               return (
-                <div 
+                <div
                   key={i}
                   className="QuickPlayMenuScene-tile"
                   style={{ backgroundColor: color }}
@@ -134,9 +134,9 @@ class QuickPlayMenuScene extends Component {
           </div>
         </div>
         {selectedMapDefinition && (
-          <NewGameSelector 
+          <NewGameSelector
             name={selectedMapDefinition.name}
-            factions={selectedMapDefinition.factions} 
+            factions={selectedMapDefinition.factions}
             updateFactions={this.updateSelectedMapDefinitionFactions}
             isFogOfWar={isFogOfWar}
             handleIsFogOfWarChange={isFogOfWar => this.setState({ isFogOfWar })}

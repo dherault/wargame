@@ -1,7 +1,7 @@
 function duel() {
-  return {  
-    worldMap: [  
-      [  
+  return {
+    worldMap: [
+      [
         'HEADQUARTERS',
         'PLAIN',
         'CITY',
@@ -13,7 +13,7 @@ function duel() {
         'MOUNTAIN',
         'MOUNTAIN',
       ],
-      [  
+      [
         'PLAIN',
         'BASE',
         'ROAD',
@@ -25,7 +25,7 @@ function duel() {
         'RIVER',
         'MOUNTAIN',
       ],
-      [  
+      [
         'CITY',
         'ROAD',
         'ROAD',
@@ -37,7 +37,7 @@ function duel() {
         'RIVER',
         'RIVER',
       ],
-      [  
+      [
         'PLAIN',
         'PLAIN',
         'ROAD',
@@ -49,7 +49,7 @@ function duel() {
         'PLAIN',
         'PLAIN',
       ],
-      [  
+      [
         'PLAIN',
         'PLAIN',
         'ROAD',
@@ -61,7 +61,7 @@ function duel() {
         'PLAIN',
         'PLAIN',
       ],
-      [  
+      [
         'PLAIN',
         'PLAIN',
         'PLAIN',
@@ -73,7 +73,7 @@ function duel() {
         'PLAIN',
         'PLAIN',
       ],
-      [  
+      [
         'PLAIN',
         'PLAIN',
         'FOREST',
@@ -85,7 +85,7 @@ function duel() {
         'PLAIN',
         'PLAIN',
       ],
-      [  
+      [
         'RIVER',
         'RIVER',
         'FOREST',
@@ -97,7 +97,7 @@ function duel() {
         'ROAD',
         'CITY',
       ],
-      [  
+      [
         'MOUNTAIN',
         'RIVER',
         'RIVER',
@@ -109,7 +109,7 @@ function duel() {
         'BASE',
         'PLAIN',
       ],
-      [  
+      [
         'MOUNTAIN',
         'MOUNTAIN',
         'RIVER',
@@ -122,117 +122,117 @@ function duel() {
         'HEADQUARTERS',
       ],
     ],
-    factions: [  
-      {  
+    factions: [
+      {
         id: 'BLUE',
         type: 'COMPUTER',
         team: 1,
       },
-      {  
+      {
         id: 'RED',
         type: 'HUMAN',
         team: 2,
       },
     ],
-    buildings: [  
-      {  
+    buildings: [
+      {
         type: 'HEADQUARTERS',
         factionId: 'BLUE',
-        position: {  
+        position: {
           x: 0,
           y: 0,
         },
       },
-      {  
+      {
         type: 'HEADQUARTERS',
         factionId: 'RED',
-        position: {  
+        position: {
           x: 9,
           y: 9,
         },
       },
-      {  
+      {
         type: 'BASE',
         factionId: 'RED',
-        position: {  
+        position: {
           x: 8,
           y: 8,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: 'RED',
-        position: {  
+        position: {
           x: 9,
           y: 7,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: 'RED',
-        position: {  
+        position: {
           x: 7,
           y: 9,
         },
       },
-      {  
+      {
         type: 'BASE',
         factionId: 'BLUE',
-        position: {  
+        position: {
           x: 1,
           y: 1,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: 'BLUE',
-        position: {  
+        position: {
           x: 2,
           y: 0,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: 'BLUE',
-        position: {  
+        position: {
           x: 0,
           y: 2,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: null,
-        position: {  
+        position: {
           x: 5,
           y: 4,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: null,
-        position: {  
+        position: {
           x: 4,
           y: 5,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: null,
-        position: {  
+        position: {
           x: 3,
           y: 3,
         },
       },
-      {  
+      {
         type: 'CITY',
         factionId: null,
-        position: {  
+        position: {
           x: 6,
           y: 6,
         },
       },
     ],
-    units: [  
+    units: [
     ],
     name: 'Duel',
     description: 'A duel',

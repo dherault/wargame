@@ -84,7 +84,7 @@ class Heap {
 
     this.hasData[data] = false
 
-    // If the removed element was the last element 
+    // If the removed element was the last element
     // the heap is still a heap
     if (index === this.size + 1) return
 

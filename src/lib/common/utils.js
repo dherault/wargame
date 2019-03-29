@@ -55,7 +55,7 @@ export function unhashPositionAndDistance(string) {
 
 export function throttle(fn, delay) {
   let timeoutId
-  
+
   return () => {
     clearTimeout(timeoutId)
 
@@ -119,7 +119,7 @@ export function sliceRandom(array, n) {
 
 export function round(x, decimal) {
   const pow = 10 ** decimal
-  
+
   return Math.round(x * pow) / pow
 }
 

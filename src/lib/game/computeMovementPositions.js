@@ -6,7 +6,7 @@ import { samePosition, hash, unhash } from '../common/utils'
 function computeMovementPositions(store, unit) {
   const { units } = store.getState()
   const { movement } = gameConfiguration.unitsConfiguration[unit.type]
-  
+
   const getSuccessors = getSuccessorsFactory(store, unit)
 
   const positions = [unit.position]
@@ -53,35 +53,35 @@ export function getSuccessorsFactory(store, unit) {
   const { terrainConfiguration } = gameConfiguration
   const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
   const ennemyUnits = units.filter(u => u.team !== unit.team)
-  
+
   // Check for a given position if the tile exists
   // If yes, puts it in successors with its updated cost
   const checkSuccessor = (position, cost, successors) => {
     const tile = worldMap[position.y] && worldMap[position.y][position.x]
 
     if (tile) {
-      successors.push({ 
-        position, 
-        cost: cost + terrainConfiguration[tile].movementCost[movementType], 
+      successors.push({
+        position,
+        cost: cost + terrainConfiguration[tile].movementCost[movementType],
       })
     }
   }
-  
+
   // Get adjacent tiles position and cost for a given unit movement type
   return function getSuccessors(position, cost) {
     // Enemy unit block passage, friendly ones do not
     if (ennemyUnits.some(unit => samePosition(unit.position, position))) {
       return []
     }
-  
+
     const { x, y } = position
     const successors = []
-  
+
     checkSuccessor({ x: x - 1, y }, cost, successors)
     checkSuccessor({ x: x + 1, y }, cost, successors)
     checkSuccessor({ x, y: y - 1 }, cost, successors)
     checkSuccessor({ x, y: y + 1 }, cost, successors)
-  
+
     return successors
   }
 }

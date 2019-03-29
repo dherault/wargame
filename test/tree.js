@@ -3,7 +3,7 @@ import { assert } from 'chai'
 import Tree from '../src/lib/common/Tree'
 
 describe('Tree', () => {
-  
+
   it('should create an tree', () => {
 
     let error

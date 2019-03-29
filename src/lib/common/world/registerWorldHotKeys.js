@@ -24,9 +24,9 @@ function registerWorldHotKeys(canvas) {
 
       if (goalY === viewBox.goalY) return
 
-      store.dispatch({ 
-        type: 'RESIZE_VIEW_BOX', 
-        payload: { 
+      store.dispatch({
+        type: 'RESIZE_VIEW_BOX',
+        payload: {
           goalY,
           diffGoalY: goalY - viewBox.y,
         },
@@ -43,9 +43,9 @@ function registerWorldHotKeys(canvas) {
 
       if (goalY === viewBox.goalY) return
 
-      store.dispatch({ 
-        type: 'RESIZE_VIEW_BOX', 
-        payload: { 
+      store.dispatch({
+        type: 'RESIZE_VIEW_BOX',
+        payload: {
           goalY,
           diffGoalY: goalY - viewBox.y,
         },
@@ -62,9 +62,9 @@ function registerWorldHotKeys(canvas) {
 
       if (goalX === viewBox.goalX) return
 
-      store.dispatch({ 
-        type: 'RESIZE_VIEW_BOX', 
-        payload: { 
+      store.dispatch({
+        type: 'RESIZE_VIEW_BOX',
+        payload: {
           goalX,
           diffGoalX: goalX - viewBox.x,
         },
@@ -81,9 +81,9 @@ function registerWorldHotKeys(canvas) {
 
       if (goalX === viewBox.goalX) return
 
-      store.dispatch({ 
-        type: 'RESIZE_VIEW_BOX', 
-        payload: { 
+      store.dispatch({
+        type: 'RESIZE_VIEW_BOX',
+        payload: {
           goalX,
           diffGoalX: goalX - viewBox.x,
         },

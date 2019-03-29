@@ -38,7 +38,7 @@ class EditorPanel extends Component {
 
     for (let i = 0; i < factions.length; i++) {
       const faction = factions[i]
-      
+
       const factionValidation = this.validateFaction(faction.id)
 
       if (factionValidation) validations.push(factionValidation)
@@ -56,7 +56,7 @@ class EditorPanel extends Component {
       return `${gameConfiguration.factionsConfiguration[factionId].name} has no headquarters.`
     }
 
-    const base = buildings.find(building => 
+    const base = buildings.find(building =>
       building.factionId === factionId
       && (
         building.type === 'BASE'
@@ -341,7 +341,7 @@ class EditorPanel extends Component {
 
     if (confirmation) {
       const { dispatch } = this.props
-      
+
       createNewEditor()
       dispatch({ type: 'RESET_VIEW_BOX' })
 
@@ -370,7 +370,7 @@ class EditorPanel extends Component {
 
     return (
       <div className="EditorPanel" ref={this.ref} onMouseEnter={() => this.ref.current.focus()}>
-        
+
         <section>
           <header>
             Dimensions
@@ -404,13 +404,13 @@ class EditorPanel extends Component {
             {Object.entries(gameConfiguration.terrainConfiguration).map(([type, configuration]) => {
 
               if (gameConfiguration.buildingTerrainTypes.includes(type)) return null
-              
+
               return (
-                <div 
-                  key={type} 
+                <div
+                  key={type}
                   className="EditorPanel-terrain-item no-select y8"
-                  style={{ 
-                    border: `1px solid ${selectedTerrainType === type ? selectionColor : 'white'}`, 
+                  style={{
+                    border: `1px solid ${selectedTerrainType === type ? selectionColor : 'white'}`,
                   }}
                   onClick={() => this.handleTerrainTypeSelection(type)}
                 >
@@ -435,17 +435,17 @@ class EditorPanel extends Component {
                   if (!factionId && buildingType === 'HEADQUARTERS') return null
 
                   return (
-                    <div 
-                      key={buildingType} 
-                      style={{ 
+                    <div
+                      key={buildingType}
+                      style={{
                         color: factionConfiguration.color,
                         border: `1px solid ${selectedFactionId === factionId && selectedBuildingType === buildingType ? selectionColor : 'white'}`,
-                      }} 
+                      }}
                       className="EditorPanel-buildings-item"
                       onClick={() => this.handleBuildingSelection(factionId, buildingType)}
                     >
                       {buildingConfiguration.name}
-                    </div> 
+                    </div>
                   )
                 })}
               </div>
@@ -464,17 +464,17 @@ class EditorPanel extends Component {
                   if (!factionId && unitType === 'HEADQUARTERS') return null
 
                   return (
-                    <div 
-                      key={unitType} 
-                      style={{ 
+                    <div
+                      key={unitType}
+                      style={{
                         color: factionConfiguration.color,
                         border: `1px solid ${selectedFactionId === factionId && selectedUnitType === unitType ? selectionColor : 'white'}`,
-                      }} 
+                      }}
                       className="EditorPanel-units-item"
                       onClick={() => this.handleUnitSelection(factionId, unitType)}
                     >
                       {unitConfiguration.name}
-                    </div> 
+                    </div>
                   )
                 })}
               </div>
@@ -505,18 +505,18 @@ class EditorPanel extends Component {
           </header>
           <div className="EditorPanel-save">
             <div>
-              <input 
-                type="text" 
-                value={mapDefinitionName} 
-                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_NAME', payload: e.target.value })} 
+              <input
+                type="text"
+                value={mapDefinitionName}
+                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_NAME', payload: e.target.value })}
                 placeholder="name"
               />
             </div>
             <div>
-              <textarea 
+              <textarea
                 className="EditorPanel-save-textarea"
-                value={mapDefinitionDescription} 
-                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_DESCRIPTION', payload: e.target.value })} 
+                value={mapDefinitionDescription}
+                onChange={e => dispatch({ type: 'SET_MAP_DEFINITION_DESCRIPTION', payload: e.target.value })}
                 placeholder="description"
               />
             </div>

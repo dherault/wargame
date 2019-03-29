@@ -26,8 +26,8 @@ class DevPanel extends Component {
     const hoveredUnit = units.find(unit => samePosition(unit.position, mouse))
     const scorePerFaction = computeWorldStateScore(store)
     const scoreEntries = Object.entries(scorePerFaction)
-    
-    return ( 
+
+    return (
       <div className="DevPanel absolute">
         {booleans.isAiComputing && (
           <div>Ai is computing...</div>

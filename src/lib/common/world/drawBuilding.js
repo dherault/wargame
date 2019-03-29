@@ -4,7 +4,7 @@ import PolarPoint from '../PolarPoint'
 
 function drawBuilding(_, tileSize, building) {
   const { viewBox } = store.getState()
-  const x = building.position.x - viewBox.x 
+  const x = building.position.x - viewBox.x
   const y = building.position.y - viewBox.y
   const { offsetX, offsetY } = viewBox
   const factionConfiguration = gameConfiguration.factionsConfiguration[building.factionId]
@@ -37,8 +37,8 @@ function drawBuilding(_, tileSize, building) {
       _.fill()
 
       break
-    
-    case 'PORT': 
+
+    case 'PORT':
       _.fillStyle = secondaryColor
       _.fillRect((x + 0.3) * tileSize + offsetX, (y + 0.3) * tileSize + offsetY, 0.4 * tileSize, 0.4 * tileSize)
       break
@@ -53,7 +53,7 @@ function drawBuilding(_, tileSize, building) {
       _.fill()
 
       break
-    
+
     default:
       break
   }

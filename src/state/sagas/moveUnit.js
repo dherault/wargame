@@ -31,7 +31,7 @@ function* moveUnit(action) {
 
   const interval = setInterval(() => {
     offset = round(offset + gameConfiguration.unitMovementIncrement, 2)
-    
+
     const nextPosition = path[0]
     const unitPosition = {
       x: currentPosition.x + (nextPosition.x - currentPosition.x) * offset,
@@ -49,7 +49,7 @@ function* moveUnit(action) {
     if (samePosition(unitPosition, nextPosition)) {
       currentPosition = path.shift()
       offset = 0
-      
+
       if (!path.length) {
         clearInterval(interval)
         complete()

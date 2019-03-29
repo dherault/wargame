@@ -10,9 +10,9 @@ function zoom(delta) {
   const goalX = boundViewBoxX((mouse.x - goalWidth / viewBox.goalWidth * (mouse.x - viewBox.goalX)), goalWidth)
   const goalY = boundViewBoxY((mouse.y - goalWidth / viewBox.goalWidth * (mouse.y - viewBox.goalY)), goalWidth)
 
-  store.dispatch({ 
-    type: 'RESIZE_VIEW_BOX', 
-    payload: { 
+  store.dispatch({
+    type: 'RESIZE_VIEW_BOX',
+    payload: {
       goalWidth,
       goalX,
       goalY,

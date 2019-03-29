@@ -34,7 +34,7 @@ function updateFactions() {
 
   let i = 0
 
-  factionIds.forEach(factionId => nextFactions.push({ 
+  factionIds.forEach(factionId => nextFactions.push({
     id: factionId,
     type: factionId === 'RED' ? 'HUMAN' : 'COMPUTER',
     team: ++i,
@@ -100,10 +100,10 @@ function registerCanvas(canvas) {
 
             const nextBuildings = buildings.slice()
 
-            nextBuildings[existingBuildingIndex] = { 
-              type: selectedBuildingType, 
-              factionId: selectedFactionId, 
-              position: mouse, 
+            nextBuildings[existingBuildingIndex] = {
+              type: selectedBuildingType,
+              factionId: selectedFactionId,
+              position: mouse,
             }
 
             store.dispatch({
@@ -119,13 +119,13 @@ function registerCanvas(canvas) {
 
             if (movementCost !== Infinity) {
               let existingUnitIndex = units.findIndex(unit => samePosition(unit.position, mouse))
-  
+
               if (existingUnitIndex === -1) {
                 existingUnitIndex = units.length
               }
-  
+
               const nextUnits = units.slice()
-  
+
               nextUnits[existingUnitIndex] = {
                 id: Math.random().toString().slice(2), // TODO: remove id
                 type: selectedUnitType,
@@ -133,12 +133,12 @@ function registerCanvas(canvas) {
                 position: mouse,
                 life: 100,
               }
-  
+
               store.dispatch({
                 type: 'SET_UNITS',
                 payload: nextUnits,
               })
-  
+
               updateFactions()
             }
           }
@@ -179,19 +179,19 @@ function registerCanvas(canvas) {
               type: 'DESELECT_TERRAIN_TYPE',
             })
           }
-      
+
           if (selectedBuildingType) {
             store.dispatch({
               type: 'DESELECT_BUILDING_TYPE',
             })
           }
-      
+
           if (selectedUnitType) {
             store.dispatch({
               type: 'DESELECT_UNIT_TYPE',
             })
           }
-      
+
           if (booleans.isDeletingUnits) {
             store.dispatch({
               type: 'SET_BOOLEAN',
@@ -222,9 +222,9 @@ function registerCanvas(canvas) {
         const { booleans, mouse, selectedTerrainType, worldMap } = store.getState()
 
         if (
-          booleans.isLeftButtonDown 
-          && selectedTerrainType 
-          && worldMap[mouse.y] 
+          booleans.isLeftButtonDown
+          && selectedTerrainType
+          && worldMap[mouse.y]
           && worldMap[mouse.y][mouse.x] !== selectedTerrainType
         ) {
           updateWorldMapWithTerrain(selectedTerrainType)
@@ -240,7 +240,7 @@ function registerCanvas(canvas) {
       ------------- */
 
       ['contextmenu', eventHandlers.contextmenu(canvas)],
-    ], 
+    ],
     registerWorldHotKeys
   )
 }

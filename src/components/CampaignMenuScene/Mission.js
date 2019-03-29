@@ -16,7 +16,7 @@ class Mission extends Component {
     const { dispatch } = this.props
 
     createNewGame(prepareMap(mapDefinition))
-    
+
     dispatch(push('/game'))
   }
 
@@ -55,17 +55,17 @@ class Mission extends Component {
     const { mission, active, selected, onClick } = this.props
 
     return (
-      <div 
-        className="Mission x5" 
-        style={{ 
+      <div
+        className="Mission x5"
+        style={{
           width: missionSize,
           height: missionSize,
           top: `calc(${mission.position.y * 100}% - ${missionSize / 2}px)`,
           left: `calc(${mission.position.x * 100}% - ${missionSize / 2}px)`,
         }}
       >
-        <img 
-          src={gameConfiguration.imageSources.campaignMenuSwords} 
+        <img
+          src={gameConfiguration.imageSources.campaignMenuSwords}
           className={`Mission-swords ${active ? 'Mission-swords_active' : ''}`}
           onClick={onClick}
           alt=""

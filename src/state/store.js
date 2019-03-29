@@ -41,7 +41,7 @@ import viewBoxSaga from './sagas/viewBox'
 // See createReducer
 const reducer = createReducer({
   aiActions,
-  booleans, 
+  booleans,
   buildings, // must be before units
   factions,
   completedCampaignMissionIds,

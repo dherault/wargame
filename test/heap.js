@@ -3,7 +3,7 @@ import { assert } from 'chai'
 import Heap from '../src/lib/common/Heap'
 
 describe('Heap', () => {
-  
+
   it('should create an heap', () => {
 
     let error

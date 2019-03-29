@@ -37,15 +37,15 @@ class MissionEdge extends Component {
     const theta2 = leftMost === pp2 ? Math.PI : 0
 
     return (
-      <div 
+      <div
         className="MissionEdge"
         style={{
           top: leftMost.y,
           left: leftMost.x,
         }}
       >
-        <div 
-          className="MissionEdge-dashes" 
+        <div
+          className="MissionEdge-dashes"
           style={{
             width: distance,
             transform: `translate(0, -3px) rotate(${theta1 + theta2}rad)`,
