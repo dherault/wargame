@@ -12,6 +12,28 @@ const missionSize = 32 * 1.5
 
 class Mission extends Component {
 
+  ref = React.createRef()
+
+  state = {
+    toggled: false,
+  }
+
+  componentDidMount() {
+    this.clickListener = e => {
+      const { toggled } = this.state
+
+      if (toggled && !this.ref.current.contains(e.target)) {
+        this.setState({ toggled: false })
+      }
+    }
+
+    document.addEventListener('click', this.clickListener)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.clickListener)
+  }
+
   handlePlayClick(mapDefinition) {
     const { dispatch } = this.props
 
@@ -21,14 +43,14 @@ class Mission extends Component {
   }
 
   handleSkipClick = () => {
-    const { mission, onClick, dispatch } = this.props
+    const { mission, dispatch } = this.props
 
     dispatch({
       type: 'COMPLETE_CAMPAIGN_MISSION',
       payload: mission.id,
     })
 
-    onClick()
+    this.setState({ toggled: false })
   }
 
   renderMissionBox() {
@@ -52,7 +74,8 @@ class Mission extends Component {
   }
 
   render() {
-    const { mission, active, selected, onClick } = this.props
+    const { mission, active } = this.props
+    const { toggled } = this.state
 
     return (
       <div
@@ -63,14 +86,15 @@ class Mission extends Component {
           top: `calc(${mission.position.y * 100}% - ${missionSize / 2}px)`,
           left: `calc(${mission.position.x * 100}% - ${missionSize / 2}px)`,
         }}
+        ref={this.ref}
       >
         <img
           src={gameConfiguration.imageSources.campaignMenuSwords}
           className={`Mission-swords ${active ? 'Mission-swords_active' : ''}`}
-          onClick={onClick}
+          onClick={() => this.setState(state => ({ toggled: !state.toggled }))}
           alt=""
         />
-        {selected && this.renderMissionBox()}
+        {toggled && this.renderMissionBox()}
       </div>
     )
   }

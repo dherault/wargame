@@ -12,17 +12,8 @@ import MissionEdge from './MissionEdge'
 
 class CampaignMenuScene extends Component {
 
-  state = {
-    selectedMissionId: null,
-  }
-
-  handleContainerClick(e) {
-    console.log(e.target)
-  }
-
   render() {
     const { completedCampaignMissionIds, dispatch } = this.props
-    const { selectedMissionId } = this.state
 
     const missions = []
     const missionEdges = []
@@ -37,8 +28,6 @@ class CampaignMenuScene extends Component {
             key={mission.id}
             mission={mission}
             active={!completedCampaignMissionIds.includes(mission.id)}
-            selected={selectedMissionId === mission.id}
-            onClick={() => this.setState({ selectedMissionId: selectedMissionId === mission.id ? null : mission.id })}
           />
         )
 
@@ -54,7 +43,7 @@ class CampaignMenuScene extends Component {
     })
 
     return (
-      <div className="CampaignMenuScene" onClick={this.handleContainerClick}>
+      <div className="CampaignMenuScene">
         <div className="CampaignMenuScene-container x5">
           <div className="relative">
             <img
