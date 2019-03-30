@@ -125,7 +125,7 @@ function duel() {
     factions: [
       {
         id: 'BLUE',
-        type: 'COMPUTER',
+        type: 'HUMAN',
         team: 1,
       },
       {

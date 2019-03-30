@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { push } from 'connected-react-router'
 import hotkeys from 'piano-keys'
 import registerCanvas from '../../lib/game/registerCanvas'
 
@@ -23,7 +24,10 @@ class GameScene extends Component {
 
   componentDidMount() {
     console.log('Mounting GameScene', window.innerWidth, window.innerHeight)
-    const { dispatch } = this.props
+    const { worldMap, dispatch } = this.props
+
+    if (!worldMap) return dispatch(push('/'))
+
     const canvas = document.getElementById('canvas-game')
 
     /* Resize canvas */
@@ -73,7 +77,7 @@ class GameScene extends Component {
   }
 
   componentWillUnmount() {
-    this.removeListenersFunctions.forEach(fn => fn())
+    (this.removeListenersFunctions || []).forEach(fn => fn())
   }
 
   resizeCanvas(canvas) {
@@ -123,6 +127,7 @@ class GameScene extends Component {
 const mapStateToProps = s => ({
   gameOver: s.gameOver,
   booleans: s.booleans,
+  worldMap: s.worldMap,
 })
 
 export default connect(mapStateToProps)(GameScene)

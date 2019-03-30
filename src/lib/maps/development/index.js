@@ -1,5 +1,6 @@
 import duel from './duel'
 import fourLeafBattle from './fourLeafBattle'
+import townMayhem from './townMayhem'
 import showOff from './showOff'
 import simpleBrawl from './simpleBrawl'
 import random from './random'
@@ -24,6 +25,7 @@ import mergeTest from './mergeTest'
 export default [
   duel(),
   fourLeafBattle(),
+  townMayhem(),
   showOff(),
   simpleBrawl(),
   random(),
