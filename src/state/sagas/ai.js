@@ -21,7 +21,7 @@ function* spanAiWebWorker(isNextTurn) {
   worker.postMessage({ state, isNextTurn })
 
   worker.onmessage = e => {
-    console.log('setting actions', e.data)
+    console.log('setting actions', e.data, isNextTurn)
     store.dispatch({
       type: 'SET_AI_ACTIONS',
       payload: e.data,
@@ -30,6 +30,7 @@ function* spanAiWebWorker(isNextTurn) {
 }
 
 function* prepareNextTurnAiActions() {
+  console.log('prepareNextTurnAiActions')
   const { currentFaction, factions } = yield select()
 
   let factionIndex = factions.findIndex(faction => faction.id === currentFaction.id)
@@ -52,6 +53,7 @@ function* prepareNextTurnAiActions() {
 }
 
 function* prepareFirstTurnAiActions() {
+  console.log('prepareFirstTurnAiActions')
   const { currentFaction, aiActions } = yield select()
 
   if (currentFaction.type === 'COMPUTER' && aiActions.length === 0) {
@@ -62,16 +64,31 @@ function* prepareFirstTurnAiActions() {
 function* flushAiActions() {
   const { currentFaction, units, booleans: { disableAutoZoom, disableDelayOnComputerActions } } = yield select()
 
+  console.log('flushAiActions')
+  // Stop if not playing
+
+  let pathname = yield select(s => s.router.location.pathname)
+
+  if (pathname !== '/game') return
+
+  console.log('flushAiActions2')
+
+  // Flush only if currentFaction is a COMPUTER type
   if (currentFaction.type !== 'COMPUTER') return
+
+  console.log('flushAiActions3')
 
   yield delay(1) // BAD !!!! To wait for turn saga to set isNewTurnAnimation = true
 
   const isNewTurnAnimation = yield select(s => s.booleans.isNewTurnAnimation)
 
+  console.log('isNewTurnAnimation', isNewTurnAnimation)
   // If isNewTurnAnimation wait for the animation to finish
   if (isNewTurnAnimation) {
     yield take(action => action.type === 'SET_BOOLEAN' && action.payload.isNewTurnAnimation === false)
   }
+
+  console.log('flushAiActions4')
 
   // Wait for aiActions
   let aiActions = yield select(s => s.aiActions)
@@ -82,10 +99,14 @@ function* flushAiActions() {
     aiActions = yield select(s => s.aiActions)
   }
 
-
   let previousActionUnitId
 
   for (let i = 0; i < aiActions.length; i++) {
+    // Stop if not playing
+    pathname = yield select(s => s.router.location.pathname)
+
+    if (pathname !== '/game') return
+
     const action = aiActions[i]
     const { type, payload } = action
     const unitId = payload.attackerId || payload.unitId || null
@@ -180,9 +201,11 @@ function* flushAiActions() {
   }
 }
 
+const endOfNewTurnAnimationSelector = action => action.type === 'SET_BOOLEAN' && action.payload.isNewTurnAnimation === false
+
 function* aiSaga() {
   yield takeLatest('RESUME_GAME', prepareFirstTurnAiActions)
-  yield takeLatest(['PLAY_UNIT', 'CREATE_UNIT', 'BEGIN_PLAYER_TURN'], prepareNextTurnAiActions)
+  yield takeLatest(['PLAY_UNIT', 'CREATE_UNIT', endOfNewTurnAnimationSelector], prepareNextTurnAiActions)
   yield takeLatest(['BEGIN_PLAYER_TURN', 'RESUME_GAME'], flushAiActions)
 }
 

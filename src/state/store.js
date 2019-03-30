@@ -78,7 +78,7 @@ function* rootSaga() {
 function loggerMiddleware() {
   return next => action => {
     if (action.type !== 'UPDATE_MOUSE_POSITION') {
-      // console.log('Action', action.type, action.payload)
+      console.log('Action', action.type, action.payload)
     }
 
     return next(action)

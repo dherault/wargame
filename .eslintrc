@@ -26,6 +26,7 @@
     "no-continue": "off",
     "no-loop-func": "off",
     "no-multi-assign": "off",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
     "no-nested-ternary": "off",
     "no-param-reassign": "off",
     "no-plusplus": "off",

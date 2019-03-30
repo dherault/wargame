@@ -344,12 +344,12 @@ function fourLeafBattle() {
         team: 2,
       },
       {
-        id: 'GREEN',
+        id: 'YELLOW',
         type: 'COMPUTER',
         team: 3,
       },
       {
-        id: 'YELLOW',
+        id: 'GREEN',
         type: 'COMPUTER',
         team: 4,
       },
