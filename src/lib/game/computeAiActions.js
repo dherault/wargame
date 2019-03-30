@@ -204,6 +204,17 @@ function extendStateTree(stateTree, parentStore, consideredFaction, maxDepth, de
 
 function computePossibleTargets(store, unit, nTargets) {
   const { units, buildings } = store.getState()
+
+  // Special case: the unit is capturing a building and healthy
+  if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && unit.life === 100) {
+    const buildingOnUnitPosition = buildings.find(b => samePosition(unit.position, b.position))
+
+    // It will continue to capture
+    if (buildingOnUnitPosition.team !== unit.team) {
+      return [[['CAPTURE', buildingOnUnitPosition.id, unit.position]]]
+    }
+  }
+
   const { damages, movementType } = gameConfiguration.unitsConfiguration[unit.type]
   const getSuccessors = getSuccessorsFactory(store, unit)
 
@@ -364,8 +375,8 @@ function addCreateUnitActions(store) {
   const ennemyHeadquarters = buildings.filter(building => building.team !== currentFaction.team && building.type === 'HEADQUARTERS')
   const ennemyUnits = units.filter(unit => unit.team !== currentFaction.team)
 
-  // 15% chance global saving
-  if (turn !== 1 && chance(0.15)) return
+  // 12% chance global saving
+  if (turn !== 1 && chance(0.12)) return
 
   buildings
     .filter(building =>
@@ -389,7 +400,11 @@ function addCreateUnitActions(store) {
       const { creatableUnitMovementTypes } = gameConfiguration.buildingsConfiguration[building.type]
       const money = store.getState().moneyByFaction[currentFaction.id]
 
-      if (turn === 1 && money >= gameConfiguration.unitsConfiguration.INFANTERY.cost) {
+      if (
+        turn === 1
+        && creatableUnitMovementTypes.includes(gameConfiguration.unitsConfiguration.INFANTERY.movementType)
+        && money >= gameConfiguration.unitsConfiguration.INFANTERY.cost
+      ) {
         const action = {
           type: 'CREATE_UNIT',
           payload: {
@@ -445,6 +460,5 @@ function getAveragePower(damages, ennemyUnits) {
 
   return power / ennemyUnits.length
 }
-
 
 export default computeAiActions
