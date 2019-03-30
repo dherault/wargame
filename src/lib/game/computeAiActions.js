@@ -210,7 +210,7 @@ function computePossibleTargets(store, unit, nTargets) {
     const buildingOnUnitPosition = buildings.find(b => samePosition(unit.position, b.position))
 
     // It will continue to capture
-    if (buildingOnUnitPosition.team !== unit.team) {
+    if (buildingOnUnitPosition && buildingOnUnitPosition.team !== unit.team) {
       return [[['CAPTURE', buildingOnUnitPosition.id, unit.position]]]
     }
   }
