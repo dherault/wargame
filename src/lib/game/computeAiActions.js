@@ -211,7 +211,7 @@ function computePossibleTargets(store, unit, nTargets) {
 
     // It will continue to capture
     if (buildingOnUnitPosition && buildingOnUnitPosition.team !== unit.team) {
-      return [[['CAPTURE', buildingOnUnitPosition.id, unit.position]]]
+      return [['CAPTURE', buildingOnUnitPosition.id, unit.position]]
     }
   }
 
