@@ -10,3 +10,9 @@
 .MainMenuScene-item:hover {
   font-weight: bold;
 }
+
+.MainMenuScene-version {
+  text-align: right;
+  color: lightgray;
+  margin-top: 64px;
+}

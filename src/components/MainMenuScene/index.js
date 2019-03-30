@@ -4,6 +4,8 @@ import { push } from 'connected-react-router'
 
 import './index.css'
 
+import version from '../../version.json'
+
 class MainMenuScene extends Component {
 
   render() {
@@ -28,6 +30,9 @@ class MainMenuScene extends Component {
         </div>
         <div className="MainMenuScene-item" onClick={window.reset}>
           Clear data storage
+        </div>
+        <div className="MainMenuScene-version">
+          Version {version.version}
         </div>
       </div>
     )
