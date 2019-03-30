@@ -3,30 +3,42 @@
   Is the game over
 */
 function gameOver(state = false, action, globalState, ongoingState) {
-  if (['KILL_UNIT', 'CAPTURE', 'SET_UNITS', 'SET_BUILDINGS', 'END_PLAYER_TURN'].includes(action.type)) {
-    const { buildings, units, turn } = ongoingState
+  switch (action.type) {
 
-    if (turn === 1) return false
+    case 'KILL_UNIT':
+    case 'CAPTURE':
+    case 'SET_UNITS':
+    case 'SET_BUILDINGS':
+    case 'END_PLAYER_TURN': {
+      const { buildings, units, turn } = ongoingState
 
-    const remainingHqTeams = new Set()
+      if (turn === 1) return false
 
-    buildings.forEach(building => {
-      if (building.type === 'HEADQUARTERS') {
-        remainingHqTeams.add(building.team)
-      }
-    })
+      const remainingHqTeams = new Set()
 
-    const remainingUnitsTeams = new Set()
+      buildings.forEach(building => {
+        if (building.type === 'HEADQUARTERS') {
+          remainingHqTeams.add(building.team)
+        }
+      })
 
-    units.forEach(unit => {
-      remainingUnitsTeams.add(unit.team)
-    })
+      const remainingUnitsTeams = new Set()
 
-    // gameOver if there is only one team remaining
-    return remainingHqTeams.size <= 1 || remainingUnitsTeams.size <= 1
+      units.forEach(unit => {
+        remainingUnitsTeams.add(unit.team)
+      })
+
+      // gameOver if there is only one team remaining
+      return remainingHqTeams.size <= 1 || remainingUnitsTeams.size <= 1
+    }
+
+    case 'RESET_GAME_OVER': {
+      return false
+    }
+
+    default:
+      return state
   }
-
-  return state
 }
 
 export default gameOver

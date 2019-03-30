@@ -5,6 +5,7 @@ import registerCanvas from '../../lib/game/registerCanvas'
 
 import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
+import NewTurnModal from './NewTurnModal'
 import FireInfo from './FireInfo'
 import GameOverModal from './GameOverModal'
 import InGameMenuModal from './InGameMenuModal'
@@ -87,7 +88,7 @@ class GameScene extends Component {
   }
 
   render() {
-    const { gameOver, isDevPanelOpened } = this.props
+    const { gameOver, booleans: { isDevPanelOpened, isNewTurnAnimation } } = this.props
     const { inGameMenuOpened } = this.state
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
@@ -111,6 +112,7 @@ class GameScene extends Component {
         <TurnInfo />
         <UnitMenu />
         {isDevPanelOpened && <DevPanel />}
+        {isNewTurnAnimation && <NewTurnModal />}
         {gameOver && <GameOverModal />}
         {inGameMenuOpened && <InGameMenuModal resume={this.handleCloseInGameMenu} />}
       </div>
@@ -120,7 +122,7 @@ class GameScene extends Component {
 
 const mapStateToProps = s => ({
   gameOver: s.gameOver,
-  isDevPanelOpened: s.booleans.isDevPanelOpened,
+  booleans: s.booleans,
 })
 
 export default connect(mapStateToProps)(GameScene)

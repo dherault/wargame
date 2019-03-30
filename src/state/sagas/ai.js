@@ -59,10 +59,20 @@ function* prepareFirstTurnAiActions() {
 }
 
 function* flushAiActions() {
-  const { currentFaction, units, booleans: { preventAutoZoom, delayComputerActions } } = yield select()
+  const { currentFaction, units, booleans: { disableAutoZoom, disableDelayOnComputerActions } } = yield select()
 
   if (currentFaction.type !== 'COMPUTER') return
 
+  yield delay(1) // BAD !!!! To wait for turn saga to set isNewTurnAnimation = true
+
+  const isNewTurnAnimation = yield select(s => s.booleans.isNewTurnAnimation)
+
+  // If isNewTurnAnimation wait for the animation to finish
+  if (isNewTurnAnimation) {
+    yield take(action => action.type === 'SET_BOOLEAN' && action.payload.isNewTurnAnimation === false)
+  }
+
+  // Wait for aiActions
   let aiActions = yield select(s => s.aiActions)
 
   if (aiActions.length === 0) {
@@ -70,6 +80,7 @@ function* flushAiActions() {
 
     aiActions = yield select(s => s.aiActions)
   }
+
 
   let previousActionUnitId
 
@@ -85,11 +96,11 @@ function* flushAiActions() {
     if (previousActionUnitId !== unitId) {
       // Next action should move the viewBox
 
-      if (i !== 0 && delayComputerActions) {
+      if (i !== 0 && !disableDelayOnComputerActions) {
         yield delay(1000)
       }
 
-      if (!preventAutoZoom) {
+      if (!disableAutoZoom) {
         let position1
         let position2
 

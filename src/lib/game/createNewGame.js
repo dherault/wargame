@@ -50,6 +50,10 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
   })
 
   store.dispatch({
+    type: 'RESET_GAME_OVER',
+  })
+
+  store.dispatch({
     type: 'RESET_TURN',
   })
 

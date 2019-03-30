@@ -5,6 +5,7 @@
 const initialState = {
   isLeftButtonDown: false,
   isRightButtonDown: false,
+  isNewTurnAnimation: false,
   isUnitMenuOpened: false,
   isBuildingMenuOpened: false,
   isDevPanelOpened: false,
@@ -12,8 +13,9 @@ const initialState = {
   isDeletingUnits: false,
   isFlippingUnits: false,
   isFogOfWar: false,
-  preventAutoZoom: false,
-  delayComputerActions: true,
+  disableAutoZoom: false,
+  disableDelayOnComputerActions: false,
+  disableNewTurnAnimation: false,
 }
 
 function booleans(state = initialState, action) {
