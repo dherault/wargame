@@ -23,8 +23,10 @@ function computeMovementPositions(store, unit) {
     // If cost is larger than possible movement, ignore candidate
     if (cost > movement) continue
 
-    // If no unit is on the position add the position to the results
-    if (!units.some(u => samePosition(u.position, position))) {
+    // If there is no unit on the position, add the position to the results
+    // If there is a mergable unit on the position, add the position to the results
+    const unitOnPosition = units.find(u => samePosition(u.position, position))
+    if (!unitOnPosition || (unitOnPosition.type === unit.type && unit.life < 100 && unitOnPosition.life < 100)) {
       positions.push(position)
     }
 

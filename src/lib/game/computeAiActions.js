@@ -282,17 +282,21 @@ function computePossibleTargets(store, unit, nTargets) {
 }
 
 function transformTargetIntoActions(store, unit, target) {
-  const { buildings } = store.getState()
+  const { buildings, units } = store.getState()
   const [type, targetId, position] = target
 
   const pathToTarget = aStarSearch(store, unit, unit.position, position)
   const movementPositions = computeMovementPositions(store, unit)
 
+  // Find the first position on the path to the target that
   const extremePosition = pathToTarget
     .reverse()
-    .find(position => samePosition(position, unit.position) || movementPositions.some(p => samePosition(p, position)))
-
-  // console.log(target, pathToTarget, extremePosition)
+    .find(position =>
+      // Is either the position of the unit
+      samePosition(position, unit.position)
+      // Or belongs to movementPositions and has no other unit on it
+      || movementPositions.some(p => samePosition(p, position) && !units.some(u => samePosition(u.position, p)))
+    )
 
   const actions = []
   let unitIsDead = false

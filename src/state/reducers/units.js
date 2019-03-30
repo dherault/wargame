@@ -50,11 +50,14 @@ function units(state = [], action, globalState, ongoingState) {
       const { unitId, position } = action.payload
       const unitIndex = units.findIndex(u => u.id === unitId)
 
+      const unit = units[unitIndex]
+      const unitOnPosition = units.find(u => u.id !== unitId && samePosition(u.position, position))
+
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT - unit not found', { unitId, position })
-      if (units.some(u => u.id !== unitId && samePosition(u.position, position))) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
+      if (unitOnPosition && unitOnPosition.type !== unit.type && unit.life >= 100 && unitOnPosition.life >= 100) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
 
       units[unitIndex] = {
-        ...units[unitIndex],
+        ...unit,
         position,
         isMoving: true,
         currentPosition: units[unitIndex].position,
@@ -124,6 +127,24 @@ function units(state = [], action, globalState, ongoingState) {
       const unitIndex = units.findIndex(u => u.id === unitId)
 
       units.splice(unitIndex, 1)
+
+      return units
+    }
+
+    case 'MERGE_UNITS': {
+      const { unitId, mergedUnitId } = action.payload
+      const units = state.slice()
+      const unitIndex = units.findIndex(u => u.id === unitId)
+      const mergedUnitIndex = units.findIndex(u => u.id === mergedUnitId)
+      const unit = units[unitIndex]
+      const [mergedUnit] = units.splice(mergedUnitIndex, 1)
+
+      if (unit.type !== mergedUnit.type) throw new DataError('Units - MERGE_UNITS - Units are not of the same type', { unit, mergedUnit })
+
+      units[unitIndex] = {
+        ...unit,
+        life: Math.min(100, unit.life + mergedUnit.life),
+      }
 
       return units
     }

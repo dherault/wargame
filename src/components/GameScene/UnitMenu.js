@@ -110,6 +110,30 @@ class UnitMenu extends Component {
     })
   }
 
+  capture = () => {
+    const { buildings, selectedPosition, selectedUnitId, dispatch } = this.props
+
+    dispatch({
+      type: 'CAPTURE',
+      payload: {
+        unitId: selectedUnitId,
+        buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
+      },
+    })
+  }
+
+  mergeUnits = mergedUnit => {
+    const { selectedUnitId, dispatch } = this.props
+
+    dispatch({
+      type: 'MERGE_UNITS',
+      payload: {
+        unitId: selectedUnitId,
+        mergedUnitId: mergedUnit.id,
+      },
+    })
+  }
+
   handleFireClick = () => {
     const { dispatch } = this.props
 
@@ -130,7 +154,7 @@ class UnitMenu extends Component {
   }
 
   handleCaptureClick = () => {
-    const { buildings, units, selectedPosition, selectedUnitId, dispatch } = this.props
+    const { units, selectedPosition, selectedUnitId } = this.props
 
     const unit = findById(units, selectedUnitId)
 
@@ -138,27 +162,13 @@ class UnitMenu extends Component {
 
     if (!samePosition(unit.position, selectedPosition)) {
       this.moveUnit(() => {
-        dispatch({
-          type: 'CAPTURE',
-          payload: {
-            buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
-            unitId: selectedUnitId,
-          },
-        })
-
+        this.capture()
         this.playUnit()
         this.deselect()
       })
     }
     else {
-      dispatch({
-        type: 'CAPTURE',
-        payload: {
-          buildingId: buildings.find(building => samePosition(building.position, selectedPosition)).id,
-          unitId: selectedUnitId,
-        },
-      })
-
+      this.capture()
       this.playUnit()
       this.deselect()
     }
@@ -168,6 +178,20 @@ class UnitMenu extends Component {
     this.closeMenu()
     this.moveUnit(() => {
       this.playUnit()
+      this.deselect()
+    })
+  }
+
+  handleDoNothingClick = () => {
+    this.closeMenu()
+    this.playUnit()
+    this.deselect()
+  }
+
+  handleMergeClick = mergedUnit => {
+    this.closeMenu()
+    this.moveUnit(() => {
+      this.mergeUnits(mergedUnit)
       this.deselect()
     })
   }
@@ -185,7 +209,9 @@ class UnitMenu extends Component {
     if (!booleans.isUnitMenuOpened || !selectedUnitId || !selectedPosition) return null
 
     const selectedUnit = findById(units, selectedUnitId)
+    const unitOnSelectedPosition = units.find(u => samePosition(u.position, selectedPosition))
     const rangePositions = computeRangePositions(store, selectedUnit, selectedPosition) // range positions at selected position
+    const selectedUnitOnSelectedPosition = samePosition(selectedPosition, selectedUnit.position)
 
     const { top, left } = this.menuPosition
     const { topDiff, leftDiff } = this.state
@@ -217,9 +243,25 @@ class UnitMenu extends Component {
             Capture
           </div>
         )}
-        {!samePosition(selectedPosition, selectedUnit.position) && (
+        {(!selectedUnitOnSelectedPosition
+          && !unitOnSelectedPosition
+        ) && (
           <div className="UnitMenu-item" onClick={this.handleMoveClick}>
             Move
+          </div>
+        )}
+        {selectedUnitOnSelectedPosition && (
+          <div className="UnitMenu-item" onClick={this.handleDoNothingClick}>
+            Do nothing
+          </div>
+        )}
+        {(unitOnSelectedPosition
+          && unitOnSelectedPosition.type === selectedUnit.type
+          && selectedUnit.life < 100
+          && unitOnSelectedPosition.life < 100
+        ) && (
+          <div className="UnitMenu-item" onClick={() => this.handleMergeClick(unitOnSelectedPosition)}>
+            Merge
           </div>
         )}
         <div className="UnitMenu-item" onClick={this.handleCancelClick}>

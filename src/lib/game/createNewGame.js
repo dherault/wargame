@@ -58,7 +58,7 @@ function createNewGame({ worldMap, buildings, units, factions, name, description
   })
 
   store.dispatch({
-    type: 'DESELECT_UNIT',
+    type: 'DESELECT_UNIT_ID',
   })
 
   store.dispatch({
