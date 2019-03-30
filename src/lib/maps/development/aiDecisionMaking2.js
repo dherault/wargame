@@ -56,7 +56,6 @@ function aiDecisionMaking2() {
           x: 1,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '3873666886677163',
@@ -66,7 +65,6 @@ function aiDecisionMaking2() {
           x: 2,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '7762500392960088',
@@ -76,7 +74,6 @@ function aiDecisionMaking2() {
           x: 1,
           y: 0,
         },
-        life: 100,
       },
     ],
     name: 'AI decision making 2',

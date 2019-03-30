@@ -24,7 +24,7 @@ function buildings(state = [], action, globalState) {
       if (building.capture <= 0) {
         const previousFactionId = building.factionId
 
-        building.capture = 100 // Reset its capture level
+        building.capture = gameConfiguration.maxBuildingCapture // Reset its capture level
         building.team = unit.team // Switch sides
         building.factionId = unit.factionId
 
@@ -61,7 +61,7 @@ function buildings(state = [], action, globalState) {
 
         nextState[buildingIndex] = {
           ...nextState[buildingIndex],
-          capture: 100,
+          capture: gameConfiguration.maxBuildingCapture,
         }
 
         return nextState
@@ -78,13 +78,13 @@ function buildings(state = [], action, globalState) {
       if (
         gameConfiguration.infanteryUnitTypes.includes(unit.type) // If the unit that died could capture
         && buildingIndex !== -1 // And was on a building
-        && state[buildingIndex].capture < 100 // That was under capture
+        && state[buildingIndex].capture < gameConfiguration.maxBuildingCapture // That was under capture
       ) {
         const nextState = state.slice()
 
         nextState[buildingIndex] = {
           ...nextState[buildingIndex],
-          capture: 100,
+          capture: gameConfiguration.maxBuildingCapture,
         }
 
         return nextState

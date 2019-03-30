@@ -1,14 +1,16 @@
 const gameConfiguration = {
-  viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
-  viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
+  maxUnitLife: 100,
+  maxBuildingCapture: 100,
   moneyPerCityPerTurn: 1000,
   unitMovementPeriod: 17,
   unitMovementIncrement: 0.05,
+  infanteryVisionBonusOnMountains: 3,
   buildingTerrainTypes: ['HEADQUARTERS', 'CITY', 'BASE', 'AIRPORT', 'PORT'],
   creationBuildingTypes: ['BASE', 'AIRPORT', 'PORT'],
   infanteryUnitTypes: ['INFANTERY', 'MECH'],
   hideoutTerrainTypes: ['FOREST', 'REEF'],
-  infanteryVisionBonusOnMountains: 3,
+  viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
+  viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
   imageSources: {
     units: '/images/units.png',
     playedUnits: '/images/units_played.png',

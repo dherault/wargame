@@ -121,7 +121,6 @@ function aiDecisionMaking1() {
           x: 5,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '7227288216902121',
@@ -131,7 +130,6 @@ function aiDecisionMaking1() {
           x: 5,
           y: 2,
         },
-        life: 100,
       },
       {
         id: '7615595476520542',
@@ -141,7 +139,6 @@ function aiDecisionMaking1() {
           x: 5,
           y: 3,
         },
-        life: 100,
       },
       {
         id: '24511701443592937',
@@ -151,7 +148,6 @@ function aiDecisionMaking1() {
           x: 0,
           y: 4,
         },
-        life: 100,
       },
       {
         id: '471089865178685',
@@ -161,7 +157,6 @@ function aiDecisionMaking1() {
           x: 0,
           y: 5,
         },
-        life: 100,
       },
       {
         id: '39583613139076745',
@@ -171,7 +166,6 @@ function aiDecisionMaking1() {
           x: 1,
           y: 3,
         },
-        life: 100,
       },
       {
         id: '529692125661696',
@@ -181,7 +175,6 @@ function aiDecisionMaking1() {
           x: 5,
           y: 0,
         },
-        life: 100,
       },
       {
         id: '8128369091319194',
@@ -191,7 +184,6 @@ function aiDecisionMaking1() {
           x: 5,
           y: 4,
         },
-        life: 100,
       },
     ],
     name: 'Ai decision making 1',

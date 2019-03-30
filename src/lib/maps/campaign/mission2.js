@@ -195,7 +195,6 @@ function mission2() {
           x: 2,
           y: 6,
         },
-        life: 100,
       },
       {
         id: '6433551151619363',
@@ -205,7 +204,6 @@ function mission2() {
           x: 2,
           y: 5,
         },
-        life: 100,
       },
       {
         id: '5639279583658974',
@@ -215,7 +213,6 @@ function mission2() {
           x: 1,
           y: 6,
         },
-        life: 100,
       },
       {
         id: '7272773453764632',
@@ -225,7 +222,6 @@ function mission2() {
           x: 3,
           y: 6,
         },
-        life: 100,
       },
       {
         id: '9218914240814986',
@@ -235,7 +231,6 @@ function mission2() {
           x: 7,
           y: 1,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -246,7 +241,6 @@ function mission2() {
           x: 7,
           y: 2,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -257,7 +251,6 @@ function mission2() {
           x: 8,
           y: 1,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -268,7 +261,6 @@ function mission2() {
           x: 9,
           y: 1,
         },
-        life: 100,
         flipped: true,
       },
     ],

@@ -72,7 +72,6 @@ function captureBug() {
           x: 0,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '8542462481479045',
@@ -82,7 +81,6 @@ function captureBug() {
           x: 2,
           y: 1,
         },
-        life: 100,
       },
     ],
     name: 'Capture bug',

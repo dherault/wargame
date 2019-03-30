@@ -5,8 +5,8 @@ import './UnitMenu.css'
 
 import store from '../../state/store'
 import { samePosition, findById } from '../../lib/common/utils'
-import computeRangePositions from '../../lib/game/computeRangePositions'
 import gameConfiguration from '../../lib/gameConfiguration'
+import computeRangePositions from '../../lib/game/computeRangePositions'
 
 class UnitMenu extends Component {
 
@@ -257,8 +257,8 @@ class UnitMenu extends Component {
         )}
         {(unitOnSelectedPosition
           && unitOnSelectedPosition.type === selectedUnit.type
-          && selectedUnit.life < 100
-          && unitOnSelectedPosition.life < 100
+          && selectedUnit.life < gameConfiguration.maxUnitLife
+          && unitOnSelectedPosition.life < gameConfiguration.maxUnitLife
         ) && (
           <div className="UnitMenu-item" onClick={() => this.handleMergeClick(unitOnSelectedPosition)}>
             Merge

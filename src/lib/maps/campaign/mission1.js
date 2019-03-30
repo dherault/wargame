@@ -125,7 +125,6 @@ function mission1() {
           x: 1,
           y: 4,
         },
-        life: 100,
       },
       {
         id: '3022363583221621',
@@ -135,7 +134,6 @@ function mission1() {
           x: 1,
           y: 5,
         },
-        life: 100,
       },
       {
         id: '48240808454914297',
@@ -145,7 +143,6 @@ function mission1() {
           x: 1,
           y: 3,
         },
-        life: 100,
       },
       {
         id: '45044663801700957',
@@ -155,7 +152,6 @@ function mission1() {
           x: 0,
           y: 5,
         },
-        life: 100,
       },
       {
         id: '65491410322846',
@@ -165,7 +161,6 @@ function mission1() {
           x: 8,
           y: 1,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -176,7 +171,6 @@ function mission1() {
           x: 8,
           y: 2,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -187,7 +181,6 @@ function mission1() {
           x: 9,
           y: 1,
         },
-        life: 100,
         flipped: true,
       },
       {

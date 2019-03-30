@@ -39,7 +39,7 @@ function moneyByFaction(state = {}, action, globalState) {
       const unit = findById(units, unitId)
       const mergedUnit = findById(units, mergedUnitId)
 
-      const lifeOverflowRatio = (unit.life + mergedUnit.life - 100) / 100
+      const lifeOverflowRatio = (unit.life + mergedUnit.life - gameConfiguration.maxUnitLife) / gameConfiguration.maxUnitLife
 
       if (lifeOverflowRatio <= 0) return state
 

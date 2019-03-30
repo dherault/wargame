@@ -12,17 +12,17 @@ function computeWorldStateScore(store) {
   factions.forEach(faction => scoreByFaction[faction.id] = 0)
   units.forEach(unit => scoreByFaction[unit.factionId] += computeUnitScore(unit))
   buildings.forEach(building => {
-    if (building.factionId !== null && building.capture === 100) {
+    if (building.factionId !== null && building.capture === gameConfiguration.maxBuildingCapture) {
       scoreByFaction[building.factionId] += 1000
     }
     if (building.type === 'HEADQUARTERS') {
       hqCaptureByFaction[building.factionId] = building.capture
     }
-    else if (building.capture < 100) {
+    else if (building.capture < gameConfiguration.maxBuildingCapture) {
       const capturingUnit = units.find(u => samePosition(u.position, building.position))
 
       if (capturingUnit) {
-        scoreByFaction[capturingUnit.factionId] += (100 - building.capture) * 10
+        scoreByFaction[capturingUnit.factionId] += (gameConfiguration.maxBuildingCapture - building.capture) * 10
       }
     }
   })

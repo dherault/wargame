@@ -362,7 +362,6 @@ function showOff() {
           x: 2,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'MECH',
@@ -371,7 +370,6 @@ function showOff() {
           x: 1,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'RECON',
@@ -380,7 +378,6 @@ function showOff() {
           x: 3,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'TANK',
@@ -389,7 +386,6 @@ function showOff() {
           x: 2,
           y: 3,
         },
-        life: 100,
       },
       {
         type: 'HEAVY_TANK',
@@ -398,7 +394,6 @@ function showOff() {
           x: 1,
           y: 4,
         },
-        life: 100,
       },
       {
         type: 'NEO_TANK',
@@ -407,17 +402,15 @@ function showOff() {
           x: 0,
           y: 3,
         },
-        life: 100,
       },
-      {
-        type: 'ARMORED_PERSONNEL_CARRIER',
-        factionId: 'BLUE',
-        position: {
-          x: 0,
-          y: 4,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'ARMORED_PERSONNEL_CARRIER',
+      //   factionId: 'BLUE',
+      //   position: {
+      //     x: 0,
+      //     y: 4,
+      //   },
+      // },
       {
         type: 'ARTILLERY',
         factionId: 'BLUE',
@@ -425,7 +418,6 @@ function showOff() {
           x: 2,
           y: 4,
         },
-        life: 100,
       },
       {
         type: 'ROCKET_LAUNCHER',
@@ -434,7 +426,6 @@ function showOff() {
           x: 3,
           y: 3,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_TANK',
@@ -443,7 +434,6 @@ function showOff() {
           x: 4,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_MISSILE_LAUNCHER',
@@ -452,7 +442,6 @@ function showOff() {
           x: 4,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'FIGHTER',
@@ -461,7 +450,6 @@ function showOff() {
           x: 4,
           y: 0,
         },
-        life: 100,
       },
       {
         type: 'BOMBER',
@@ -470,7 +458,6 @@ function showOff() {
           x: 0,
           y: 5,
         },
-        life: 100,
       },
       {
         type: 'BATTLE_HELICOPTER',
@@ -479,17 +466,15 @@ function showOff() {
           x: 1,
           y: 5,
         },
-        life: 100,
       },
-      {
-        type: 'TRANSPORT_HELICOPTER',
-        factionId: 'BLUE',
-        position: {
-          x: 5,
-          y: 0,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'TRANSPORT_HELICOPTER',
+      //   factionId: 'BLUE',
+      //   position: {
+      //     x: 5,
+      //     y: 0,
+      //   },
+      // },
       {
         type: 'BATTLESHIP',
         factionId: 'BLUE',
@@ -497,7 +482,6 @@ function showOff() {
           x: 0,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'CRUISER',
@@ -506,17 +490,15 @@ function showOff() {
           x: 0,
           y: 2,
         },
-        life: 100,
       },
-      {
-        type: 'LANDER',
-        factionId: 'BLUE',
-        position: {
-          x: 0,
-          y: 0,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'LANDER',
+      //   factionId: 'BLUE',
+      //   position: {
+      //     x: 0,
+      //     y: 0,
+      //   },
+      // },
       {
         type: 'SUBMARINE',
         factionId: 'BLUE',
@@ -524,7 +506,6 @@ function showOff() {
           x: 1,
           y: 0,
         },
-        life: 100,
       },
       {
         type: 'INFANTERY',
@@ -533,7 +514,6 @@ function showOff() {
           x: 9,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'MECH',
@@ -542,7 +522,6 @@ function showOff() {
           x: 10,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'RECON',
@@ -551,7 +530,6 @@ function showOff() {
           x: 8,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'TANK',
@@ -560,7 +538,6 @@ function showOff() {
           x: 9,
           y: 3,
         },
-        life: 100,
       },
       {
         type: 'HEAVY_TANK',
@@ -569,7 +546,6 @@ function showOff() {
           x: 10,
           y: 4,
         },
-        life: 100,
       },
       {
         type: 'NEO_TANK',
@@ -578,17 +554,15 @@ function showOff() {
           x: 11,
           y: 3,
         },
-        life: 100,
       },
-      {
-        type: 'ARMORED_PERSONNEL_CARRIER',
-        factionId: 'RED',
-        position: {
-          x: 11,
-          y: 4,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'ARMORED_PERSONNEL_CARRIER',
+      //   factionId: 'RED',
+      //   position: {
+      //     x: 11,
+      //     y: 4,
+      //   },
+      // },
       {
         type: 'ARTILLERY',
         factionId: 'RED',
@@ -596,7 +570,6 @@ function showOff() {
           x: 9,
           y: 4,
         },
-        life: 100,
       },
       {
         type: 'ROCKET_LAUNCHER',
@@ -605,7 +578,6 @@ function showOff() {
           x: 8,
           y: 3,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_TANK',
@@ -614,7 +586,6 @@ function showOff() {
           x: 7,
           y: 2,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_MISSILE_LAUNCHER',
@@ -623,7 +594,6 @@ function showOff() {
           x: 7,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'FIGHTER',
@@ -632,7 +602,6 @@ function showOff() {
           x: 7,
           y: 0,
         },
-        life: 100,
       },
       {
         type: 'BOMBER',
@@ -641,7 +610,6 @@ function showOff() {
           x: 11,
           y: 5,
         },
-        life: 100,
       },
       {
         type: 'BATTLE_HELICOPTER',
@@ -650,17 +618,15 @@ function showOff() {
           x: 10,
           y: 5,
         },
-        life: 100,
       },
-      {
-        type: 'TRANSPORT_HELICOPTER',
-        factionId: 'RED',
-        position: {
-          x: 6,
-          y: 0,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'TRANSPORT_HELICOPTER',
+      //   factionId: 'RED',
+      //   position: {
+      //     x: 6,
+      //     y: 0,
+      //   },
+      // },
       {
         type: 'BATTLESHIP',
         factionId: 'RED',
@@ -668,7 +634,6 @@ function showOff() {
           x: 11,
           y: 1,
         },
-        life: 100,
       },
       {
         type: 'CRUISER',
@@ -677,17 +642,15 @@ function showOff() {
           x: 11,
           y: 2,
         },
-        life: 100,
       },
-      {
-        type: 'LANDER',
-        factionId: 'RED',
-        position: {
-          x: 11,
-          y: 0,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'LANDER',
+      //   factionId: 'RED',
+      //   position: {
+      //     x: 11,
+      //     y: 0,
+      //   },
+      // },
       {
         type: 'SUBMARINE',
         factionId: 'RED',
@@ -695,7 +658,6 @@ function showOff() {
           x: 10,
           y: 0,
         },
-        life: 100,
       },
       {
         type: 'RECON',
@@ -704,7 +666,6 @@ function showOff() {
           x: 8,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'TANK',
@@ -713,7 +674,6 @@ function showOff() {
           x: 9,
           y: 8,
         },
-        life: 100,
       },
       {
         type: 'HEAVY_TANK',
@@ -722,7 +682,6 @@ function showOff() {
           x: 10,
           y: 7,
         },
-        life: 100,
       },
       {
         type: 'NEO_TANK',
@@ -731,17 +690,15 @@ function showOff() {
           x: 11,
           y: 8,
         },
-        life: 100,
       },
-      {
-        type: 'ARMORED_PERSONNEL_CARRIER',
-        factionId: 'YELLOW',
-        position: {
-          x: 11,
-          y: 7,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'ARMORED_PERSONNEL_CARRIER',
+      //   factionId: 'YELLOW',
+      //   position: {
+      //     x: 11,
+      //     y: 7,
+      //   },
+      // },
       {
         type: 'ARTILLERY',
         factionId: 'YELLOW',
@@ -749,7 +706,6 @@ function showOff() {
           x: 9,
           y: 7,
         },
-        life: 100,
       },
       {
         type: 'ROCKET_LAUNCHER',
@@ -758,7 +714,6 @@ function showOff() {
           x: 8,
           y: 8,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_TANK',
@@ -767,7 +722,6 @@ function showOff() {
           x: 7,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_MISSILE_LAUNCHER',
@@ -776,7 +730,6 @@ function showOff() {
           x: 7,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'FIGHTER',
@@ -785,7 +738,6 @@ function showOff() {
           x: 7,
           y: 11,
         },
-        life: 100,
       },
       {
         type: 'BOMBER',
@@ -794,7 +746,6 @@ function showOff() {
           x: 11,
           y: 6,
         },
-        life: 100,
       },
       {
         type: 'BATTLE_HELICOPTER',
@@ -803,17 +754,15 @@ function showOff() {
           x: 10,
           y: 6,
         },
-        life: 100,
       },
-      {
-        type: 'TRANSPORT_HELICOPTER',
-        factionId: 'YELLOW',
-        position: {
-          x: 6,
-          y: 11,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'TRANSPORT_HELICOPTER',
+      //   factionId: 'YELLOW',
+      //   position: {
+      //     x: 6,
+      //     y: 11,
+      //   },
+      // },
       {
         type: 'BATTLESHIP',
         factionId: 'YELLOW',
@@ -821,7 +770,6 @@ function showOff() {
           x: 11,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'CRUISER',
@@ -830,17 +778,15 @@ function showOff() {
           x: 11,
           y: 9,
         },
-        life: 100,
       },
-      {
-        type: 'LANDER',
-        factionId: 'YELLOW',
-        position: {
-          x: 11,
-          y: 11,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'LANDER',
+      //   factionId: 'YELLOW',
+      //   position: {
+      //     x: 11,
+      //     y: 11,
+      //   },
+      // },
       {
         type: 'SUBMARINE',
         factionId: 'YELLOW',
@@ -848,7 +794,6 @@ function showOff() {
           x: 10,
           y: 11,
         },
-        life: 100,
       },
       {
         type: 'INFANTERY',
@@ -857,7 +802,6 @@ function showOff() {
           x: 9,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'MECH',
@@ -866,7 +810,6 @@ function showOff() {
           x: 10,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'INFANTERY',
@@ -875,7 +818,6 @@ function showOff() {
           x: 2,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'MECH',
@@ -884,7 +826,6 @@ function showOff() {
           x: 1,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'RECON',
@@ -893,7 +834,6 @@ function showOff() {
           x: 3,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'TANK',
@@ -902,7 +842,6 @@ function showOff() {
           x: 2,
           y: 8,
         },
-        life: 100,
       },
       {
         type: 'HEAVY_TANK',
@@ -911,7 +850,6 @@ function showOff() {
           x: 1,
           y: 7,
         },
-        life: 100,
       },
       {
         type: 'NEO_TANK',
@@ -920,17 +858,15 @@ function showOff() {
           x: 0,
           y: 8,
         },
-        life: 100,
       },
-      {
-        type: 'ARMORED_PERSONNEL_CARRIER',
-        factionId: 'GREEN',
-        position: {
-          x: 0,
-          y: 7,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'ARMORED_PERSONNEL_CARRIER',
+      //   factionId: 'GREEN',
+      //   position: {
+      //     x: 0,
+      //     y: 7,
+      //   },
+      // },
       {
         type: 'ARTILLERY',
         factionId: 'GREEN',
@@ -938,7 +874,6 @@ function showOff() {
           x: 2,
           y: 7,
         },
-        life: 100,
       },
       {
         type: 'ROCKET_LAUNCHER',
@@ -947,7 +882,6 @@ function showOff() {
           x: 3,
           y: 8,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_TANK',
@@ -956,7 +890,6 @@ function showOff() {
           x: 4,
           y: 9,
         },
-        life: 100,
       },
       {
         type: 'ANTI_AIR_MISSILE_LAUNCHER',
@@ -965,7 +898,6 @@ function showOff() {
           x: 4,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'FIGHTER',
@@ -974,7 +906,6 @@ function showOff() {
           x: 4,
           y: 11,
         },
-        life: 100,
       },
       {
         type: 'BOMBER',
@@ -983,7 +914,6 @@ function showOff() {
           x: 0,
           y: 6,
         },
-        life: 100,
       },
       {
         type: 'BATTLE_HELICOPTER',
@@ -992,17 +922,15 @@ function showOff() {
           x: 1,
           y: 6,
         },
-        life: 100,
       },
-      {
-        type: 'TRANSPORT_HELICOPTER',
-        factionId: 'GREEN',
-        position: {
-          x: 5,
-          y: 11,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'TRANSPORT_HELICOPTER',
+      //   factionId: 'GREEN',
+      //   position: {
+      //     x: 5,
+      //     y: 11,
+      //   },
+      // },
       {
         type: 'BATTLESHIP',
         factionId: 'GREEN',
@@ -1010,7 +938,6 @@ function showOff() {
           x: 0,
           y: 10,
         },
-        life: 100,
       },
       {
         type: 'CRUISER',
@@ -1019,17 +946,15 @@ function showOff() {
           x: 0,
           y: 9,
         },
-        life: 100,
       },
-      {
-        type: 'LANDER',
-        factionId: 'GREEN',
-        position: {
-          x: 0,
-          y: 11,
-        },
-        life: 100,
-      },
+      // {
+      //   type: 'LANDER',
+      //   factionId: 'GREEN',
+      //   position: {
+      //     x: 0,
+      //     y: 11,
+      //   },
+      // },
       {
         type: 'SUBMARINE',
         factionId: 'GREEN',
@@ -1037,7 +962,6 @@ function showOff() {
           x: 1,
           y: 11,
         },
-        life: 100,
       },
     ],
     name: 'Show off',

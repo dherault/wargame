@@ -131,7 +131,6 @@ function registerCanvas(canvas) {
                 type: selectedUnitType,
                 factionId: selectedFactionId,
                 position: mouse,
-                life: 100,
               }
 
               store.dispatch({

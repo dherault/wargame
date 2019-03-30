@@ -169,7 +169,6 @@ function mergeTest() {
           x: 5,
           y: 5,
         },
-        life: 100,
       },
       {
         id: '05ddb32c-8072-4af4-a4bd-9fc428c70629',
@@ -179,7 +178,6 @@ function mergeTest() {
           x: 0,
           y: 4,
         },
-        life: 100,
       },
       {
         id: 'ee6bf8e7-7cc7-4d2c-827c-fa94548eafcd',
@@ -189,7 +187,6 @@ function mergeTest() {
           x: 2,
           y: 4,
         },
-        life: 100,
       },
     ],
     name: 'mergeTest',

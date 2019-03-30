@@ -23,7 +23,7 @@ function units(state = [], action, globalState, ongoingState) {
         position,
         factionId,
         team,
-        life: 100,
+        life: gameConfiguration.maxUnitLife,
         played: true,
       }
 
@@ -54,7 +54,7 @@ function units(state = [], action, globalState, ongoingState) {
       const unitOnPosition = units.find(u => u.id !== unitId && samePosition(u.position, position))
 
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT - unit not found', { unitId, position })
-      if (unitOnPosition && unitOnPosition.type !== unit.type && unit.life >= 100 && unitOnPosition.life >= 100) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
+      if (unitOnPosition && unitOnPosition.type !== unit.type && unit.life >= gameConfiguration.maxUnitLife && unitOnPosition.life >= gameConfiguration.maxUnitLife) throw new DataError('Unit - MOVE_UNIT - a unit is already on the position', { unitId, position })
 
       units[unitIndex] = {
         ...unit,
@@ -143,7 +143,7 @@ function units(state = [], action, globalState, ongoingState) {
 
       units[unitIndex] = {
         ...unit,
-        life: Math.min(100, unit.life + mergedUnit.life),
+        life: Math.min(gameConfiguration.maxUnitLife, unit.life + mergedUnit.life),
         played: true,
       }
 
@@ -186,7 +186,7 @@ function units(state = [], action, globalState, ongoingState) {
           if (reparableMovementTypes.includes(movementType)) {
             return {
               ...unit,
-              life: Math.min(100, unit.life + 20),
+              life: Math.min(gameConfiguration.maxUnitLife, unit.life + 20),
             }
           }
         }

@@ -66,7 +66,6 @@ function suicideBug() {
           x: 2,
           y: 2,
         },
-        life: 100,
       },
     ],
     name: 'Suicide bug',

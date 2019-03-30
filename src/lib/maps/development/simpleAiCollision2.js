@@ -91,7 +91,6 @@ function simpleAiCollision() {
           x: 0,
           y: 0,
         },
-        life: 100,
       },
       {
         id: '7002462187525387',
@@ -101,7 +100,6 @@ function simpleAiCollision() {
           x: 0,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '2846336243320269',
@@ -111,7 +109,6 @@ function simpleAiCollision() {
           x: 0,
           y: 3,
         },
-        life: 100,
       },
       {
         id: '5489103156650608',
@@ -121,7 +118,6 @@ function simpleAiCollision() {
           x: 0,
           y: 4,
         },
-        life: 100,
       },
       {
         id: '8813879666742777',

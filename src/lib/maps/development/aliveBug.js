@@ -126,7 +126,6 @@ function aliveBug() {
           x: 5,
           y: 3,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -137,7 +136,6 @@ function aliveBug() {
           x: 1,
           y: 3,
         },
-        life: 100,
         flipped: true,
       },
       {
@@ -148,7 +146,6 @@ function aliveBug() {
           x: 1,
           y: 5,
         },
-        life: 100,
       },
     ],
     name: 'Alive bug',

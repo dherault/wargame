@@ -40,7 +40,7 @@ function drawUnit(_, tileSize, images, unit) {
   _.restore()
 
   // Draw life amount
-  if (unit.life !== 100) {
+  if (typeof unit.life === 'number' && unit.life !== gameConfiguration.maxUnitLife) {
     _.font = `bold ${tileSize / 4}px lato`
     _.textAlign = 'right'
     _.textBaseline = 'alphabetic'

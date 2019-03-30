@@ -206,7 +206,7 @@ function computePossibleTargets(store, unit, nTargets) {
   const { units, buildings } = store.getState()
 
   // Special case: the unit is capturing a building and healthy
-  if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && unit.life === 100) {
+  if (gameConfiguration.infanteryUnitTypes.includes(unit.type) && unit.life === gameConfiguration.maxUnitLife) {
     const buildingOnUnitPosition = buildings.find(b => samePosition(unit.position, b.position))
 
     // It will continue to capture
@@ -263,7 +263,7 @@ function computePossibleTargets(store, unit, nTargets) {
       // Units can be repaired in a building
       if (
         building
-        && unit.life < 100
+        && unit.life < gameConfiguration.maxUnitLife
         && building.factionId === unit.factionId
         && gameConfiguration.buildingsConfiguration[building.type].reparableMovementTypes.includes(movementType)
       ) {

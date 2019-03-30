@@ -1,3 +1,4 @@
+import gameConfiguration from '../gameConfiguration'
 import { createId, cloneArrayOfObjects } from '../common/utils'
 
 function prepareMap({ worldMap, factions, buildings, units }) {
@@ -13,7 +14,7 @@ function prepareMap({ worldMap, factions, buildings, units }) {
 
   nextBuidlings.forEach(building => {
     if (!building.id) building.id = createId()
-    if (typeof building.capture !== 'number') building.capture = 100
+    if (typeof building.capture !== 'number') building.capture = gameConfiguration.maxBuildingCapture
     if (typeof building.team !== 'number') {
       const faction = factions.find(faction => faction.id === building.factionId)
 
@@ -23,7 +24,7 @@ function prepareMap({ worldMap, factions, buildings, units }) {
 
   nextUnits.forEach(unit => {
     if (!unit.id) unit.id = createId()
-    if (typeof unit.life !== 'number') unit.life = 100
+    if (typeof unit.life !== 'number') unit.life = gameConfiguration.maxUnitLife
     if (typeof unit.played !== 'boolean') unit.played = false
     if (typeof unit.isMoving !== 'boolean') unit.isMoving = false
     if (typeof unit.flipped !== 'boolean') unit.flipped = false

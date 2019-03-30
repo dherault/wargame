@@ -94,11 +94,10 @@ function draw(_) {
 
     if (selectedUnitType && mouseTile) {
       drawUnit(_, tileSize, images, {
+        id: '0',
         type: selectedUnitType,
         factionId: selectedFactionId,
         position: mouse,
-        life: 100,
-        id: '0',
       })
     }
 

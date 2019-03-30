@@ -102,7 +102,6 @@ function simpleBrawl() {
           x: 0,
           y: 2,
         },
-        life: 100,
       },
       {
         id: '8238753154052059',
@@ -112,7 +111,6 @@ function simpleBrawl() {
           x: 0,
           y: 3,
         },
-        life: 100,
       },
       {
         id: '046422693839874185',
@@ -122,7 +120,6 @@ function simpleBrawl() {
           x: 0,
           y: 4,
         },
-        life: 100,
       },
       {
         id: '0016444741641850058',
@@ -132,7 +129,6 @@ function simpleBrawl() {
           x: 6,
           y: 0,
         },
-        life: 100,
       },
       {
         id: '9053193238989516',
@@ -142,7 +138,6 @@ function simpleBrawl() {
           x: 6,
           y: 1,
         },
-        life: 100,
       },
       {
         id: '5171871650069821',
@@ -152,7 +147,6 @@ function simpleBrawl() {
           x: 6,
           y: 2,
         },
-        life: 100,
       },
     ],
     name: 'Simple brawl',
