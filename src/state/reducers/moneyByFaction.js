@@ -1,10 +1,11 @@
 import gameConfiguration from '../../lib/gameConfiguration'
-import { findById } from '../../lib/common/utils';
+import { findById } from '../../lib/common/utils'
 
 /*
   {
     [factionId]: money
   }
+  The money each faction has
 */
 function moneyByFaction(state = {}, action, globalState) {
   switch (action.type) {
@@ -40,7 +41,6 @@ function moneyByFaction(state = {}, action, globalState) {
 
       const lifeOverflowRatio = (unit.life + mergedUnit.life - 100) / 100
 
-      console.log('lifeOverflowRatio', lifeOverflowRatio)
       if (lifeOverflowRatio <= 0) return state
 
       return {
