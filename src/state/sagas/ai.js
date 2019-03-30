@@ -21,6 +21,7 @@ function* spanAiWebWorker(isNextTurn) {
   worker.postMessage({ state, isNextTurn })
 
   worker.onmessage = e => {
+    console.log('setting actions', e.data)
     store.dispatch({
       type: 'SET_AI_ACTIONS',
       payload: e.data,

@@ -48,7 +48,7 @@ class GameScene extends Component {
     const unregisterCtrlQ = hotkeys(document.documentElement, 'ctrl+q', e => {
       e.preventDefault()
 
-      const { isDevPanelOpened, dispatch } = this.props
+      const { booleans: { isDevPanelOpened }, dispatch } = this.props
 
       dispatch({
         type: 'SET_BOOLEAN',

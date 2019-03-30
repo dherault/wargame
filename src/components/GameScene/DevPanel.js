@@ -43,13 +43,13 @@ class DevPanel extends Component {
         {scoreEntries.map(([factionId, score]) => (
           <div key={factionId}>{factionId}: {score}</div>
         ))}
-        <div className="x1 no-select" onClick={() => this.handleBooleanClick('disableNewTurnAnimation')}>
+        <div className="x1 no-select pointer" onClick={() => this.handleBooleanClick('disableNewTurnAnimation')}>
           <input readOnly type="checkbox" checked={booleans.disableNewTurnAnimation} /> disableNewTurnAnimation
         </div>
-        <div className="x1 no-select" onClick={() => this.handleBooleanClick('disableAutoZoom')}>
+        <div className="x1 no-select pointer" onClick={() => this.handleBooleanClick('disableAutoZoom')}>
           <input readOnly type="checkbox" checked={booleans.disableAutoZoom} /> disableAutoZoom
         </div>
-        <div className="x1 no-select" onClick={() => this.handleBooleanClick('disableDelayOnComputerActions')}>
+        <div className="x1 no-select pointer" onClick={() => this.handleBooleanClick('disableDelayOnComputerActions')}>
           <input readOnly type="checkbox" checked={booleans.disableDelayOnComputerActions} /> disableDelayOnComputerActions
         </div>
       </div>

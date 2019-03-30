@@ -144,6 +144,7 @@ function units(state = [], action, globalState, ongoingState) {
       units[unitIndex] = {
         ...unit,
         life: Math.min(100, unit.life + mergedUnit.life),
+        played: true,
       }
 
       return units
