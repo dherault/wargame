@@ -64,7 +64,7 @@ class TurnInfo extends Component {
     if (!currentFaction) return null
 
     return (
-      <div className="TurnInfo absolute x4 no-select">
+      <div className="TurnInfo absolute no-select x4">
         <div style={{ marginRight: 10 }}>
           turn {turn} - {gameConfiguration.factionsConfiguration[currentFaction.id].name} - {moneyByFaction[currentFaction.id]}$
         </div>
