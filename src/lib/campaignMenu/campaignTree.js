@@ -1,6 +1,6 @@
 import Tree from '../common/Tree'
-import getMission1MapDefinition from '../maps/campaign/mission1'
-import getMission2MapDefinition from '../maps/campaign/mission2'
+import getMission1MapDefinition from '../mapDefinitions/campaign/mission1'
+import getMission2MapDefinition from '../mapDefinitions/campaign/mission2'
 
 const campaignDefinition = new Tree()
 

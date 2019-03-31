@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 import hotkeys from 'piano-keys'
 import gameConfiguration from '../../lib/gameConfiguration'
 import { samePosition } from '../../lib/common/utils'
-import developmentMaps from '../../lib/maps/development'
-import standardMaps from '../../lib/maps/standard'
+import developmentMaps from '../../lib/mapDefinitions/development'
+import standardMaps from '../../lib/mapDefinitions/standard'
 
 import './Carousel.css'
 
