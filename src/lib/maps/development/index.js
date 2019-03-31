@@ -1,9 +1,5 @@
-import duel from './duel'
-import fourLeafBattle from './fourLeafBattle'
-import townMayhem from './townMayhem'
-import showOff from './showOff'
-import simpleBrawl from './simpleBrawl'
 import random from './random'
+import showOff from './showOff'
 import aiDecisionMaking1 from './aiDecisionMaking1'
 import aiDecisionMaking2 from './aiDecisionMaking2'
 import simpleAiAttack from './simpleAiAttack'
@@ -23,12 +19,8 @@ import aliveBug from './aliveBug'
 import mergeTest from './mergeTest'
 
 export default [
-  duel(),
-  fourLeafBattle(),
-  townMayhem(),
-  showOff(),
-  simpleBrawl(),
   random(),
+  showOff(),
   aiDecisionMaking1(),
   aiDecisionMaking2(),
   simpleAiAttack(),

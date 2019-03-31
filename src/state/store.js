@@ -109,6 +109,6 @@ sagaMiddleware.run(rootSaga)
 store.subscribe(throttle(() => saveState(store.getState()), 333))
 
 // For debug purposes
-window.store = store
+// window.store = store
 
 export default store

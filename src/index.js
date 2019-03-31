@@ -7,6 +7,8 @@ import { ConnectedRouter } from 'connected-react-router'
 import 'normalize.css'
 import 'flexpad/dist/flexpad.min.css'
 import './index.css'
+import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
+import '@fortawesome/fontawesome-free/css/solid.min.css'
 
 import history from './history'
 import store from './state/store'

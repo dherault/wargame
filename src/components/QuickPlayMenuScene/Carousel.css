@@ -1,0 +1,123 @@
+.Carousel-filters {
+  margin: 16px 0px;
+}
+
+.Carousel-filter {
+  margin: 0px 8px;
+  cursor: pointer;
+}
+
+.Carousel-filter-active {
+  text-decoration: underline;
+}
+
+.Carousel-icon {
+  color: lightgrey;
+  cursor: pointer;
+}
+
+.Carousel-icon-left {
+  z-index: 200;
+  position: relative;
+  left: 85%;
+}
+
+.Carousel-icon-right {
+  z-index: 200;
+  position: relative;
+  right: 85%;
+}
+
+.CarouselItem {
+  position: relative;
+  min-width: 50%;
+  min-height: 70vh;
+  background-color: white;
+  padding-bottom: 32px;
+}
+
+.CarouselItem-info {
+  position: absolute;
+  bottom: 32px;
+}
+
+.CarouselItem-tiles {
+  margin-top: -64px;
+}
+
+.CarouselItem-tile {
+  width: 1.4vw;
+  height: 1.4vw;
+}
+
+.CarouselItem-indexMinusTwo {
+  right: -75%;
+  z-index: -200;
+  transform: scale(0.8);
+}
+
+.CarouselItem-indexMinusTwo-animate-right {
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.33);
+}
+
+.CarouselItem-indexMinusOne {
+  right: -25%;
+  z-index: -100;
+  transform: scale(0.8);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.33);
+}
+
+.CarouselItem-indexMinusOne-animate-right {
+  right: -50%;
+  z-index: 1000;
+  transform: scale(1);
+  transition: all linear 0.5s;
+}
+
+.CarouselItem-index {
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.33);
+}
+
+.CarouselItem-index-pre-animate-left {
+  right: 0%;
+}
+
+.CarouselItem-index-pre-animate-right {
+  left: 0%;
+}
+
+.CarouselItem-index-animate-right {
+  left: 25%;
+  transform: scale(0.8);
+  transition: all linear 0.5s;
+}
+
+.CarouselItem-index-animate-left {
+  right: 25%;
+  transform: scale(0.8);
+  transition: all linear 0.5s;
+}
+
+.CarouselItem-indexPlusOne {
+  left: -25%;
+  z-index: -100;
+  transform: scale(0.8);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.33);
+}
+
+.CarouselItem-indexPlusOne-animate-left {
+  left: -50%;
+  z-index: 1000;
+  transform: scale(1);
+  transition: all linear 0.5s;
+}
+
+.CarouselItem-indexPlusTwo {
+  left: -75%;
+  z-index: -200;
+  transform: scale(0.8);
+}
+
+.CarouselItem-indexPlusTwo-animate-left {
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.33);
+}
