@@ -31,3 +31,4 @@ Be familiar with React and Redux, then
 - How the canvas is drawn can is written is `src/lib/game/draw.js`
 - How the canvas listens to events can be found in `src/lib/game/registerCanvas`
 - How the AI works is in `src/lib/game/computeAiActions.js`
+- The maps defintions are stored under `src/lib/mapDefinitions`
