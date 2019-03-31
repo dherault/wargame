@@ -12,7 +12,7 @@ class MainMenuScene extends Component {
     const { dispatch } = this.props
 
     return (
-      <div className="MainMenuScene text-align-center">
+      <div className="MainMenuScene text-align-center relative">
         <h1 className="gold">
           Basic Wars
         </h1>

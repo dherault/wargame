@@ -1,5 +1,7 @@
 .MainMenuScene {
-  padding: 15% 0% 0% 0%;
+  box-sizing: border-box;
+  padding-top: 15%;
+  height: 100vh;
 }
 
 .MainMenuScene-item {
@@ -12,8 +14,9 @@
 }
 
 .MainMenuScene-version {
+  position: absolute;
   text-align: right;
   color: lightgray;
-  margin-top: 64px;
-  margin-right: 64px;
+  bottom: 32px;
+  right: 32px;
 }
