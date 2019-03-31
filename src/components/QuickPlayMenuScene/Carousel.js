@@ -36,7 +36,7 @@ const CarouselItem = React.memo(({ className, onClick, mapDefinition: { worldMap
         </div>
       ))}
     </div>
-    <div className="CarouselItem-info">
+    <div className="CarouselItem-info text-align-center">
       <h2>
         {name}
       </h2>
