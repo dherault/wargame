@@ -55,8 +55,13 @@ function resizeViewBox() {
   }, viewBoxIntervalPeriod)
 }
 
+// function* moveViewBox(action) {
+//   console.log(action)
+// }
+
 function* viewBoxSaga() {
   yield takeEvery('RESIZE_VIEW_BOX', resizeViewBox)
+  // yield takeEvery('MOVE_UNIT_POSITION', moveViewBox)
 }
 
 export default viewBoxSaga

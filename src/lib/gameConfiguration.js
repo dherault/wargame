@@ -2,6 +2,7 @@ const gameConfiguration = {
   maxUnitLife: 100,
   maxBuildingCapture: 100,
   moneyPerCityPerTurn: 1000,
+  newTurnAnimationDuration: 1500,
   unitMovementPeriod: 17,
   unitMovementIncrement: 0.05,
   infanteryVisionBonusOnMountains: 3,

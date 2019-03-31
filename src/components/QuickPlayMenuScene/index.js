@@ -27,7 +27,6 @@ class QuickPlayMenuScene extends Component {
   updateSelectedMapDefinitionFactions = factions => {
     const { selectedMapDefinition } = this.state
 
-    console.log('factions', factions)
     this.setState({
       selectedMapDefinition: {
         ...selectedMapDefinition,

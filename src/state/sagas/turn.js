@@ -1,4 +1,5 @@
 import { takeEvery, select, put, delay } from 'redux-saga/effects'
+import gameConfiguration from '../../lib/gameConfiguration'
 
 function* launchNewTurnAnimation() {
   const booleans = yield select(s => s.booleans)
@@ -11,7 +12,7 @@ function* launchNewTurnAnimation() {
       },
     })
 
-    yield delay(1500)
+    yield delay(gameConfiguration.newTurnAnimationDuration)
 
     yield put({
       type: 'SET_BOOLEAN',
@@ -28,9 +29,25 @@ function focusCanvas() {
   }
 }
 
+function* endNewTurnAnimation() {
+  const isNewTurnAnimation = yield select(s => s.booleans.isNewTurnAnimation)
+
+  if (isNewTurnAnimation) {
+    yield delay(gameConfiguration.newTurnAnimationDuration)
+
+    yield put({
+      type: 'SET_BOOLEAN',
+      payload: {
+        isNewTurnAnimation: false,
+      },
+    })
+  }
+}
+
 function* turnSaga() {
   yield takeEvery('BEGIN_PLAYER_TURN', focusCanvas)
   yield takeEvery('BEGIN_PLAYER_TURN', launchNewTurnAnimation)
+  yield takeEvery('RESUME_GAME', endNewTurnAnimation)
 }
 
 export default turnSaga
