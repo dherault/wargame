@@ -38,6 +38,14 @@ canvas:focus {
   height: 100%;
 }
 
+.text-align-center {
+  text-align: center;
+}
+
 .text-align-right {
   text-align: right;
+}
+
+.gold {
+  color: goldenrod;
 }

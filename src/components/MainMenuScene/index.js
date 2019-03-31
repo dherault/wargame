@@ -12,8 +12,8 @@ class MainMenuScene extends Component {
     const { dispatch } = this.props
 
     return (
-      <div className="MainMenuScene">
-        <h1>
+      <div className="MainMenuScene text-align-center">
+        <h1 className="gold">
           Basic Wars
         </h1>
         <div className="MainMenuScene-item" onClick={() => dispatch(push('/campaign'))}>

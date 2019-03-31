@@ -58,9 +58,6 @@ class CampaignMenuScene extends Component {
         <div className="CampaignMenyScene-return" onClick={() => dispatch(push('/'))}>
           Return
         </div>
-        <div className="CampaignMenyScene-reset" onClick={window.reset}>
-          Reset
-        </div>
       </div>
     )
   }

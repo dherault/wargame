@@ -22,24 +22,11 @@
   color: white;
   cursor: pointer;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 16px;
+  left: 16px;
   z-index: 1000;
 }
 
 .CampaignMenyScene-return:hover {
-  font-weight: bold;
-}
-
-.CampaignMenyScene-reset {
-  color: white;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  left: 55px;
-  z-index: 1000;
-}
-
-.CampaignMenyScene-reset:hover {
   font-weight: bold;
 }

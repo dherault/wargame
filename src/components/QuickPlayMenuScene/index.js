@@ -69,7 +69,7 @@ class QuickPlayMenuScene extends Component {
         <div className="QuickPlayMenuScene-return" onClick={this.handleReturnClick}>
           Return
         </div>
-        <h1 style={{ textAlign: 'center' }}>Quick Play</h1>
+        <h1 className="text-align-center gold">Quick Play</h1>
         <Carousel selectMapDefinition={mapDefinition => this.setState({ selectedMapDefinition: mapDefinition })} />
         {selectedMapDefinition && (
           <NewGameSelector

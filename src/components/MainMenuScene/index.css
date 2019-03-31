@@ -1,5 +1,5 @@
 .MainMenuScene {
-  padding: 15% 20% 0% 20%;
+  padding: 15% 0% 0% 0%;
 }
 
 .MainMenuScene-item {
@@ -15,4 +15,5 @@
   text-align: right;
   color: lightgray;
   margin-top: 64px;
+  margin-right: 64px;
 }
