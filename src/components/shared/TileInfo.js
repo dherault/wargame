@@ -22,7 +22,7 @@ class TileInfo extends Component {
     const building = buildings.find(building => samePosition(building.position, mouse))
 
     return (
-      <div className="TileInfo absolute x4">
+      <div className="TileInfo absolute no-select x4">
         {tileConfiguration.name} (defense {tileConfiguration.defense})
         {building && ` - capture ${building.capture}`}
         {unit && ` - ${gameConfiguration.unitsConfiguration[unit.type].name}`}
