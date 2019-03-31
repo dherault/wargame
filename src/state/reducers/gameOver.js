@@ -1,3 +1,5 @@
+import { getRemainingTeams } from '../../lib/common/helpers'
+
 /*
   boolean
   Is the game over
@@ -14,22 +16,10 @@ function gameOver(state = false, action, globalState, ongoingState) {
 
       if (turn === 1) return false
 
-      const remainingHqTeams = new Set()
-
-      buildings.forEach(building => {
-        if (building.type === 'HEADQUARTERS') {
-          remainingHqTeams.add(building.team)
-        }
-      })
-
-      const remainingUnitsTeams = new Set()
-
-      units.forEach(unit => {
-        remainingUnitsTeams.add(unit.team)
-      })
+      const remainingTeams = getRemainingTeams(buildings, units)
 
       // gameOver if there is only one team remaining
-      return remainingHqTeams.size <= 1 || remainingUnitsTeams.size <= 1
+      return remainingTeams.length <= 1
     }
 
     case 'RESET_GAME_OVER': {

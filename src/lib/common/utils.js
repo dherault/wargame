@@ -1,4 +1,7 @@
 import uuid from 'uuid'
+/*
+  Utils make non-domain logic DRY
+*/
 
 export function chance(probability) {
   return Math.random() > 1 - probability
@@ -14,6 +17,23 @@ export function randomArray(array) {
 
 export function randomPop(array) {
   return array.splice(Math.floor(Math.random() * array.length), 1)[0]
+}
+
+export function randomSlice(array, n) {
+  const result = []
+
+  for (let i = 0; i < n; i++) {
+    const item = randomPop(array)
+
+    if (typeof item !== 'undefined') {
+      result.push(item)
+    }
+    else {
+      break
+    }
+  }
+
+  return result
 }
 
 export function cloneArrayOfObjects(array) {
@@ -55,6 +75,20 @@ export function unhashPositionAndDistance(string) {
   return [{ x: parseInt(x), y: parseInt(y) }, parseInt(distance)]
 }
 
+export function round(x, decimal) {
+  const pow = 10 ** decimal
+
+  return Math.round(x * pow) / pow
+}
+
+export function manhattanDistance(p1, p2) {
+  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
+}
+
+export function euclidianDistance(p1, p2) {
+  return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y))
+}
+
 export function throttle(fn, delay) {
   let timeoutId
 
@@ -68,6 +102,7 @@ export function throttle(fn, delay) {
 // transforms [[a, b], [c, d, e]] into [[a, c], [a, d], [a, e], [b, c], [b, d], [b, e]]
 // Where a is an array
 // https://stackoverflow.com/a/4331218
+// LEGACY CODE
 export function combineArrayItems(array) {
   if (array.length === 0) {
     return []
@@ -86,49 +121,4 @@ export function combineArrayItems(array) {
   }
 
   return result
-}
-
-export function randomSlice(array, n) {
-  const result = []
-
-  for (let i = 0; i < n; i++) {
-    const item = randomPop(array)
-
-    if (typeof item !== 'undefined') {
-      result.push(item)
-    }
-    else {
-      break
-    }
-  }
-
-  return result
-}
-
-export function sliceRandom(array, n) {
-  const result = []
-
-  for (let i = 0; i < n; i++) {
-    const item = randomPop(array)
-
-    if (typeof item !== 'undefined') {
-      result.push(item)
-    }
-  }
-
-  return result
-}
-
-export function round(x, decimal) {
-  const pow = 10 ** decimal
-
-  return Math.round(x * pow) / pow
-}
-
-export function manhattanDistance(p1, p2) {
-  return Math.abs(p2.x - p1.x) + Math.abs(p2.y - p1.y)
-}
-
-export function euclidianDistance(p1, p2) {
-  return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y))
 }

@@ -2,7 +2,9 @@ import { takeEvery, select, put, delay } from 'redux-saga/effects'
 import gameConfiguration from '../../lib/gameConfiguration'
 
 function* launchNewTurnAnimation() {
-  const booleans = yield select(s => s.booleans)
+  const { booleans, gameOver } = yield select()
+
+  if (gameOver) return
 
   if (!booleans.disableNewTurnAnimation) {
     yield put({
@@ -29,6 +31,7 @@ function focusCanvas() {
   }
 }
 
+// On resume, if the reload was during isNewTurnAnimation, resume with isNewTurnAnimation
 function* endNewTurnAnimation() {
   const isNewTurnAnimation = yield select(s => s.booleans.isNewTurnAnimation)
 
