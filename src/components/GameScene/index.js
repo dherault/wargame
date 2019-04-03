@@ -4,17 +4,18 @@ import { push } from 'connected-react-router'
 import hotkeys from 'piano-keys'
 import registerCanvas from '../../lib/game/registerCanvas'
 
+import './index.css'
+
+import AiComputationModal from './AiComputationModal'
 import BuildingMenu from './BuildingMenu'
 import DevPanel from './DevPanel'
-import NewTurnModal from './NewTurnModal'
 import FireInfo from './FireInfo'
 import GameOverModal from './GameOverModal'
 import InGameMenuModal from './InGameMenuModal'
+import NewTurnModal from './NewTurnModal'
 import TileInfo from '../shared/TileInfo'
 import TurnInfo from './TurnInfo'
 import UnitMenu from './UnitMenu'
-
-import './index.css'
 
 class GameScene extends Component {
 
@@ -92,7 +93,7 @@ class GameScene extends Component {
   }
 
   render() {
-    const { gameOver, booleans: { isDevPanelOpened, isNewTurnAnimation } } = this.props
+    const { currentFaction, gameOver, booleans: { isDevPanelOpened, isNewTurnAnimation, isAiComputing } } = this.props
     const { inGameMenuOpened } = this.state
 
     // tabIndex 0: https://stackoverflow.com/a/12887221/4847258
@@ -118,6 +119,7 @@ class GameScene extends Component {
         {isDevPanelOpened && <DevPanel />}
         {isNewTurnAnimation && <NewTurnModal />}
         {gameOver && <GameOverModal />}
+        {!isNewTurnAnimation && isAiComputing && currentFaction.type === 'COMPUTER' && <AiComputationModal />}
         {inGameMenuOpened && <InGameMenuModal resume={this.handleCloseInGameMenu} />}
       </div>
     )
@@ -125,6 +127,7 @@ class GameScene extends Component {
 }
 
 const mapStateToProps = s => ({
+  currentFaction: s.currentFaction,
   gameOver: s.gameOver,
   booleans: s.booleans,
   worldMap: s.worldMap,

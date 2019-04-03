@@ -17,7 +17,16 @@ function* spanAiWebWorker(isNextTurn) {
     worker.terminate()
   }
 
-  yield put({ type: 'RESET_AI_ACTIONS' })
+  yield put({
+    type: 'RESET_AI_ACTIONS',
+  })
+
+  yield put({
+    type: 'SET_BOOLEAN',
+    payload: {
+      isAiComputing: true,
+    },
+  })
 
   const state = yield select()
 
@@ -26,6 +35,13 @@ function* spanAiWebWorker(isNextTurn) {
   worker.postMessage({ state, isNextTurn })
 
   worker.onmessage = e => {
+    store.dispatch({
+      type: 'SET_BOOLEAN',
+      payload: {
+        isAiComputing: false,
+      },
+    })
+
     store.dispatch({
       type: 'SET_AI_ACTIONS',
       payload: e.data,

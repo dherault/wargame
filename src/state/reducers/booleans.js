@@ -6,6 +6,7 @@ const initialState = {
   isLeftButtonDown: false,
   isRightButtonDown: false,
   isNewTurnAnimation: false,
+  isAiComputing: false,
   isUnitMenuOpened: false,
   isBuildingMenuOpened: false,
   isDevPanelOpened: false,
