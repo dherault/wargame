@@ -1,5 +1,5 @@
 import gameConfiguration from '../../lib/gameConfiguration'
-import { createId, samePosition } from '../../lib/common/utils'
+import { createId, samePosition, manhattanDistance } from '../../lib/common/utils'
 import DataError from '../../lib/common/DataError'
 
 /*
@@ -17,6 +17,11 @@ function units(state = [], action, globalState, ongoingState) {
       if (state.some(u => samePosition(u.position, position))) throw new DataError('Unit - CREATE_UNIT - a unit is already on the position', { position })
       // We do not check if the unit is on a forbidden position since it can only be created in a building
 
+      // On creation, a unit should look at the ennemy headquarters
+      const closestEnnemyHeadQuarters = globalState.buildings
+        .filter(building => building.type === 'HEADQUARTERS' && building.team !== team)
+        .reduce((a, b) => manhattanDistance(a.position, position) < manhattanDistance(b.position, position) ? a : b)
+
       const unit = {
         id: createId(),
         type,
@@ -25,6 +30,7 @@ function units(state = [], action, globalState, ongoingState) {
         team,
         life: gameConfiguration.maxUnitLife,
         played: true,
+        flipped: closestEnnemyHeadQuarters.position.x < position.x,
       }
 
       return [...state, unit]
@@ -74,9 +80,12 @@ function units(state = [], action, globalState, ongoingState) {
 
       if (unitIndex === -1) throw new DataError('Units - MOVE_UNIT_POSITION - unit not found', { unitId, position })
 
+      const previousPosition = units[unitIndex].currentPosition
+
       units[unitIndex] = {
         ...units[unitIndex],
         currentPosition: position,
+        flipped: position.x === previousPosition.x ? units[unitIndex].flipped : position.x < previousPosition.x,
       }
 
       return units
@@ -110,10 +119,16 @@ function units(state = [], action, globalState, ongoingState) {
       units[attackerUnitIndex] = {
         ...units[attackerUnitIndex],
         life: units[attackerUnitIndex].life - defenderDamage,
+        flipped: units[attackerUnitIndex].position.x === units[defenderUnitIndex].position.x
+          ? units[attackerUnitIndex].flipped
+          : units[attackerUnitIndex].position.x > units[defenderUnitIndex].position.x,
       }
       units[defenderUnitIndex] = {
         ...units[defenderUnitIndex],
         life: units[defenderUnitIndex].life - attackerDamage,
+        flipped: units[attackerUnitIndex].position.x === units[defenderUnitIndex].position.x || defenderDamage === 0
+          ? units[defenderUnitIndex].flipped
+          : units[attackerUnitIndex].position.x < units[defenderUnitIndex].position.x,
       }
 
       // If life <= 0, unitSaga will trigger KILL_UNIT
