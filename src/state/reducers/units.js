@@ -137,7 +137,7 @@ function units(state = [], action, globalState, ongoingState) {
       const unitIndex = units.findIndex(u => u.id === unitId)
       const mergedUnitIndex = units.findIndex(u => u.id === mergedUnitId)
       const unit = units[unitIndex]
-      const [mergedUnit] = units.splice(mergedUnitIndex, 1)
+      const mergedUnit = units[mergedUnitIndex]
 
       if (unit.type !== mergedUnit.type) throw new DataError('Units - MERGE_UNITS - Units are not of the same type', { unit, mergedUnit })
 
@@ -146,6 +146,8 @@ function units(state = [], action, globalState, ongoingState) {
         life: Math.min(gameConfiguration.maxUnitLife, unit.life + mergedUnit.life),
         played: true,
       }
+
+      units.splice(mergedUnitIndex, 1)
 
       return units
     }
