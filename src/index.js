@@ -20,6 +20,7 @@ import GameScene from './components/GameScene'
 import EditorScene from './components/EditorScene'
 import CampaignMenuScene from './components/CampaignMenuScene'
 import QuickPlayMenuScene from './components/QuickPlayMenuScene'
+import DevelopmentScene from './components/DevelopmentScene'
 import NotFoundScene from './components/NotFoundScene'
 
 class App extends PureComponent {
@@ -44,6 +45,7 @@ class App extends PureComponent {
             <Route exact path="/editor" component={EditorScene} />
             <Route exact path="/campaign" component={CampaignMenuScene} />
             <Route exact path="/quick_play" component={QuickPlayMenuScene} />
+            {process.env.NODE_ENV === 'development' && <Route exact path="/development" component={DevelopmentScene} />}
             <Route component={NotFoundScene} />
           </Switch>
         </ConnectedRouter>

@@ -9,6 +9,7 @@ import { loadState, saveState } from './persist'
 import { throttle } from '../lib/common/utils'
 
 import aiActions from './reducers/aiActions'
+import attackAnimationParameters from './reducers/attackAnimationParameters'
 import booleans from './reducers/booleans'
 import buildings from './reducers/buildings'
 import completedCampaignMissionIds from './reducers/completedCampaignMissionIds'
@@ -41,6 +42,7 @@ import viewBoxSaga from './sagas/viewBox'
 // See createReducer
 const reducer = createReducer({
   aiActions,
+  attackAnimationParameters,
   booleans,
   buildings, // must be before units
   factions,

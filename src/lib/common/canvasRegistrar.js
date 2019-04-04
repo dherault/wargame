@@ -1,7 +1,7 @@
+// A function called once for registering the canvas event listeners
 function canvasRegistrar(canvas, draw, eventsDescriptors = [], registerFn = () => null) {
 
-  // A function called once for registering the canvas event listeners
-  console.log('registering canvas')
+  console.log('registering', canvas.id)
 
   // For global canvas access, do not remove
   window.canvas = canvas

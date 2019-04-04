@@ -12,9 +12,11 @@ const gameConfiguration = {
   hideoutTerrainTypes: ['FOREST', 'REEF'],
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
+  attackAnimationSeparatorWidth: 4,
   imageSources: {
     units: '/images/units.png',
     playedUnits: '/images/units_played.png',
+    attackAnimationBackgrounds: '/images/attack_animation_backgrounds_remastered.png',
     campaignMenuBackground: '/images/map_remastered.png',
     campaignMenuSwords: '/images/swords_64x64.png',
   },
@@ -22,6 +24,16 @@ const gameConfiguration = {
     campaignMenuBackground: {
       width: 4096,
       height: 2048,
+    },
+  },
+  imageTileDimensions: {
+    units: {
+      width: 64,
+      height: 64,
+    },
+    attackAnimationBackgrounds: {
+      width: 128,
+      height: 168,
     },
   },
   terrainConfiguration: {
@@ -36,6 +48,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     ROAD: {
       name: 'Road',
@@ -48,6 +66,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     FOREST: {
       name: 'Forest',
@@ -60,6 +84,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     MOUNTAIN: {
       name: 'Mountain',
@@ -72,6 +102,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     RIVER: {
       name: 'River',
@@ -84,6 +120,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     SEA: {
       name: 'Sea',
@@ -96,6 +138,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: 1,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     REEF: {
       name: 'Reefs',
@@ -108,6 +156,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: 2,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     HEADQUARTERS: {
       name: 'HQ',
@@ -120,6 +174,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     CITY: {
       name: 'City',
@@ -132,6 +192,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     BASE: {
       name: 'Base',
@@ -144,6 +210,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     AIRPORT: {
       name: 'Airport',
@@ -156,6 +228,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: Infinity,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
     PORT: {
       name: 'Port',
@@ -168,6 +246,12 @@ const gameConfiguration = {
         FLY: 1,
         SAIL: 1,
       },
+      animationBackgrounds: [
+        {
+          x: 50,
+          y: 50,
+        },
+      ],
     },
   },
   unitsConfiguration: {

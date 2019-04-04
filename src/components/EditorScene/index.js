@@ -13,7 +13,7 @@ class EditorScene extends Component {
   componentDidMount() {
     console.log('Mounting EditorScene')
     const { isEditing, dispatch } = this.props
-    const canvas = document.getElementById('canvas-editor')
+    const canvas = document.getElementById('canvas-EditorScene')
 
     this.resizeCanvasListener = () => this.resizeCanvas(canvas)
 
@@ -46,7 +46,7 @@ class EditorScene extends Component {
     return (
       <div className="EditorScene">
         <canvas
-          id="canvas-editor"
+          id="canvas-EditorScene"
           className="EditorScene-canvas no-select"
           tabIndex={0}
         />

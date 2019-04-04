@@ -29,7 +29,7 @@ class GameScene extends Component {
 
     if (!worldMap) return dispatch(push('/'))
 
-    const canvas = document.getElementById('canvas-game')
+    const canvas = document.getElementById('canvas-GameScene')
 
     /* Resize canvas */
 
@@ -100,7 +100,7 @@ class GameScene extends Component {
     return (
       <div className="GameScene relative">
         <canvas
-          id="canvas-game"
+          id="canvas-GameScene"
           className="GameScene-canvas no-select"
           tabIndex={0}
         />

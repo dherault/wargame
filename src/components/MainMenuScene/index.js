@@ -25,6 +25,11 @@ class MainMenuScene extends Component {
         <div className="MainMenuScene-item" onClick={() => dispatch(push('/editor'))}>
           Editor
         </div>
+        {process.env.NODE_ENV === 'development' && (
+          <div className="MainMenuScene-item" onClick={() => dispatch(push('/development'))}>
+            Development page
+          </div>
+        )}
         <div className="MainMenuScene-item" onClick={() => window.open('https://github.com/dherault/wargame', '_blank')}>
           GitHub
         </div>

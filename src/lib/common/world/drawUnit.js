@@ -1,9 +1,6 @@
 import store from '../../../state/store'
 import gameConfiguration from '../../gameConfiguration'
 
-const unitsImageTileWidth = 64
-const unitsImageTileHeight = 64
-
 function drawUnit(_, tileSize, images, unit) {
   const { viewBox, booleans: { isDevPanelOpened } } = store.getState()
   const position = unit.currentPosition || unit.position
@@ -29,8 +26,8 @@ function drawUnit(_, tileSize, images, unit) {
     unit.played ? images[gameConfiguration.imageSources.playedUnits] : images[gameConfiguration.imageSources.units],
     dx,
     dy + factionDy,
-    unitsImageTileWidth,
-    unitsImageTileHeight,
+    gameConfiguration.imageTileDimensions.units.width,
+    gameConfiguration.imageTileDimensions.units.height,
     flipped ? -((x + 1) * tileSize + offsetX) : x * tileSize + offsetX,
     y * tileSize + offsetY,
     tileSize,
