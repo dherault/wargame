@@ -133,7 +133,6 @@ function draw(_) {
         _.stroke()
       }
     }
-
   })
 }
 
