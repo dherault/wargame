@@ -1,4 +1,54 @@
+const imageSources = {
+  units: '/images/units.png',
+  playedUnits: '/images/units_played.png',
+  attackAnimationBackgrounds: '/images/attack_animation_backgrounds_remastered.png',
+  campaignMenuBackground: '/images/map_remastered.png',
+  campaignMenuSwords: '/images/swords_64x64.png',
+  tileAirportBlue: '/images/tiles/airport_blue.png',
+  tileAirportGreen: '/images/tiles/airport_green.png',
+  tileAirportNeutral: '/images/tiles/airport_neutral.png',
+  tileAirportRed: '/images/tiles/airport_red.png',
+  tileAirportYellow: '/images/tiles/airport_yellow.png',
+  tileBaseBlue: '/images/tiles/base_blue.png',
+  tileBaseGreen: '/images/tiles/base_green.png',
+  tileBaseNeutral: '/images/tiles/base_neutral.png',
+  tileBaseRed: '/images/tiles/base_red.png',
+  tileBaseYellow: '/images/tiles/base_yellow.png',
+  tileBeach: '/images/tiles/beach.png',
+  tileBridge: '/images/tiles/bridge.png',
+  tileCityBlue: '/images/tiles/city_blue.png',
+  tileCityGreen: '/images/tiles/city_green.png',
+  tileCityNeutral: '/images/tiles/city_neutral.png',
+  tileCityRed: '/images/tiles/city_red.png',
+  tileCityYellow: '/images/tiles/city_yellow.png',
+  tileForest1: '/images/tiles/forest1.png',
+  tileForest2: '/images/tiles/forest2.png',
+  tileForest3: '/images/tiles/forest3.png',
+  tileForest4: '/images/tiles/forest4.png',
+  tileHeadquartersBlue: '/images/tiles/hq_blue.png',
+  tileHeadquartersGreen: '/images/tiles/hq_green.png',
+  tileHeadquartersRed: '/images/tiles/hq_red.png',
+  tileHeadquartersYellow: '/images/tiles/hq_yellow.png',
+  tileMountain: '/images/tiles/mountain.png',
+  tilePlain: '/images/tiles/plain.png',
+  tilePortBlue: '/images/tiles/port_blue.png',
+  tilePortGreen: '/images/tiles/port_green.png',
+  tilePortNeutral: '/images/tiles/port_neutral.png',
+  tilePortRed: '/images/tiles/port_red.png',
+  tilePortYellow: '/images/tiles/port_yellow.png',
+  tileRiver1: '/images/tiles/river1.png',
+  tileRiver2: '/images/tiles/river2.png',
+  tileRiver3: '/images/tiles/river3.png',
+  tileRiver4: '/images/tiles/river4.png',
+  tileRoad1: '/images/tiles/road1.png',
+  tileRoad2: '/images/tiles/road2.png',
+  tileRoad3: '/images/tiles/road3.png',
+  tileRoad4: '/images/tiles/road4.png',
+  tileSea: '/images/tiles/sea.png',
+}
+
 const gameConfiguration = {
+  imageSources,
   maxUnitLife: 100,
   maxBuildingCapture: 100,
   moneyPerCityPerTurn: 1000,
@@ -13,13 +63,6 @@ const gameConfiguration = {
   viewBoxIntervalPeriod: 1000 / 60, // 17ms period = 60 iterations per seconds frequency
   viewBoxIncrements: 5, // The viewBox will move nIncrements times each time it has changed
   attackAnimationSeparatorWidth: 4,
-  imageSources: {
-    units: '/images/units.png',
-    playedUnits: '/images/units_played.png',
-    attackAnimationBackgrounds: '/images/attack_animation_backgrounds_remastered.png',
-    campaignMenuBackground: '/images/map_remastered.png',
-    campaignMenuSwords: '/images/swords_64x64.png',
-  },
   imageDimensions: {
     campaignMenuBackground: {
       width: 4096,
@@ -54,6 +97,9 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tilePlain,
+      ],
     },
     ROAD: {
       name: 'Road',
@@ -71,6 +117,12 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tileRoad1,
+        imageSources.tileRoad2,
+        imageSources.tileRoad3,
+        imageSources.tileRoad4,
       ],
     },
     FOREST: {
@@ -90,6 +142,12 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tileForest1,
+        imageSources.tileForest2,
+        imageSources.tileForest3,
+        imageSources.tileForest4,
+      ],
     },
     MOUNTAIN: {
       name: 'Mountain',
@@ -107,6 +165,9 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tileMountain,
       ],
     },
     RIVER: {
@@ -126,6 +187,12 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tileRiver1,
+        imageSources.tileRiver2,
+        imageSources.tileRiver3,
+        imageSources.tileRiver4,
+      ],
     },
     SEA: {
       name: 'Sea',
@@ -143,6 +210,9 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tileSea,
       ],
     },
     REEF: {
@@ -162,6 +232,9 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tileSea,
+      ],
     },
     HEADQUARTERS: {
       name: 'HQ',
@@ -179,6 +252,12 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tileHeadquartersRed,
+        imageSources.tileHeadquartersBlue,
+        imageSources.tileHeadquartersGreen,
+        imageSources.tileHeadquartersYellow,
       ],
     },
     CITY: {
@@ -198,6 +277,13 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tileCityRed,
+        imageSources.tileCityBlue,
+        imageSources.tileCityGreen,
+        imageSources.tileCityYellow,
+        imageSources.tileCityNeutral,
+      ],
     },
     BASE: {
       name: 'Base',
@@ -215,6 +301,13 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tileBaseRed,
+        imageSources.tileBaseBlue,
+        imageSources.tileBaseGreen,
+        imageSources.tileBaseYellow,
+        imageSources.tileBaseNeutral,
       ],
     },
     AIRPORT: {
@@ -234,6 +327,13 @@ const gameConfiguration = {
           y: 50,
         },
       ],
+      tileBackgrounds: [
+        imageSources.tileAirportRed,
+        imageSources.tileAirportBlue,
+        imageSources.tileAirportGreen,
+        imageSources.tileAirportYellow,
+        imageSources.tileAirportNeutral,
+      ],
     },
     PORT: {
       name: 'Port',
@@ -251,6 +351,13 @@ const gameConfiguration = {
           x: 50,
           y: 50,
         },
+      ],
+      tileBackgrounds: [
+        imageSources.tilePortRed,
+        imageSources.tilePortBlue,
+        imageSources.tilePortGreen,
+        imageSources.tilePortYellow,
+        imageSources.tilePortNeutral,
       ],
     },
   },
