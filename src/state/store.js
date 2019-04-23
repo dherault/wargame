@@ -20,6 +20,7 @@ import mapDefinitionDescription from './reducers/mapDefinitionDescription'
 import mapDefinitionName from './reducers/mapDefinitionName'
 import moneyByFaction from './reducers/moneyByFaction'
 import mouse from './reducers/mouse'
+import selectedBackgroundImageSource from './reducers/selectedBackgroundImageSource'
 import selectedBuildingType from './reducers/selectedBuildingType'
 import selectedFactionId from './reducers/selectedFactionId'
 import selectedPosition from './reducers/selectedPosition'
@@ -52,6 +53,7 @@ const reducer = createReducer({
   mapDefinitionName,
   moneyByFaction,
   mouse,
+  selectedBackgroundImageSource,
   selectedBuildingType,
   selectedFactionId,
   selectedPosition,

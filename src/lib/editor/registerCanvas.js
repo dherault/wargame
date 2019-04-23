@@ -6,7 +6,7 @@ import { samePosition, createId } from '../common/utils'
 import registerWorldHotKeys from '../common/world/registerWorldHotKeys'
 import eventHandlers from '../common/world/eventHandlers'
 
-function updateWorldMapWithTerrain(terrainType) {
+function updateWorldMapWithTerrain(terrainType, backgroundImageSource) {
   const { worldMap, mouse } = store.getState()
 
   if (!(worldMap[mouse.y] && worldMap[mouse.y][mouse.x])) return
@@ -14,7 +14,7 @@ function updateWorldMapWithTerrain(terrainType) {
   const nextWorldMap = worldMap.slice()
 
   nextWorldMap[mouse.y] = nextWorldMap[mouse.y].slice()
-  nextWorldMap[mouse.y][mouse.x] = terrainType
+  nextWorldMap[mouse.y][mouse.x] = { type: terrainType, backgroundImageSource }
 
   store.dispatch({
     type: 'SET_WORLD_MAP',
@@ -68,7 +68,7 @@ function registerCanvas(canvas) {
             },
           })
 
-          const { mouse, booleans, buildings, units, worldMap, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId } = store.getState()
+          const { mouse, booleans, buildings, units, worldMap, selectedTerrainType, selectedBuildingType, selectedBackgroundImageSource, selectedUnitType, selectedFactionId } = store.getState()
 
           const tile = worldMap[mouse.y] && worldMap[mouse.y][mouse.x]
 
@@ -76,8 +76,8 @@ function registerCanvas(canvas) {
 
           let existingBuildingIndex = buildings.findIndex(building => samePosition(building.position, mouse))
 
-          if (selectedTerrainType) {
-            updateWorldMapWithTerrain(selectedTerrainType)
+          if (selectedTerrainType && selectedBackgroundImageSource) {
+            updateWorldMapWithTerrain(selectedTerrainType, selectedBackgroundImageSource)
 
             if (existingBuildingIndex !== -1) {
               const nextBuildings = buildings.slice()
@@ -91,8 +91,8 @@ function registerCanvas(canvas) {
             }
           }
 
-          if (selectedBuildingType) {
-            updateWorldMapWithTerrain(selectedBuildingType)
+          if (selectedBuildingType && selectedBackgroundImageSource) {
+            updateWorldMapWithTerrain(selectedBuildingType, selectedBackgroundImageSource)
 
             if (existingBuildingIndex === -1) {
               existingBuildingIndex = buildings.length
@@ -218,15 +218,18 @@ function registerCanvas(canvas) {
       ['mousemove', eventHandlers.mousemove(canvas)],
 
       ['mousemove', () => {
-        const { booleans, mouse, selectedTerrainType, worldMap } = store.getState()
+        const { booleans, mouse, selectedTerrainType, selectedBackgroundImageSource, worldMap } = store.getState()
 
         if (
           booleans.isLeftButtonDown
           && selectedTerrainType
+          && selectedBackgroundImageSource
           && worldMap[mouse.y]
-          && worldMap[mouse.y][mouse.x] !== selectedTerrainType
+          && worldMap[mouse.y][mouse.x]
+          && worldMap[mouse.y][mouse.x].type !== selectedTerrainType
+          && worldMap[mouse.y][mouse.x].backgroundImageSource !== selectedBackgroundImageSource
         ) {
-          updateWorldMapWithTerrain(selectedTerrainType)
+          updateWorldMapWithTerrain(selectedTerrainType, selectedBackgroundImageSource)
         }
       }],
 

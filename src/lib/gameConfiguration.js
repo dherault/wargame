@@ -79,6 +79,13 @@ const gameConfiguration = {
       height: 168,
     },
   },
+  factionsOrderForBackgroundImageSources: [
+    'RED',
+    'BLUE',
+    'GREEN',
+    'YELLOW',
+    null,
+  ],
   terrainConfiguration: {
     PLAIN: {
       name: 'Plain',
@@ -97,7 +104,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tilePlain,
       ],
     },
@@ -118,7 +125,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileRoad1,
         imageSources.tileRoad2,
         imageSources.tileRoad3,
@@ -142,7 +149,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileForest1,
         imageSources.tileForest2,
         imageSources.tileForest3,
@@ -166,7 +173,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileMountain,
       ],
     },
@@ -187,7 +194,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileRiver1,
         imageSources.tileRiver2,
         imageSources.tileRiver3,
@@ -211,7 +218,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileSea,
       ],
     },
@@ -232,7 +239,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileSea,
       ],
     },
@@ -253,7 +260,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileHeadquartersRed,
         imageSources.tileHeadquartersBlue,
         imageSources.tileHeadquartersGreen,
@@ -277,7 +284,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileCityRed,
         imageSources.tileCityBlue,
         imageSources.tileCityGreen,
@@ -302,7 +309,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileBaseRed,
         imageSources.tileBaseBlue,
         imageSources.tileBaseGreen,
@@ -327,7 +334,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tileAirportRed,
         imageSources.tileAirportBlue,
         imageSources.tileAirportGreen,
@@ -352,7 +359,7 @@ const gameConfiguration = {
           y: 50,
         },
       ],
-      tileBackgrounds: [
+      tileBackgroundImageSources: [
         imageSources.tilePortRed,
         imageSources.tilePortBlue,
         imageSources.tilePortGreen,

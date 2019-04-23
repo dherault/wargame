@@ -153,6 +153,16 @@ class EditorPanel extends Component {
     }
   }
 
+  deselectBackgroundImageSource() {
+    const { selectedBackgroundImageSource, dispatch } = this.props
+
+    if (selectedBackgroundImageSource) {
+      dispatch({
+        type: 'DESELECT_BACKGROUND_IMAGE_SOURCE',
+      })
+    }
+  }
+
   deselectUnitType() {
     const { selectedUnitType, dispatch } = this.props
 
@@ -189,17 +199,20 @@ class EditorPanel extends Component {
     }
   }
 
-  handleTerrainTypeSelection = terrainType => {
-    const { selectedTerrainType, dispatch } = this.props
+  handleTerrainTypeSelection = (terrainType, backgroundImageSource) => {
+    const { selectedTerrainType, selectedBackgroundImageSource, dispatch } = this.props
 
     this.deselectBuildingType()
     this.deselectUnitType()
     this.stopDeletingUnits()
     this.stopFlippingUnits()
 
-    if (selectedTerrainType === terrainType) {
+    if (selectedTerrainType === terrainType && selectedBackgroundImageSource === backgroundImageSource) {
       dispatch({
         type: 'DESELECT_TERRAIN_TYPE',
+      })
+      dispatch({
+        type: 'DESELECT_BACKGROUND_IMAGE_SOURCE',
       })
     }
     else {
@@ -207,13 +220,17 @@ class EditorPanel extends Component {
         type: 'SELECT_TERRAIN_TYPE',
         payload: terrainType,
       })
+      dispatch({
+        type: 'SELECT_BACKGROUND_IMAGE_SOURCE',
+        payload: backgroundImageSource,
+      })
     }
 
     window.canvas.focus()
   }
 
-  handleBuildingSelection = (factionId, buildingType) => {
-    const { selectedBuildingType, selectedFactionId, dispatch } = this.props
+  handleBuildingSelection = (factionId, buildingType, backgroundImageSource) => {
+    const { selectedBuildingType, selectedFactionId, selectedBackgroundImageSource, dispatch } = this.props
 
     this.deselectTerrainType()
     this.deselectUnitType()
@@ -225,15 +242,22 @@ class EditorPanel extends Component {
       payload: factionId,
     })
 
-    if (selectedFactionId === factionId && selectedBuildingType === buildingType) {
+    if (selectedFactionId === factionId && selectedBuildingType === buildingType && selectedBackgroundImageSource === backgroundImageSource) {
       dispatch({
         type: 'DESELECT_BUILDING_TYPE',
+      })
+      dispatch({
+        type: 'DESELECT_BACKGROUND_IMAGE_SOURCE',
       })
     }
     else {
       dispatch({
         type: 'SELECT_BUILDING_TYPE',
         payload: buildingType,
+      })
+      dispatch({
+        type: 'SELECT_BACKGROUND_IMAGE_SOURCE',
+        payload: backgroundImageSource,
       })
     }
 
@@ -245,6 +269,7 @@ class EditorPanel extends Component {
 
     this.deselectTerrainType()
     this.deselectBuildingType()
+    this.deselectBackgroundImageSource()
     this.stopDeletingUnits()
     this.stopFlippingUnits()
 
@@ -273,6 +298,7 @@ class EditorPanel extends Component {
 
     this.deselectTerrainType()
     this.deselectBuildingType()
+    this.deselectBackgroundImageSource()
     this.deselectUnitType()
     this.stopFlippingUnits()
 
@@ -291,6 +317,7 @@ class EditorPanel extends Component {
 
     this.deselectTerrainType()
     this.deselectBuildingType()
+    this.deselectBackgroundImageSource()
     this.deselectUnitType()
     this.stopDeletingUnits()
 
@@ -363,7 +390,7 @@ class EditorPanel extends Component {
   }
 
   render() {
-    const { mapDefinitionName, mapDefinitionDescription, factions, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, dispatch } = this.props
+    const { mapDefinitionName, mapDefinitionDescription, factions, selectedTerrainType, selectedBuildingType, selectedBackgroundImageSource, selectedUnitType, selectedFactionId, dispatch } = this.props
     const { width, height, exportButtonLabel } = this.state
 
     const validations = this.validateMap()
@@ -400,23 +427,29 @@ class EditorPanel extends Component {
           <header>
             Terrain
           </header>
-          <div className="EditorPanel-terrain x77">
+          <div className="EditorPanel-terrain">
             {Object.entries(gameConfiguration.terrainConfiguration).map(([type, configuration]) => {
 
               if (gameConfiguration.buildingTerrainTypes.includes(type)) return null
 
               return (
-                <div
-                  key={type}
-                  className="EditorPanel-terrain-item no-select y8"
-                  style={{
-                    border: `1px solid ${selectedTerrainType === type ? selectionColor : 'white'}`,
-                  }}
-                  onClick={() => this.handleTerrainTypeSelection(type)}
-                >
-                  <div className="EditorPanel-terrain-item-tile" style={{ backgroundColor: configuration.color }} />
-                  <div>
+                <div key={type} className="EditorPanel-terrain-list no-select">
+                  <div className="EditorPanel-terrain-list-header">
                     {configuration.name}
+                  </div>
+                  <div className="x77">
+                    {configuration.tileBackgroundImageSources.map(backgroundImageSource => (
+                      <img
+                        key={backgroundImageSource}
+                        src={backgroundImageSource}
+                        alt={configuration.name}
+                        className="EditorPanel-terrain-list-item"
+                        style={{
+                          border: `4px solid ${selectedTerrainType === type && selectedBackgroundImageSource === backgroundImageSource ? selectionColor : 'white'}`,
+                        }}
+                        onClick={() => this.handleTerrainTypeSelection(type, backgroundImageSource)}
+                      />
+                    ))}
                   </div>
                 </div>
               )
@@ -428,26 +461,33 @@ class EditorPanel extends Component {
           <header>
             Buildings
           </header>
-          <div className="EditorPanel-buildings x77">
-            {[[null, { color: '#c1c1c1' }], ...Object.entries(gameConfiguration.factionsConfiguration)].map(([factionId, factionConfiguration]) => (
-              <div key={factionId} className="x77">
-                {Object.entries(gameConfiguration.buildingsConfiguration).map(([buildingType, buildingConfiguration]) => {
-                  if (!factionId && buildingType === 'HEADQUARTERS') return null
+          <div className="EditorPanel-buildings">
+            {[[null, { name: 'Neutral' }], ...Object.entries(gameConfiguration.factionsConfiguration)].map(([factionId, factionConfiguration]) => (
+              <div key={factionId} className="EditorPanel-buildings-list">
+                <div className="EditorPanel-buildings-list-header">
+                  {factionConfiguration.name}
+                </div>
+                <div className="x77">
+                  {Object.entries(gameConfiguration.buildingsConfiguration).map(([buildingType, buildingConfiguration]) => {
+                    if (!factionId && buildingType === 'HEADQUARTERS') return null
 
-                  return (
-                    <div
-                      key={buildingType}
-                      style={{
-                        color: factionConfiguration.color,
-                        border: `1px solid ${selectedFactionId === factionId && selectedBuildingType === buildingType ? selectionColor : 'white'}`,
-                      }}
-                      className="EditorPanel-buildings-item"
-                      onClick={() => this.handleBuildingSelection(factionId, buildingType)}
-                    >
-                      {buildingConfiguration.name}
-                    </div>
-                  )
-                })}
+                    const backgroundImageSource = gameConfiguration.terrainConfiguration[buildingType].tileBackgroundImageSources[gameConfiguration.factionsOrderForBackgroundImageSources.indexOf(factionId)]
+
+                    return (
+                      <img
+                        key={buildingType}
+                        src={backgroundImageSource}
+                        alt={buildingConfiguration.name}
+                        title={buildingConfiguration.name}
+                        className="EditorPanel-buildings-list-item"
+                        style={{
+                          border: `4px solid ${selectedBuildingType === buildingType && selectedBackgroundImageSource === backgroundImageSource ? selectionColor : 'white'}`,
+                        }}
+                        onClick={() => this.handleBuildingSelection(factionId, buildingType, backgroundImageSource)}
+                      />
+                    )
+                  })}
+                </div>
               </div>
             ))}
           </div>
@@ -561,6 +601,7 @@ const mapStateToProps = s => ({
   factions: s.factions,
   mapDefinitionDescription: s.mapDefinitionDescription,
   mapDefinitionName: s.mapDefinitionName,
+  selectedBackgroundImageSource: s.selectedBackgroundImageSource,
   selectedBuildingType: s.selectedBuildingType,
   selectedFactionId: s.selectedFactionId,
   selectedTerrainType: s.selectedTerrainType,

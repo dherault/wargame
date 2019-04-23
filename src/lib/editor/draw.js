@@ -1,17 +1,19 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-// import { samePosition } from '../common/utils'
 import drawBuilding from '../common/world/drawBuilding'
 import drawUnit from '../common/world/drawUnit'
 import loadImages from '../common/loadImages'
 
 const imagesSources = [
   gameConfiguration.imageSources.units,
+  ...Object.keys(gameConfiguration.imageSources)
+    .filter(key => key.startsWith('tile'))
+    .map(key => gameConfiguration.imageSources[key]),
 ]
 
 // The main draw function for the editor
 function draw(_) {
-  const { viewBox, mouse, booleans, worldMap, buildings, units, selectedTerrainType, selectedBuildingType, selectedUnitType, selectedFactionId, selectedPosition } = store.getState()
+  const { viewBox, mouse, booleans, worldMap, units, selectedTerrainType, selectedBuildingType, selectedBackgroundImageSource, selectedUnitType, selectedFactionId, selectedPosition } = store.getState()
   const { width, height } = _.canvas
   const { offsetX, offsetY } = viewBox
 
@@ -42,48 +44,36 @@ function draw(_) {
 
         if (!tile) continue
 
-        const { color } = gameConfiguration.terrainConfiguration[tile]
-
-        _.fillStyle = color
-        _.strokeStyle = color
-
-        _.beginPath()
-        _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
-        _.closePath()
-        _.fill()
-        _.stroke()
+        _.drawImage(
+          images[tile.backgroundImageSource],
+          (i - (viewBox.x % 1)) * tileSize + offsetX,
+          (j - (viewBox.y % 1)) * tileSize + offsetY,
+          tileSize,
+          tileSize
+        )
       }
     }
-
-    /* ---------------
-      DRAW BUILDINGS
-    --------------- */
-
-    buildings.forEach(building => drawBuilding(_, tileSize, building))
 
     /* ---------------
       DRAW SELECTION
     --------------- */
 
     if (selectedBuildingType && mouseTile) {
-      drawBuilding(_, tileSize, {
+      drawBuilding(_, images, tileSize, {
         type: selectedBuildingType,
         factionId: selectedFactionId,
         position: mouse,
       })
     }
 
-    if (selectedTerrainType && mouseTile) {
-      const { color } = gameConfiguration.terrainConfiguration[selectedTerrainType]
-
-      _.fillStyle = color
-      _.strokeStyle = color
-
-      _.beginPath()
-      _.rect((mouse.x - viewBox.x) * tileSize + offsetX, (mouse.y - viewBox.y) * tileSize + offsetY, tileSize, tileSize)
-      _.closePath()
-      _.fill()
-      _.stroke()
+    if (selectedTerrainType && selectedBackgroundImageSource && mouseTile) {
+      _.drawImage(
+        images[selectedBackgroundImageSource],
+        (mouse.x - viewBox.x) * tileSize + offsetX,
+        (mouse.y - viewBox.y) * tileSize + offsetY,
+        tileSize,
+        tileSize
+      )
     }
 
     /* -----------

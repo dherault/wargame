@@ -13,7 +13,7 @@ const TileInfo = ({ mouse, worldMap, units, buildings }) => {
 
   if (!tile) return null
 
-  const tileConfiguration = gameConfiguration.terrainConfiguration[tile]
+  const tileConfiguration = gameConfiguration.terrainConfiguration[tile.type]
   const unit = units.find(unit => samePosition(unit.position, mouse))
   const building = buildings.find(building => samePosition(building.position, mouse))
 
