@@ -2,50 +2,53 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import hotkeys from 'piano-keys'
-import gameConfiguration from '../../lib/gameConfiguration'
-import { samePosition } from '../../lib/common/utils'
 import developmentMaps from '../../lib/mapDefinitions/development'
 import standardMaps from '../../lib/mapDefinitions/standard'
 
 import './Carousel.css'
 
-const CarouselItem = React.memo(({ className, onClick, mapDefinition: { worldMap = [[]], buildings, name, description } = {} }) => (
-  <div className={`CarouselItem ${className} y5 pointer`} onClick={onClick}>
-    <div className="CarouselItem-tiles">
-      {worldMap.map((row, j) => (
-        <div key={j} className="x4">
-          {row.map((tile, i) => {
-            let { color } = gameConfiguration.terrainConfiguration[tile]
+const CarouselItem = React.memo(({
+  className,
+  onClick,
+  mapDefinition: {
+    worldMap = [[]],
+    name,
+    description,
+  } = {},
+}) => {
 
-            if (gameConfiguration.buildingTerrainTypes.includes(tile)) {
-              const { factionId } = buildings.find(building => samePosition(building.position, { x: i, y: j }))
+  const maxDimension = Math.max(worldMap.length, worldMap[0].length)
+  const tileSize = `${100 / maxDimension}%`
 
-              if (factionId !== null) {
-                ({ color } = gameConfiguration.factionsConfiguration[factionId])
-              }
-            }
-
-            return (
-              <div
+  return (
+    <div className={`CarouselItem ${className} y5 pointer`} onClick={onClick}>
+      <div className="CarouselItem-tiles">
+        {worldMap.map((row, j) => (
+          <div key={j} className="x4">
+            {row.map((tile, i) => (
+              <img
                 key={i}
-                className="CarouselItem-tile"
-                style={{ backgroundColor: color }}
+                src={tile.backgroundImageSource}
+                style={{
+                  width: tileSize,
+                  height: tileSize,
+                }}
               />
-            )
-          })}
-        </div>
-      ))}
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="CarouselItem-info text-align-center">
+        <h2>
+          {name}
+        </h2>
+        <strong>
+          {description}
+        </strong>
+      </div>
     </div>
-    <div className="CarouselItem-info text-align-center">
-      <h2>
-        {name}
-      </h2>
-      <strong>
-        {description}
-      </strong>
-    </div>
-  </div>
-))
+  )
+})
 
 class Carousel extends Component {
 

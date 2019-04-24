@@ -26,7 +26,6 @@ reconstruct reverse path from goal to start
 by following parent pointers
 */
 
-
 function aStarSearch(store, unit, startPosition, goalPosition) {
   const { worldMap, units } = store.getState()
   const { movementType } = gameConfiguration.unitsConfiguration[unit.type]
@@ -74,7 +73,7 @@ function aStarSearch(store, unit, startPosition, goalPosition) {
       const neighborHash = hash(neighborPosition)
 
       // cost = g(current) + movementcost(neighbor)
-      const cost = hashToCost[currentPositionHash] + gameConfiguration.terrainConfiguration[worldMap[neighborPosition.y][neighborPosition.x]].movementCost[movementType]
+      const cost = hashToCost[currentPositionHash] + gameConfiguration.terrainConfiguration[worldMap[neighborPosition.y][neighborPosition.x].type].movementCost[movementType]
 
       if (cost === Infinity) return
 

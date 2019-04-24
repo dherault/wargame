@@ -64,7 +64,7 @@ export function getSuccessorsFactory(store, unit) {
     if (tile) {
       successors.push({
         position,
-        cost: cost + terrainConfiguration[tile].movementCost[movementType],
+        cost: cost + terrainConfiguration[tile.type].movementCost[movementType],
       })
     }
   }

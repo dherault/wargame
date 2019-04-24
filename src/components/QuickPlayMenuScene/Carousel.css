@@ -43,11 +43,7 @@
 
 .CarouselItem-tiles {
   margin-top: -64px;
-}
-
-.CarouselItem-tile {
-  width: 1.4vw;
-  height: 1.4vw;
+  padding: 16px 32px;
 }
 
 .CarouselItem-indexMinusTwo {

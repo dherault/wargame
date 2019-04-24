@@ -2,8 +2,8 @@ import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
 import computeRangePositions from './computeRangePositions'
 import computeMovementPositions from './computeMovementPositions'
-import computeVisionPositionsHashes from './computeVisionPositionHashes'
-import { samePosition, findById, hash } from '../common/utils'
+// import computeVisionPositionsHashes from './computeVisionPositionHashes'
+import { samePosition, findById } from '../common/utils'
 import drawBuilding from '../common/world/drawBuilding'
 import drawUnit from '../common/world/drawUnit'
 import loadImages from '../common/loadImages'
@@ -14,6 +14,9 @@ let gradientAnimationDirection = true
 const imagesSources = [
   gameConfiguration.imageSources.units,
   gameConfiguration.imageSources.playedUnits,
+  ...Object.keys(gameConfiguration.imageSources)
+    .filter(key => key.startsWith('tile'))
+    .map(key => gameConfiguration.imageSources[key]),
 ]
 
 // The main draw function for the game
@@ -33,11 +36,11 @@ function draw(_) {
 
   _.lineWidth = 1
 
-  let visionPositionHashes
+  // let visionPositionHashes
 
-  if (booleans.isFogOfWar) {
-    visionPositionHashes = computeVisionPositionsHashes(store)
-  }
+  // if (booleans.isFogOfWar) {
+  //   visionPositionHashes = computeVisionPositionsHashes(store)
+  // }
 
   loadImages(imagesSources).then(images => {
     /* ----------------
@@ -53,30 +56,27 @@ function draw(_) {
 
         if (!tile) continue
 
-        const { color } = gameConfiguration.terrainConfiguration[tile]
+        _.drawImage(
+          images[tile.backgroundImageSource],
+          (i - (viewBox.x % 1)) * tileSize + offsetX,
+          (j - (viewBox.y % 1)) * tileSize + offsetY,
+          tileSize,
+          tileSize
+        )
 
-        _.fillStyle = color
-        _.strokeStyle = color
+        // if (booleans.isFogOfWar && !visionPositionHashes.has(hash({ x, y }))) {
+        //   _.fillStyle = 'black'
+        //   _.strokeStyle = 'black'
+        //   _.globalAlpha = 0.33
 
-        _.beginPath()
-        _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
-        _.closePath()
-        _.fill()
-        _.stroke()
+        //   _.beginPath()
+        //   _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
+        //   _.closePath()
+        //   _.fill()
+        //   _.stroke()
 
-        if (booleans.isFogOfWar && !visionPositionHashes.has(hash({ x, y }))) {
-          _.fillStyle = 'black'
-          _.strokeStyle = 'black'
-          _.globalAlpha = 0.33
-
-          _.beginPath()
-          _.rect((i - (viewBox.x % 1)) * tileSize + offsetX, (j - (viewBox.y % 1)) * tileSize + offsetY, tileSize, tileSize)
-          _.closePath()
-          _.fill()
-          _.stroke()
-
-          _.globalAlpha = 1
-        }
+        //   _.globalAlpha = 1
+        // }
       }
     }
 
@@ -84,7 +84,7 @@ function draw(_) {
       DRAW BUILDINGS
     --------------- */
 
-    buildings.forEach(building => drawBuilding(_, tileSize, building))
+    buildings.forEach(building => drawBuilding(_, images, tileSize, building))
 
     /* ------------------------------
       DRAW MOVEMENT AND RANGE TILES
@@ -147,9 +147,9 @@ function draw(_) {
       .slice()
       .sort(a => a.isMoving ? 1 : -1)
       .forEach(unit => {
-        if (!booleans.isFogOfWar || visionPositionHashes.has(hash(unit.position))) {
-          drawUnit(_, tileSize, images, unit)
-        }
+        drawUnit(_, tileSize, images, unit)
+        // if (!booleans.isFogOfWar || visionPositionHashes.has(hash(unit.position))) {
+        // }
       })
 
     /* ---------------------------
