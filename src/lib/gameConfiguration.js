@@ -30,7 +30,8 @@ const imageSources = {
   tileHeadquartersRed: '/images/tiles/hq_red.png',
   tileHeadquartersYellow: '/images/tiles/hq_yellow.png',
   tileMountain: '/images/tiles/mountain.png',
-  tilePlain: '/images/tiles/plain.png',
+  tilePlain1: '/images/tiles/plain1.png',
+  tilePlain2: '/images/tiles/plain2.png',
   tilePortBlue: '/images/tiles/port_blue.png',
   tilePortGreen: '/images/tiles/port_green.png',
   tilePortNeutral: '/images/tiles/port_neutral.png',
@@ -119,7 +120,8 @@ const gameConfiguration = {
         },
       ],
       tileBackgroundImageSources: [
-        imageSources.tilePlain,
+        imageSources.tilePlain1,
+        imageSources.tilePlain2,
       ],
     },
     ROAD: {

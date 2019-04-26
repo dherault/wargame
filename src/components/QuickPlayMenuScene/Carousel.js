@@ -62,8 +62,8 @@ class Carousel extends Component {
 
   componentDidMount() {
     this.unregisterFns = [
-      hotkeys(document.documentElement, 'left', this.decrementIndex),
-      hotkeys(document.documentElement, 'right', this.incrementIndex),
+      hotkeys(document.documentElement, 'left', this.decrementIndex, { fireOnce: true }),
+      hotkeys(document.documentElement, 'right', this.incrementIndex, { fireOnce: true }),
     ]
   }
 

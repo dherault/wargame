@@ -1,13 +1,12 @@
 import store from '../../state/store'
 import gameConfiguration from '../gameConfiguration'
-import { randomArray } from '../common/utils'
 
 function createEmptyWorldMap(width = 20, height = 15) {
   const tiles = []
   const row = []
 
   for (let i = 0; i < width; i++) {
-    row.push({ type: 'PLAIN', backgroundImageSource: randomArray(gameConfiguration.terrainConfiguration.PLAIN.tileBackgroundImageSources) })
+    row.push({ type: 'PLAIN', backgroundImageSource: gameConfiguration.terrainConfiguration.PLAIN.tileBackgroundImageSources[0] })
   }
 
   for (let j = 0; j < height; j++) {

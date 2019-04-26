@@ -8,35 +8,35 @@ function mergeBug() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'HEADQUARTERS',
@@ -46,85 +46,85 @@ function mergeBug() {
       [
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
       ],
       [
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
       ],
     ],

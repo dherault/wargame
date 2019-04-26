@@ -30,7 +30,7 @@
     "connected-react-router": "^6.4.0",
     "flexpad": "^0.2.0",
     "history": "^4.9.0",
-    "piano-keys": "^1.0.3",
+    "piano-keys": "^1.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.2",

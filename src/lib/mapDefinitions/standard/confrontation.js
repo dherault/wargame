@@ -9,7 +9,7 @@ function confrontation() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'MOUNTAIN',
@@ -95,7 +95,7 @@ function confrontation() {
       [
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'ROAD',
@@ -103,7 +103,7 @@ function confrontation() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'RIVER',
@@ -111,7 +111,7 @@ function confrontation() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'ROAD',
@@ -119,7 +119,7 @@ function confrontation() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
       ],
       [
@@ -205,7 +205,7 @@ function confrontation() {
         },
         {
           type: 'PLAIN',
-          backgroundImageSource: '/images/tiles/plain.png',
+          backgroundImageSource: '/images/tiles/plain1.png',
         },
         {
           type: 'HEADQUARTERS',

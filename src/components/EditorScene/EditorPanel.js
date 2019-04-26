@@ -83,7 +83,7 @@ class EditorPanel extends Component {
       const nextRow = []
 
       for (let i = 0; i < width; i++) {
-        const tile = row[i] || 'PLAIN'
+        const tile = row[i] || { type: 'PLAIN', backgroundImageSource: gameConfiguration.terrainConfiguration.PLAIN.tileBackgroundImageSources[0] }
 
         nextRow.push(tile)
       }
