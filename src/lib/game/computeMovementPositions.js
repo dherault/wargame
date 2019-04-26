@@ -9,7 +9,7 @@ function computeMovementPositions(store, unit) {
 
   const getSuccessors = getSuccessorsFactory(store, unit)
 
-  const positions = [unit.position]
+  const positions = []
   const openSet = new Heap()
   const closedSet = new Set()
 
