@@ -26,6 +26,7 @@ function computeMovementPositions(store, unit) {
     // If there is no unit on the position, add the position to the results
     // If there is a mergable unit on the position, add the position to the results
     const unitOnPosition = units.find(u => samePosition(u.position, position))
+
     if (!unitOnPosition || (unitOnPosition.type === unit.type && unit.life < gameConfiguration.maxUnitLife && unitOnPosition.life < gameConfiguration.maxUnitLife)) {
       positions.push(position)
     }

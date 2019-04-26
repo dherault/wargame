@@ -3,6 +3,7 @@ import version from './version.json'
 function parseMajor(versionString) {
   return parseInt(versionString.split('.')[0])
 }
+
 function checkVersion() {
   const lastVersion = localStorage.getItem('wargame-version')
 

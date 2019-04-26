@@ -39,11 +39,16 @@
     "object-curly-newline": "off",
     "operator-linebreak": "off",
     "padded-blocks": "off",
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "import", "next": "*"},
+      { "blankLine": "any",    "prev": "import", "next": "import"}
+    ],
     "radix": "off",
     "semi": ["error", "never"],
     "space-infix-ops": "error",
     "import/no-cycle": "off",
-    "jsx-a11y/alt-text": "off",
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/no-static-element-interactions": "off",

@@ -62,7 +62,6 @@ describe('Tree', () => {
     const twoIndex = tree.addNode(2, rootIndex)
     const treeIndex = tree.addNode(3, oneIndex)
 
-
     assert.equal(tree.getData(rootIndex), 0)
     assert.equal(tree.getData(oneIndex), 1)
     assert.equal(tree.getData(twoIndex), 2)

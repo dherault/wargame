@@ -2,7 +2,10 @@
 export function loadState() {
   try {
     const serializedState = localStorage.getItem('wargame-state')
-    if (serializedState) return JSON.parse(serializedState)
+
+    if (serializedState) {
+      return JSON.parse(serializedState)
+    }
   }
   catch (error) {
     console.error(error)
@@ -13,6 +16,7 @@ export function loadState() {
 export function saveState(state) {
   try {
     const serializedState = JSON.stringify(state)
+
     localStorage.setItem('wargame-state', serializedState)
   }
   catch (error) {
