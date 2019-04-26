@@ -115,7 +115,7 @@ function registerCanvas(canvas) {
           }
 
           if (selectedUnitType) {
-            const movementCost = gameConfiguration.terrainConfiguration[tile].movementCost[gameConfiguration.unitsConfiguration[selectedUnitType].movementType]
+            const movementCost = gameConfiguration.terrainConfiguration[tile.type].movementCost[gameConfiguration.unitsConfiguration[selectedUnitType].movementType]
 
             if (movementCost !== Infinity) {
               let existingUnitIndex = units.findIndex(unit => samePosition(unit.position, mouse))

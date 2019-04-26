@@ -1,23 +1,23 @@
-import version from './version.json'
+import versionJson from './version.json'
 
 function parseMajor(versionString) {
   return parseInt(versionString.split('.')[0])
 }
 
 function checkVersion() {
-  const lastVersion = localStorage.getItem('wargame-version')
+  const lastVersion = localStorage.getItem('basicwars-version')
 
   if (lastVersion) {
     const lastVersionMajor = parseMajor(lastVersion)
-    const versionMajor = parseMajor(version)
+    const versionMajor = parseMajor(versionJson.version)
 
     // If the major has been bumped, we flush the state
     if (versionMajor > lastVersionMajor) {
-      localStorage.removeItem('wargame-state')
+      localStorage.removeItem('basicwars-state')
     }
   }
 
-  localStorage.setItem('wargame-version', version)
+  localStorage.setItem('basicwars-version', versionJson.version)
 }
 
 export default checkVersion

@@ -1,7 +1,7 @@
 // Loads the state from localStorage
 export function loadState() {
   try {
-    const serializedState = localStorage.getItem('wargame-state')
+    const serializedState = localStorage.getItem('basicwars-state')
 
     if (serializedState) {
       return JSON.parse(serializedState)
@@ -17,7 +17,7 @@ export function saveState(state) {
   try {
     const serializedState = JSON.stringify(state)
 
-    localStorage.setItem('wargame-state', serializedState)
+    localStorage.setItem('basicwars-state', serializedState)
   }
   catch (error) {
     console.error(error)
@@ -26,7 +26,7 @@ export function saveState(state) {
 
 // A utility to call from the browser's console when everything seems to fall apart
 window.reset = () => {
-  localStorage.removeItem('wargame-state')
+  localStorage.removeItem('basicwars-state')
   window.location.reload()
 
   return 'Roll \'em dices baby!'

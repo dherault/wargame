@@ -256,6 +256,7 @@ class UnitMenu extends Component {
           </div>
         )}
         {(unitOnSelectedPosition
+          && unitOnSelectedPosition.id !== selectedUnit.id
           && unitOnSelectedPosition.type === selectedUnit.type
           && selectedUnit.life < gameConfiguration.maxUnitLife
           && unitOnSelectedPosition.life < gameConfiguration.maxUnitLife
