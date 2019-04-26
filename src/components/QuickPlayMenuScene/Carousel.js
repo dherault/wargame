@@ -83,7 +83,9 @@ class Carousel extends Component {
   }
 
   incrementIndex = () => {
-    const { array, state: { index } } = this
+    const { array, state: { index, preAnimate } } = this
+
+    if (preAnimate) return
 
     this.setState({
       preAnimate: 'right',
@@ -105,7 +107,9 @@ class Carousel extends Component {
   }
 
   decrementIndex = () => {
-    const { array, state: { index } } = this
+    const { array, state: { index, preAnimate } } = this
+
+    if (preAnimate) return
 
     this.setState({
       preAnimate: 'left',
