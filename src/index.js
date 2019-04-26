@@ -9,6 +9,7 @@ import 'flexpad/dist/flexpad.css'
 import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import '@fortawesome/fontawesome-free/css/solid.min.css'
 
+import checkVersion from './checkVersion'
 import history from './history'
 import store from './state/store'
 import gameConfiguration from './lib/gameConfiguration'
@@ -21,6 +22,9 @@ import CampaignMenuScene from './components/CampaignMenuScene'
 import QuickPlayMenuScene from './components/QuickPlayMenuScene'
 // import DevelopmentScene from './components/DevelopmentScene'
 import NotFoundScene from './components/NotFoundScene'
+
+// Flush the game state if the version's major has been bumped
+checkVersion()
 
 class App extends PureComponent {
 

@@ -28,6 +28,7 @@ const CarouselItem = React.memo(({
             {row.map((tile, i) => (
               <img
                 key={i}
+                alt="tile"
                 src={tile.backgroundImageSource}
                 style={{
                   width: tileSize,
